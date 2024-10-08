@@ -1,0 +1,126 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    color: #333;
+    margin: 0;
+    background: white;
+}
+* {
+    box-sizing: border-box;
+}
+
+a {
+    color: #2B2D42;
+    font-weight: 500;
+    -webkit-transition: 0.2s color;
+    transition: 0.2s color;
+    text-decoration: none;
+  }
+
+header {
+    z-index: 999;
+    position: sticky;
+    top: 0;
+    left: 0;
+    background: #ddd;
+    padding: 20px 50px;
+    display: flex;
+    justify-content: space-between;
+    height: 115px;
+}
+
+.inner-logo {
+    cursor: pointer;
+}
+
+.inner-user {
+    width: 60%;
+    min-width: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+
+.inner-user > div {
+    margin-left: 20px;
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    min-width: 130px;
+    height: 55px;
+    border-radius: 8px;
+}
+
+.inner-user > div:hover {
+    background: beige;
+}
+
+
+.infor-user .avatar {
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+}
+
+.sider {
+    position: absolute;
+    top: 115px;
+    left: 0;
+    width: 220px;
+    min-height: calc(100% - 115px);
+    background: #F3F6F9;
+    margin: 0;
+    padding: 20px 10px;
+    padding-left: 0;
+    list-style-type: none;
+    
+}
+.sider .inner-icon {
+    background: white;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.sider li {
+    height: 50px;
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    padding: 15px 0;
+    padding-left: 10px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    background: transparent;
+    transition: background 0.4s;
+}
+
+.sider li:hover {
+    background: rgb(174, 242, 227);
+}
+
+.sider li a {
+    font-weight: 500;
+    color: black;
+}
+.sider li a:hover {
+    text-decoration: none;
+}
+
+.content {
+    position: absolute;
+    left: 220px;
+    height: calc(100% - 115px);
+    padding: 15px;
+    overflow-y: auto;
+}
