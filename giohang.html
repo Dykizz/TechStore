@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"> <!-- Đã thay đổi lang thành 'vi' để phù hợp với nội dung tiếng Việt -->
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -76,70 +76,69 @@
                     <div class="col-md-3 clearfix">
                         <div class="header-ctn">
                              <!-- Tài khoản -->
-                             <div class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                                    <i class="fa fa-user-o"></i>
-                                    <span>Tài khoản</span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">Thông tin cá nhân</a></li>
-                                    <li><a href="#">Lịch sử mua hàng</a></li>
-                                    <li><a href="#">Đăng xuất</a></li>
-                                </ul>
-                            </div>
-                            <!-- /Tài khoản -->
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                                        <i class="fa fa-user-o"></i>
+                                        <span>Tài khoản</span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#">Thông tin cá nhân</a></li>
+                                        <li><a href="#">Lịch sử mua hàng</a></li>
+                                        <li><a href="#">Đăng xuất</a></li>
+                                    </ul>
+                                </div>
+                                <!-- /Tài khoản -->
+                                <!-- Cart -->
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                                        <i class="fa fa-shopping-cart"></i>
+                                        <span>Giỏ hàng</span>
+                                        <div class="qty">4</div>
+                                    </a>
+                                    <div class="cart-dropdown">
+                                        <div class="cart-list">
+                                            <div class="product-widget">
+                                                <div class="product-img">
+                                                    <img src="./img/product01.png" alt="">
+                                                </div>
+                                                <div class="product-body">
+                                                    <h3 class="product-name"><a href="#">product name goes here</a></h3>
+                                                    <h4 class="product-price"><span class="qty">1x</span>$980.00</h4>
+                                                </div>
+                                                <button class="delete"><i class="fa fa-close"></i></button>
+                                            </div>
 
-                            <!-- Cart -->
-                            <div class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                                    <i class="fa fa-shopping-cart"></i>
-                                    <span>Giỏ hàng</span>
-                                    <div class="qty">0</div>
-                                </a>
-                                <div class="cart-dropdown">
-                                    <div class="cart-list">
-                                        <div class="product-widget">
-                                            <div class="product-img">
-                                                <img src="./img/product01.png" alt="Product 01">
+                                            <div class="product-widget">
+                                                <div class="product-img">
+                                                    <img src="./img/product02.png" alt="">
+                                                </div>
+                                                <div class="product-body">
+                                                    <h3 class="product-name"><a href="#">product name goes here</a></h3>
+                                                    <h4 class="product-price"><span class="qty">3x</span>$980.00</h4>
+                                                </div>
+                                                <button class="delete"><i class="fa fa-close"></i></button>
                                             </div>
-                                            <div class="product-body">
-                                                <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                                <h4 class="product-price"><span class="qty">1x</span>$980.00</h4>
-                                            </div>
-                                            <button class="delete"><i class="fa fa-close"></i></button>
                                         </div>
-
-                                        <div class="product-widget">
-                                            <div class="product-img">
-                                                <img src="./img/product02.png" alt="Product 02">
-                                            </div>
-                                            <div class="product-body">
-                                                <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                                <h4 class="product-price"><span class="qty">3x</span>$980.00</h4>
-                                            </div>
-                                            <button class="delete"><i class="fa fa-close"></i></button>
+                                        <div class="cart-summary">
+                                            <small>4 sản phẩm được chọn.</small>
+                                            <h5>TỔNG TIỀN: $2940.00</h5>
                                         </div>
-                                    </div>
-                                    <div class="cart-summary">
-                                        <small>3 Item(s) selected</small>
-                                        <h5>SUBTOTAL: $2940.00</h5>
-                                    </div>
-                                    <div class="cart-btns">
-                                        <a href="#">View Cart</a>
-                                        <a href="#"> Thanh toán <i class="fa fa-arrow-circle-right"></i></a>
+                                        <div class="cart-btns">
+                                            <a href="#">Xem giỏ hàng</a>
+                                            <a href="#">Thanh toán <i class="fa fa-arrow-circle-right"></i></a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <!-- /Cart -->
+                                <!-- /Cart -->
 
-                            <!-- Menu Toggle -->
-                            <div class="menu-toggle">
-                                <a href="#">
+                                <!-- Menu Toggle -->
+                                <div class="menu-toggle">
+                                    <a href="#">
                                     <i class="fa fa-bars"></i>
                                     <span>Danh mục</span>
-                                </a>
-                            </div>
-                            <!-- /Menu Toggle -->
+                                    </a>
+                                </div>
+                                <!-- /Menu Toggle -->
                         </div>
                     </div>
                     <!-- /ACCOUNT -->
@@ -151,7 +150,7 @@
         <!-- /MAIN HEADER -->
     </header>
     <!-- /HEADER -->
-
+     
     <!-- NAVIGATION -->
     <nav id="navigation">
         <!-- container -->
@@ -173,5 +172,146 @@
         <!-- /container -->
     </nav>
     <!-- /NAVIGATION -->
+
+    <!-- CART -->
+    <div class="container mt-5">
+        <h2 class="text-center" style="margin: 20px;">Giỏ Hàng</h2>
+    
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th class="text-center" style="padding: 20px">STT</th>
+                        <th class="text-center" style="padding: 20px">Sản phẩm</th>
+                        <th class="text-center" style="padding: 20px">Giá</th>
+                        <th class="text-center" style="padding: 20px">Số lượng</th>
+                        <th class="text-center" style="padding: 20px">Thành tiền</th>
+                        <th class="text-center" style="padding: 20px">Xóa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center" style="padding: 20px">1</td>
+                        <td class="text-center" style="padding: 20px">Tên sản phẩm 1</td>
+                        <td class="text-center" style="padding: 20px">1.990.000 ₫</td>
+                        <td class="text-center">
+                            <button class="btn btn-secondary">-</button>
+                            <span>1</span>
+                            <button class="btn btn-secondary">+</button>
+                        </td>
+                        <td class="text-center" style="padding: 20px">1.990.000 ₫</td>
+                        <td style="text-align: center;">
+                            <button class="remove-btn btn"><i class="fa fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center" style="padding: 20px">2</td>
+                        <td class="text-center" style="padding: 20px">Tên sản phẩm 2</td>
+                        <td class="text-center" style="padding: 20px">1.990.000 ₫</td>
+                        <td class="text-center">
+                            <button class="btn btn-secondary">-</button>
+                            <span>3</span>
+                            <button class="btn btn-secondary">+</button>
+                        </td>
+                        <td class="text-center" style="padding: 20px">1.990.000 ₫</td>
+                        <td style="text-align: center;">
+                            <button class="remove-btn btn"><i class="fa fa-trash"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot class="total-row">
+                    <tr>
+                        <td colspan="4">Tổng tiền:</td>
+                        <td colspan="2">1.990.000 ₫</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    
+        <!-- Chọn địa chỉ giao hàng -->
+        <div class="form-group">
+            <label for="saved-address">Chọn địa chỉ giao hàng:</label>
+            <div class="select-container">
+                <select class="form-control" id="saved-address">
+                    <option value="" disabled selected>Chọn địa chỉ</option>
+                    <option value="address1">273, An Dương Vương, Phường 3, Quận 5, TP.Hồ Chí Minh</option>
+                    <option value="address2">59C, Nguyễn Đình Chiểu, Phường 6, Quận 3, TP.Hồ Chí Minh</option>
+                    <option value="address3">19, Đ. Nguyễn Hữu Thọ, Tân Hưng, Quận 7, TP.Hồ Chí Minh</option>
+                </select>
+            </div>
+        </div>
+    
+        <div class="form-group">
+            <label for="new-address-checkbox">
+                <input type="checkbox" id="new-address-checkbox"> Nhập địa chỉ giao hàng mới
+            </label>
+        </div>
+    
+        <div id="new-address-form">
+            <div class="form-group">
+                <label for="recipient-name">Tên người nhận:</label>
+                <input type="text" class="form-control" id="recipient-name" placeholder="Nhập tên người nhận" required>
+            </div>
+            <div class="form-group">
+                <label for="new-address">Địa chỉ giao hàng:</label>
+                <input type="text" class="form-control" id="new-address" placeholder="Nhập địa chỉ giao hàng" required>
+            </div>
+            <div class="form-group">
+                <label for="phone-number">Số điện thoại:</label>
+                <input type="tel" class="form-control" id="phone-number" placeholder="Nhập số điện thoại" required>
+            </div>
+            <div class="form-group">
+                <label for="delivery-notes">Ghi chú giao hàng (nếu có):</label>
+                <textarea class="form-control" id="delivery-notes" rows="3" placeholder="Nhập ghi chú giao hàng"></textarea>
+            </div>
+        </div>
+    
+        <!-- Chọn phương thức thanh toán -->
+        <h3 class="mt-4">Chọn Phương Thức Thanh Toán</h3>
+        <div class="form-group">
+            <label for="payment-method">Phương thức:</label>
+            <div class="select-container">
+                <select class="form-control" id="payment-method">
+                    <option value="" disabled selected>Chọn phương thức</option>
+                    <option value="cash">Tiền mặt</option>
+                    <option value="bank-transfer">Chuyển khoản</option>
+                    <option value="card">Thẻ tín dụng</option>
+                </select>
+            </div>
+        </div>
+    
+        <div id="card-details">
+            <h4>Thông Tin Thẻ</h4>
+            <div class="form-group">
+                <label for="card-name">Tên chủ thẻ:</label>
+                <input type="text" class="form-control" id="card-name" placeholder="Nhập tên chủ thẻ" required>
+            </div>
+            <div class="form-group">
+                <label for="card-number">Số thẻ:</label>
+                <input type="text" class="form-control" id="card-number" placeholder="Nhập số thẻ" required>
+            </div>
+            <div class="form-group">
+                <label for="card-expiry">Ngày hết hạn:</label>
+                <input type="text" class="form-control" id="card-expiry" placeholder="MM/YY" required>
+            </div>
+        </div>
+    
+        <!-- Tóm tắt hóa đơn -->
+        <h3 class="mt-4">Tóm Tắt Hóa Đơn</h3>
+        <div class="summary">
+            <p><strong>Tổng tiền:</strong> <span id="grand-total-summary">4.480.000 ₫</span></p>
+            <p><strong>Địa chỉ giao hàng:</strong> <span id="delivery-address-summary">Địa chỉ chưa chọn</span></p>
+            <p><strong>Phương thức thanh toán:</strong> <span id="payment-method-summary">Chưa chọn</span></p>
+        </div>
+    
+        <div style="text-align: center;">
+            <button class="btn btn-danger checkout">Thanh Toán</button>
+        </div>
+    </div>
+    <!-- /CART -->
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
