@@ -46,10 +46,6 @@
 						<li><a href="#"><i class="fa fa-envelope-o"></i> email@email.com</a></li>
 						<li><a href="#"><i class="fa fa-map-marker"></i> 1734 Stonecoal Road</a></li>
 					</ul>
-					<ul class="header-links pull-right">
-						<li><a href="#"><i class="fa fa-dollar"></i> VND</a></li>
-						<li><a href="#"><i class="fa fa-user-o"></i> Tài khoản</a></li>
-					</ul>
 				</div>
 			</div>
 			<!-- /TOP HEADER -->
@@ -84,21 +80,26 @@
 						<!-- ACCOUNT -->
 						<div class="col-md-3 clearfix">
 							<div class="header-ctn">
-								<!-- Wishlist -->
-								<div>
-									<a href="#">
-										<i class="fa fa-heart-o"></i>
-										<span>Sản phẩm yêu thích</span>
-										<div class="qty">2</div>
+								 <!-- Tài khoản -->
+								 <div class="dropdown">
+									<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+										<i class="fa fa-user-o"></i>
+										<span>Tài khoản</span>
 									</a>
+									<ul class="dropdown-menu">
+										<li><a href="#">Thông tin cá nhân</a></li>
+										<li><a href="#">Lịch sử mua hàng</a></li>
+										<li><a href="#">Đăng xuất</a></li>
+									</ul>
 								</div>
-								<!-- /Wishlist -->
+								<!-- /Tài khoản -->
+
 								<!-- Cart -->
 								<div class="dropdown">
 									<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
 										<i class="fa fa-shopping-cart"></i>
 										<span>Giỏ hàng</span>
-										<div class="qty">3</div>
+										<div class="qty">0</div>
 									</a>
 									<div class="cart-dropdown">
 										<div class="cart-list">
@@ -130,7 +131,7 @@
 										</div>
 										<div class="cart-btns">
 											<a href="#">View Cart</a>
-											<a href="#">Checkout  <i class="fa fa-arrow-circle-right"></i></a>
+											<a href="#"> Thanh toán  <i class="fa fa-arrow-circle-right"></i></a>
 										</div>
 									</div>
 								</div>
@@ -140,7 +141,7 @@
 								<div class="menu-toggle">
 									<a href="#">
 										<i class="fa fa-bars"></i>
-										<span>Menu</span>
+										<span>Danh mục</span>
 									</a>
 								</div>
 								<!-- /Menu Toogle -->
@@ -165,8 +166,6 @@
 					<!-- NAV -->
 					<ul class="main-nav nav navbar-nav">
 						<li class="active"><a href="index.html">Trang chủ</a></li>
-						<li><a href="#">Hot Deals</a></li>
-						<li><a href="#">Categories</a></li>
 						<li><a href="#">Máy tính</a></li>
 						<li><a href="#">Điện thoại</a></li>
 						<li><a href="#">Máy ảnh</a></li>
@@ -193,8 +192,8 @@
 								<img src="./img/shop01.png" alt="">
 							</div>
 							<div class="shop-body">
-								<h3>Laptop<br>Collection</h3>
-								<a href="#" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
+								<h3>Máy tính</h3>
+								<a href="#" class="cta-btn"> Mua ngay <i class="fa fa-arrow-circle-right"></i></a>
 							</div>
 						</div>
 					</div>
@@ -207,8 +206,8 @@
 								<img src="./img/shop03.png" alt="">
 							</div>
 							<div class="shop-body">
-								<h3>Accessories<br>Collection</h3>
-								<a href="#" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
+								<h3>Phụ kiện</h3>
+								<a href="#" class="cta-btn"> Mua ngay <i class="fa fa-arrow-circle-right"></i></a>
 							</div>
 						</div>
 					</div>
@@ -221,8 +220,8 @@
 								<img src="./img/shop02.png" alt="">
 							</div>
 							<div class="shop-body">
-								<h3>Cameras<br>Collection</h3>
-								<a href="#" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
+								<h3>Máy ảnh</h3>
+								<a href="#" class="cta-btn"> Mua ngay <i class="fa fa-arrow-circle-right"></i></a>
 							</div>
 						</div>
 					</div>
@@ -244,7 +243,7 @@
 					<!-- section title -->
 					<div class="col-md-12">
 						<div class="section-title">
-							<h3 class="title">Sản phẩm mới</h3>
+							<h3 class="title"> Sản phẩm mới </h3>
 							<div class="section-nav">
 								<ul class="section-tab-nav tab-nav">
 									<li class="active"><a data-toggle="tab" href="#tab1">Máy tính</a></li>
@@ -270,11 +269,10 @@
 												<img src="./img/product01.png" alt="">
 												<div class="product-label">
 													<span class="sale">-30%</span>
-													<span class="new">NEW</span>
+													<span class="new">MỚI</span>
 												</div>
 											</div>
 											<div class="product-body">
-												<p class="product-category">Category</p>
 												<h3 class="product-name"><a href="#">product name goes here</a></h3>
 												<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
 												<div class="product-rating">
@@ -291,7 +289,7 @@
 												</div>
 											</div>
 											<div class="add-to-cart">
-												<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+												<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng </button>
 											</div>
 										</div>
 										<!-- /product -->
@@ -301,11 +299,10 @@
 											<div class="product-img">
 												<img src="./img/product02.png" alt="">
 												<div class="product-label">
-													<span class="new">NEW</span>
+													<span class="new">MỚI</span>
 												</div>
 											</div>
 											<div class="product-body">
-												<p class="product-category">Category</p>
 												<h3 class="product-name"><a href="#">product name goes here</a></h3>
 												<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
 												<div class="product-rating">
@@ -322,7 +319,7 @@
 												</div>
 											</div>
 											<div class="add-to-cart">
-												<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+												<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng </button>
 											</div>
 										</div>
 										<!-- /product -->
@@ -336,7 +333,6 @@
 												</div>
 											</div>
 											<div class="product-body">
-												<p class="product-category">Category</p>
 												<h3 class="product-name"><a href="#">product name goes here</a></h3>
 												<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
 												<div class="product-rating">
@@ -348,7 +344,7 @@
 												</div>
 											</div>
 											<div class="add-to-cart">
-												<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+												<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng </button>
 											</div>
 										</div>
 										<!-- /product -->
@@ -359,7 +355,6 @@
 												<img src="./img/product04.png" alt="">
 											</div>
 											<div class="product-body">
-												<p class="product-category">Category</p>
 												<h3 class="product-name"><a href="#">product name goes here</a></h3>
 												<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
 												<div class="product-rating">
@@ -376,7 +371,7 @@
 												</div>
 											</div>
 											<div class="add-to-cart">
-												<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+												<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng </button>
 											</div>
 										</div>
 										<!-- /product -->
@@ -387,7 +382,6 @@
 												<img src="./img/product05.png" alt="">
 											</div>
 											<div class="product-body">
-												<p class="product-category">Category</p>
 												<h3 class="product-name"><a href="#">product name goes here</a></h3>
 												<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
 												<div class="product-rating">
@@ -404,7 +398,7 @@
 												</div>
 											</div>
 											<div class="add-to-cart">
-												<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+												<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng </button>
 											</div>
 										</div>
 										<!-- /product -->
@@ -505,11 +499,10 @@
 												<img src="./img/product06.png" alt="">
 												<div class="product-label">
 													<span class="sale">-30%</span>
-													<span class="new">NEW</span>
+													<span class="new">MỚI</span>
 												</div>
 											</div>
 											<div class="product-body">
-												<p class="product-category">Category</p>
 												<h3 class="product-name"><a href="#">product name goes here</a></h3>
 												<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
 												<div class="product-rating">
@@ -526,7 +519,7 @@
 												</div>
 											</div>
 											<div class="add-to-cart">
-												<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+												<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng </button>
 											</div>
 										</div>
 										<!-- /product -->
@@ -540,7 +533,6 @@
 												</div>
 											</div>
 											<div class="product-body">
-												<p class="product-category">Category</p>
 												<h3 class="product-name"><a href="#">product name goes here</a></h3>
 												<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
 												<div class="product-rating">
@@ -557,7 +549,7 @@
 												</div>
 											</div>
 											<div class="add-to-cart">
-												<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+												<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng </button>
 											</div>
 										</div>
 										<!-- /product -->
@@ -571,7 +563,6 @@
 												</div>
 											</div>
 											<div class="product-body">
-												<p class="product-category">Category</p>
 												<h3 class="product-name"><a href="#">product name goes here</a></h3>
 												<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
 												<div class="product-rating">
@@ -583,7 +574,7 @@
 												</div>
 											</div>
 											<div class="add-to-cart">
-												<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+												<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng </button>
 											</div>
 										</div>
 										<!-- /product -->
@@ -594,7 +585,6 @@
 												<img src="./img/product09.png" alt="">
 											</div>
 											<div class="product-body">
-												<p class="product-category">Category</p>
 												<h3 class="product-name"><a href="#">product name goes here</a></h3>
 												<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
 												<div class="product-rating">
@@ -611,7 +601,7 @@
 												</div>
 											</div>
 											<div class="add-to-cart">
-												<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+												<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng </button>
 											</div>
 										</div>
 										<!-- /product -->
@@ -622,7 +612,6 @@
 												<img src="./img/product01.png" alt="">
 											</div>
 											<div class="product-body">
-												<p class="product-category">Category</p>
 												<h3 class="product-name"><a href="#">product name goes here</a></h3>
 												<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
 												<div class="product-rating">
@@ -639,7 +628,7 @@
 												</div>
 											</div>
 											<div class="add-to-cart">
-												<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+												<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng </button>
 											</div>
 										</div>
 										<!-- /product -->
@@ -666,7 +655,7 @@
 				<div class="row">
 					<div class="col-md-4 col-xs-6">
 						<div class="section-title">
-							<h4 class="title">Top selling</h4>
+							<h4 class="title">Bán chạy</h4>
 							<div class="section-nav">
 								<div id="slick-nav-3" class="products-slick-nav"></div>
 							</div>
