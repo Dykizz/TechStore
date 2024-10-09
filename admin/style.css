@@ -76,7 +76,7 @@ header {
 
 /* End Header */
 
-/* Content */
+/* Sider */
 .sider {
     position: absolute;
     top: 115px;
@@ -123,6 +123,9 @@ header {
     font-weight: 500;
     color: black;
 }
+/* End Sider */
+
+/* Content */
 
 .content {
     position: absolute;
@@ -131,6 +134,7 @@ header {
     width: calc(100% - 220px);
     padding: 15px;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .content .row div {
@@ -179,6 +183,7 @@ table td {
 
 /* Product Detail */
 .inner-img {
+    position: relative;
     height: 250px;
     width: auto;
     border-radius: 7px;
@@ -187,6 +192,29 @@ table td {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.inner-img .cancel {
+    position: absolute;
+    top: 5%;
+    right: 5%;
+    width: 25px;
+    height: 25px;
+    padding-top: 7px;
+    padding-bottom: 8px;
+    font-weight: 600;
+    border-radius: 50%;
+    background: #e1dcdce0;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.inner-img .cancel:hover {
+    color: red;
 }
 
 .inner-img img {
@@ -216,7 +244,7 @@ table td {
     margin-right: 5px;
     background: #FFF;
     color: #E4E7ED;
-    
+
 }
 
 .product-rating>i {
@@ -244,4 +272,42 @@ textarea.description:focus {
     box-shadow: 0 0 8px rgba(102, 175, 233, 1);
 }
 
- /* End Manage Product */
+/* End Manage Product */
+
+/* Edit Product */
+
+#form-edit {
+    border: 2px solid green;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 9px;
+}
+/* End Edit Product */
+
+/* Edit Success */
+.alert-show {
+    position: absolute;
+    animation: show 3.5s ease-out 1 ;
+}
+@keyframes show {
+    from {
+        opacity: 0;
+        visibility: hidden;
+        top: 15px;
+        right: -50%;
+    }
+
+    40% {
+        opacity: 1;
+        visibility: visible;
+        right: 15px;
+    }
+
+    to {
+        opacity: 0;
+        visibility: hidden;
+        top: 15px;
+        right: 15px;
+    }
+}
+/* End Edit Success */
