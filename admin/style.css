@@ -129,3 +129,22 @@ header {
 .content .row div {
     margin-bottom: 15px;
 }
+
+.table_inner-img {
+    height: 110px;
+    aspect-ratio: 4/3;
+}
+
+.table_inner-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.table_inner-btn {
+    width: 140px;
+}
+.table_inner-btn button {
+    margin-right: 10px;
+    display: inline-block;
+}
