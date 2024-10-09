@@ -98,16 +98,18 @@
 									</ul>
 								</div>
 								<!-- /Tài khoản -->
+							
 								<!-- Cart -->
 								<div class="dropdown">
 									<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
 										<i class="fa fa-shopping-cart"></i>
 										<span>Giỏ hàng</span>
-										<div class="qty">0</div>
+										<div class="qty">0</div> <!-- Số lượng sản phẩm trong giỏ -->
 									</a>
 									<div class="cart-dropdown">
 										<div class="cart-list">
-											<div class="product-widget">
+											<!-- Kiểm tra số lượng sản phẩm, nếu là 0 thì hiện thông báo giỏ hàng trống -->
+											<div class="product-widget" style="display: none;" id="product1">
 												<div class="product-img">
 													<img src="./img/product01.png" alt="">
 												</div>
@@ -118,7 +120,7 @@
 												<button class="delete"><i class="fa fa-close"></i></button>
 											</div>
 
-											<div class="product-widget">
+											<div class="product-widget" style="display: none;" id="product2">
 												<div class="product-img">
 													<img src="./img/product02.png" alt="">
 												</div>
@@ -128,18 +130,25 @@
 												</div>
 												<button class="delete"><i class="fa fa-close"></i></button>
 											</div>
+
+											<!-- Thêm một thông báo khi giỏ hàng trống -->
+											<div class="empty-cart" id="empty-cart">
+												<p>Không có sản phẩm nào trong giỏ hàng</p>
+											</div>
 										</div>
+
 										<div class="cart-summary">
-											<small>3 Item(s) selected</small>
-											<h5>SUBTOTAL: $2940.00</h5>
+											<!-- Thay đổi số lượng và tổng tiền nếu không có sản phẩm -->
+											<small><span id="item-count">0</span> sản phẩm đã chọn</small>
+											<h5>Tổng cộng: <span id="subtotal">$0.00</span></h5>
 										</div>
 										<div class="cart-btns">
-											<a href="#">View Cart</a>
+											<a href="#">Xem giỏ hàng</a>
 											<a href="#">Thanh toán <i class="fa fa-arrow-circle-right"></i></a>
 										</div>
 									</div>
 								</div>
-								<!-- /Cart -->
+								<!-- /Cart --> 
 
 								<!-- Menu Toogle -->
 								<div class="menu-toggle">
@@ -222,7 +231,7 @@
 									<label for="category-1">
 										<span></span>
 										Máy tính
-										<small>(120)</small>
+										<small>(600)</small>
 									</label>
 								</div>
 
@@ -231,7 +240,7 @@
 									<label for="category-2">
 										<span></span>
 										Điện thoại
-										<small>(740)</small>
+										<small>(412)</small>
 									</label>
 								</div>
 
@@ -240,7 +249,7 @@
 									<label for="category-3">
 										<span></span>
 										Máy ảnh
-										<small>(145)</small>
+										<small>(270)</small>
 									</label>
 								</div>
 
@@ -249,7 +258,7 @@
 									<label for="category-4">
 										<span></span>
 										Phụ kiện
-										<small>(357)</small>
+										<small>(126)</small>
 									</label>
 								</div>
 							</div>
@@ -259,18 +268,41 @@
 						<!-- aside Widget -->
 						<div class="aside">
 							<h3 class="aside-title">Giá</h3>
-							<div class="price-filter">
-								<div id="price-slider"></div>
-								<div class="input-number price-min">
-									<input id="price-min" type="number">
-									<span class="qty-up">+</span>
-									<span class="qty-down">-</span>
+							<div class="checkbox-filter">
+								<div class="input-checkbox">
+									<input type="checkbox" id="price-1">
+									<label for="price-1">
+										<span></span>
+										3-5 triệu
+									</label>
 								</div>
-								<span>-</span>
-								<div class="input-number price-max">
-									<input id="price-max" type="number">
-									<span class="qty-up">+</span>
-									<span class="qty-down">-</span>
+								<div class="input-checkbox">
+									<input type="checkbox" id="price-2">
+									<label for="price-2">
+										<span></span>
+										5-10 triệu
+									</label>
+								</div>
+								<div class="input-checkbox">
+									<input type="checkbox" id="price-3">
+									<label for="price-3">
+										<span></span>
+										10-15 triệu
+									</label>
+								</div>
+								<div class="input-checkbox">
+									<input type="checkbox" id="price-4">
+									<label for="price-4">
+										<span></span>
+										15-20 triệu
+									</label>
+								</div>
+								<div class="input-checkbox">
+									<input type="checkbox" id="price-5">
+									<label for="price-5">
+										<span></span>
+										20 triệu trở lên
+									</label>
 								</div>
 							</div>
 						</div>
@@ -284,32 +316,48 @@
 									<input type="checkbox" id="brand-1">
 									<label for="brand-1">
 										<span></span>
-										Samsung
-										<small>(578)</small>
+										Asus
+										<small>(378)</small>
 									</label>
 								</div>
 								<div class="input-checkbox">
 									<input type="checkbox" id="brand-2">
 									<label for="brand-2">
 										<span></span>
-										Apple
-										<small>(425)</small>
+										Dell
+										<small>(225)</small>
 									</label>
 								</div>
 								<div class="input-checkbox">
 									<input type="checkbox" id="brand-3">
 									<label for="brand-3">
 										<span></span>
-										Oppo
+										Samsung
 										<small>(256)</small>
 									</label>
 								</div>
 								<div class="input-checkbox">
-									<input type="checkbox" id="brand-3">
+									<input type="checkbox" id="brand-4">
+									<label for="brand-3">
+										<span></span>
+										Apple
+										<small>(156)</small>
+									</label>
+								</div>
+								<div class="input-checkbox">
+									<input type="checkbox" id="brand-5">
 									<label for="brand-3">
 										<span></span>
 										Canon
-										<small>(156)</small>
+										<small>(142)</small>
+									</label>
+								</div>
+								<div class="input-checkbox">
+									<input type="checkbox" id="brand-6">
+									<label for="brand-3">
+										<span></span>
+										Sony
+										<small>(128)</small>
 									</label>
 								</div>
 							</div>
@@ -321,31 +369,41 @@
 							<h3 class="aside-title">Sản phẩm bán chạy</h3>
 							<div class="product-widget">
 								<div class="product-img">
-									<img src="./img/product01.png" alt="">
+									<img src="./img/iphone-15-pro-max_3.png" alt="">
 								</div>
 								<div class="product-body">
-									<h3 class="product-name"><a href="#">product name goes here</a></h3>
-									<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+									<h3 class="product-name"><a href="#">iPhone 15 Pro Max 256GB | Chính hãng VN/A</a></h3>
+									<h4 class="product-price">29.490.000&#8363; <del class="product-old-price">34.990.000&#8363;</del></h4>
 								</div>
 							</div>
 
 							<div class="product-widget">
 								<div class="product-img">
-									<img src="./img/product02.png" alt="">
+									<img src="./img/text_ng_n_12__5_72.png" alt="">
 								</div>
 								<div class="product-body">
-									<h3 class="product-name"><a href="#">product name goes here</a></h3>
-									<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+									<h3 class="product-name"><a href="#">Laptop ASUS TUF Gaming A14 FA401WV-RG061WS</a></h3>
+									<h4 class="product-price">44.990.000&#8363; <del class="product-old-price">46.990.000&#8363;</del></h4>
 								</div>
 							</div>
 
 							<div class="product-widget">
 								<div class="product-img">
-									<img src="./img/product03.png" alt="">
+									<img src="./img/apple-airpods-pro-2-usb-c_1_.png" alt="">
 								</div>
 								<div class="product-body">
-									<h3 class="product-name"><a href="#">product name goes here</a></h3>
-									<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+									<h3 class="product-name"><a href="#">Tai nghe Bluetooth Apple AirPods Pro 2 2023 USB-C </a></h3>
+									<h4 class="product-price">5.790.000&#8363; <del class="product-old-price">6.190.000&#8363;</del></h4>
+								</div>
+							</div>
+
+							<div class="product-widget">
+								<div class="product-img">
+									<img src="./img/canon.png" alt="">
+								</div>
+								<div class="product-body">
+									<h3 class="product-name"><a href="#">Máy ảnh Canon EOS R10 kit RF-S18-45mm F4.5-6.3 IS STM</a></h3>
+									<h4 class="product-price">21.900.000&#8363; <del class="product-old-price">28.330.000&#8363;</del></h4>
 								</div>
 							</div>
 						</div>
@@ -365,14 +423,6 @@
 										<option value="1">Vị trí</option>
 									</select>
 								</label>
-
-								<label>
-									Show:
-									<select class="input-select">
-										<option value="0">20</option>
-										<option value="1">50</option>
-									</select>
-								</label>
 							</div>
 							<ul class="store-grid">
 								<li class="active"><i class="fa fa-th"></i></li>
@@ -384,7 +434,7 @@
 						<!-- store products -->
 						<div class="row">
 							<!-- product -->
-							<div class="col-md-4 col-xs-6">
+							<div class="col-md-4 col-xs-6" style="margin-bottom: 42px;">
 								<div class="product">
 									<div class="product-img">
 										<img src="./img/product01.png" alt="">
@@ -412,7 +462,7 @@
 							<!-- /product -->
 							 
 							<!-- product -->
-							<div class="col-md-4 col-xs-6">
+							<div class="col-md-4 col-xs-6" style="margin-bottom: 42px;">
 								<div class="product">
 									<div class="product-img">
 										<img src="./img/product02.png" alt="">
@@ -441,7 +491,7 @@
 							<div class="clearfix visible-sm visible-xs"></div>
 
 							<!-- product -->
-							<div class="col-md-4 col-xs-6">
+							<div class="col-md-4 col-xs-6" style="margin-bottom: 42px;">
 								<div class="product">
 									<div class="product-img">
 										<img src="./img/product03.png" alt="">
@@ -483,7 +533,7 @@
 							<div class="clearfix visible-sm visible-xs"></div>
 
 							<!-- product -->
-							<div class="col-md-4 col-xs-6">
+							<div class="col-md-4 col-xs-6" style="margin-bottom: 42px;">
 								<div class="product">
 									<div class="product-img">
 										<img src="./img/product05.png" alt="">
@@ -502,7 +552,7 @@
 							<!-- /product -->
 
 							<!-- product -->
-							<div class="col-md-4 col-xs-6">
+							<div class="col-md-4 col-xs-6" style="margin-bottom: 42px;">
 								<div class="product">
 									<div class="product-img">
 										<img src="./img/product06.png" alt="">
@@ -528,7 +578,7 @@
 							<div class="clearfix visible-lg visible-md visible-sm visible-xs"></div>
 
 							<!-- product -->
-							<div class="col-md-4 col-xs-6">
+							<div class="col-md-4 col-xs-6" style="margin-bottom: 42px;">
 								<div class="product">
 									<div class="product-img">
 										<img src="./img/product07.png" alt="">
@@ -552,7 +602,7 @@
 							<!-- /product -->
 
 							<!-- product -->
-							<div class="col-md-4 col-xs-6">
+							<div class="col-md-4 col-xs-6" style="margin-bottom: 42px;">
 								<div class="product">
 									<div class="product-img">
 										<img src="./img/product08.png" alt="">
@@ -573,7 +623,7 @@
 							<div class="clearfix visible-sm visible-xs"></div>
 
 							<!-- product -->
-							<div class="col-md-4 col-xs-6">
+							<div class="col-md-4 col-xs-6" style="margin-bottom: 50px;">
 								<div class="product">
 									<div class="product-img">
 										<img src="./img/product09.png" alt="">
@@ -595,7 +645,6 @@
 
 						<!-- store bottom filter -->
 						<div class="store-filter clearfix">
-							<span class="store-qty">Showing 20-100 products</span>
 							<ul class="store-pagination">
 								<li class="active">1</li>
 								<li><a href="#">2</a></li>
@@ -730,7 +779,7 @@
 							</ul>
 							<span class="copyright">
 								<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-								Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+								Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved
 							<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 							</span>
 						</div>
