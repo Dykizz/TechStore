@@ -22,7 +22,7 @@
             </a>
         </div>
         <div class="inner-user">
-            <div class="notification">
+            <div class="notification"> 
                 <i class="fa-regular fa-bell"></i>
                 <span>Thông báo</span>
             </div>
@@ -42,13 +42,13 @@
             </div>
             <a href="./index.html">Tổng quan</a>
         </li>
-        <li class="active">
+        <li>
             <div class="inner-icon">
                 <i class="fa-solid fa-people-group"></i>
             </div>
             <a href="./manage-client.html">Quản lý người dùng</a>
         </li>
-        <li>
+        <li class="active">
             <div class="inner-icon">
                 <i class="fa-solid fa-list"></i>
             </div>
@@ -74,9 +74,44 @@
         </li>
     </ul>
     <div class="content">
-        <h2>Quản lý người dùng</h2>
-        <div class="row">
+        <h2 class="mb-3">Sau chỉnh sửa</h2>
+        <a class="btn btn-primary mb-3" href="./category-detail.html">Quay về trang chi tiết</a>
+        <div class="alert alert-success alert-show" role="alert">
+            Chỉnh sửa thông tin danh mục thành công!
         </div>
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h4 class="d-inline-block">Danh mục test</h4>
+                <span class="badge badge-success ml-2">Hoạt động</span>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <div> Hình ảnh danh mục</div>
+                        <div class="inner-img">
+                            <img src="../img/product01.png" alt="danh mục" srcset="">
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="stock">Số lượng sản phẩm đang quản lý</label>
+                            <input class="form-control" type="number" id="stock" value="3" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <label for="description">Mô tả danh mục</label>
+                        <textarea name="description" class="description" id="description" rows="10" class="" readonly>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aperiam maiores reprehenderit officia, corporis excepturi dolor pariatur esse non quo eveniet velit minima quas distinctio reiciendis rem nihil. Obcaecati, voluptatem consequatur!
+                        </textarea>
+                    </div>
+                </div>
+                <a class="btn btn-warning" href="./category-edit.html">Tiếp tục chỉnh sửa thông tin</a>
+            </div>
+        </div>
+
+
     </div>
 </body>
 

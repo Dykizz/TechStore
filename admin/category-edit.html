@@ -48,13 +48,13 @@
             </div>
             <a href="./manage-client.html">Quản lý người dùng</a>
         </li>
-        <li>
+        <li class="active">
             <div class="inner-icon">
                 <i class="fa-solid fa-list"></i>
             </div>
             <a href="./manage-category.html">Quản lý danh mục</a>
         </li>
-        <li class="active">
+        <li>
             <div class="inner-icon">
                 <i class="fa-brands fa-product-hunt"></i>
             </div>
@@ -74,17 +74,17 @@
         </li>
     </ul>
     <div class="content">
-        <h2 class="mb-3">Chỉnh sửa sản phẩm</h2>
+        <h2 class="mb-3">Chỉnh sửa danh mục</h2>
 
-        <form action="./product-edit-success.html" id="form-edit" method="get">
+        <form action="./category-edit-success.html" id="form-edit" method="get">
             <div class="form-group">
-                <label for="name" >Tên sản phẩm</label>
-                <input class="form-control" type="text" name="name" id="name" value="Sản phẩm test" required>
+                <label for="name" >Tên danh mục</label>
+                <input class="form-control" type="text" name="name" id="name" value="Danh mục test" required>
             </div>
 
             <div class="row">
                 <div class="col-6">
-                    <div>Trạng thái sản phẩm</div>
+                    <div>Trạng thái danh mục</div>
                     <label>
                         <input type="radio" name="status" value="active" checked>
                         Hoạt động
@@ -95,25 +95,15 @@
                     </label>
                 </div>
 
-                <div class="col-6">
-                    <label for="category">Danh mục sản phẩm </label>
-                    <select class="custom-select" name="category" id="category" required>
-                        <option disabled>--- Chọn danh mục ---</option>
-                        <option selected value="laptop">Máy tính</option>
-                        <option value="phone">Điện thoại</option>
-                        <option value="camera">Máy ảnh</option>
-                        <option value="accessory">Phụ kiện</option>
-                      </select>
-                </div>
             </div>
 
             <div class="row">
                 <div class="col-6">
-                    <label for="img-product">Hình ảnh sản phẩm</label>
+                    <label for="img-category">Hình ảnh danh mục</label>
                     <div class="custom-file">
-                        <input type="file" name="img-product" class="custom-file-input" id="img-product"
+                        <input type="file" name="img-category" class="custom-file-input" id="img-category"
                             aria-describedby="inputGroupFileAddon01" >
-                        <label class="custom-file-label" for="img-product">Chọn hình ảnh từ máy</label>
+                        <label class="custom-file-label" for="img-category">Chọn hình ảnh từ máy</label>
                     </div>
                     <div class="inner-img">
                         <img src="../img/product01.png" alt="sản phẩm" srcset="">
@@ -123,37 +113,8 @@
             </div>
 
             <div class="row">
-                <div class="col-4">
-                    <label for="price">Giá</label>
-                    <div class="input-group">
-                        <input class="form-control" type="number" name="price" id="price" min="0" value="1" required>
-                        <div class="input-group-append">
-                            <span class="input-group-text">VND</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="form-group">
-                        <label for="stock">Số lượng</label>
-                        <input class="form-control" type="number" name="stock" id="stock" min=0 value="3" required>
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="form-group">
-                        <label for="discount"> Giảm giá</label>
-                        <div class="input-group">
-                            <input class="form-control" type="number" name="discount" step="0.01" id="discount" min="0" value="10" required>
-                            <div class="input-group-append">
-                                <span class="input-group-text">%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
                 <div class="col-12">
-                    <label for="description">Mô tả sản phẩm</label>
+                    <label for="description">Mô tả danh mục</label>
                     <textarea name="description" class="description" id="description" rows="10">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aperiam maiores reprehenderit officia, corporis excepturi dolor pariatur esse non quo eveniet velit minima quas distinctio reiciendis rem nihil. Obcaecati, voluptatem consequatur!
                 </textarea>
                 </div>
