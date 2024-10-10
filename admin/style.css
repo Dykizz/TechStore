@@ -103,16 +103,24 @@ header {
 }
 
 .sider li {
-    height: 50px;
+    height: auto;
     width: 100%;
     display: inline-flex;
     align-items: center;
-    padding: 15px 0;
-    padding-left: 10px;
+    padding: 0 8px;
     border-top-right-radius: 15px;
     border-bottom-right-radius: 15px;
     background: transparent;
     transition: background 0.4s;
+}
+
+.sider li a {
+    padding-top: 15px;
+    padding-bottom: 10px;
+}
+
+.sider li.active{
+    background: rgb(100, 246, 163);
 }
 
 .sider li:hover {
@@ -287,7 +295,7 @@ textarea.description:focus {
 /* Edit Success */
 .alert-show {
     position: absolute;
-    animation: show 3.5s ease-out 1 ;
+    animation: show 5s ease-out 1 ;
 }
 @keyframes show {
     from {
@@ -311,3 +319,12 @@ textarea.description:focus {
     }
 }
 /* End Edit Success */
+
+/* Add Product  */
+#form-add {
+    border: 2px solid green;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 9px;
+}
+/* End Add Product */
