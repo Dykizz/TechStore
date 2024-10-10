@@ -74,12 +74,12 @@
         </li>
     </ul>
     <div class="content">
-        <h2 class="mb-3">Chỉnh sửa sản phẩm</h2>
+        <h2 class="mb-3">Thêm sản phẩm mới</h2>
 
-        <form action="./product-edit-success.html" id="form-edit" method="get">
+        <form action="./product-add-success.html" id="form-add" method="get">
             <div class="form-group">
                 <label for="name" >Tên sản phẩm</label>
-                <input class="form-control" type="text" name="name" id="name" value="Sản phẩm test" required>
+                <input class="form-control" type="text" name="name" id="name" required>
             </div>
 
             <div class="row">
@@ -98,8 +98,8 @@
                 <div class="col-6">
                     <label for="category">Danh mục sản phẩm </label>
                     <select class="custom-select" name="category" id="category" required>
-                        <option disabled>--- Chọn danh mục ---</option>
-                        <option selected value="laptop">Máy tính</option>
+                        <option selected disabled>--- Chọn danh mục ---</option>
+                        <option value="laptop">Máy tính</option>
                         <option value="phone">Điện thoại</option>
                         <option value="camera">Máy ảnh</option>
                         <option value="accessory">Phụ kiện</option>
@@ -115,10 +115,6 @@
                             aria-describedby="inputGroupFileAddon01" >
                         <label class="custom-file-label" for="img-product">Chọn hình ảnh từ máy</label>
                     </div>
-                    <div class="inner-img">
-                        <img src="../img/product01.png" alt="sản phẩm" srcset="">
-                        <span class="cancel">x</span>
-                    </div>
                 </div>
             </div>
 
@@ -126,7 +122,7 @@
                 <div class="col-4">
                     <label for="price">Giá</label>
                     <div class="input-group">
-                        <input class="form-control" type="number" name="price" id="price" min="0" value="1" required>
+                        <input class="form-control" type="number" name="price" id="price" min="0" required>
                         <div class="input-group-append">
                             <span class="input-group-text">VND</span>
                         </div>
@@ -135,14 +131,14 @@
                 <div class="col-4">
                     <div class="form-group">
                         <label for="stock">Số lượng</label>
-                        <input class="form-control" type="number" name="stock" id="stock" min=0 value="3" required>
+                        <input class="form-control" type="number" name="stock" id="stock" min=0 required>
                     </div>
                 </div>
                 <div class="col-4">
                     <div class="form-group">
                         <label for="discount"> Giảm giá</label>
                         <div class="input-group">
-                            <input class="form-control" type="number" name="discount" step="0.01" id="discount" min="0" value="10" required>
+                            <input class="form-control" type="number" name="discount" step="0.01" id="discount" min="0" required>
                             <div class="input-group-append">
                                 <span class="input-group-text">%</span>
                             </div>
@@ -154,12 +150,11 @@
             <div class="row">
                 <div class="col-12">
                     <label for="description">Mô tả sản phẩm</label>
-                    <textarea name="description" class="description" id="description" rows="10">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aperiam maiores reprehenderit officia, corporis excepturi dolor pariatur esse non quo eveniet velit minima quas distinctio reiciendis rem nihil. Obcaecati, voluptatem consequatur!
-                </textarea>
+                    <textarea name="description" class="description" id="description" rows="10"></textarea>
                 </div>
             </div>
 
-            <button class="btn btn-warning" type="submit"> Xác nhận thay đổi</button>
+            <button class="btn btn-success" type="submit"> Xác nhận thêm</button>
         </form>
 
     </div>
