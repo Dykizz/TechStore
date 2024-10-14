@@ -2188,3 +2188,20 @@ textarea.input {
     margin-top: 10px;
   }
 }
+.remove-btn {
+  background-color: #D10024;   
+  color: white;            
+  border: none;           
+  padding: 10px;           
+  border-radius: 5px;     
+  cursor: pointer;         
+  outline: none;           
+}
+.remove-btn:focus,
+.remove-btn:active {
+  color: white;           
+  outline: none;           
+}
+
+
+
