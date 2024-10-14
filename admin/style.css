@@ -328,3 +328,34 @@ textarea.description:focus {
     border-radius: 9px;
 }
 /* End Add Product */
+
+/* Manage Client */
+.table_inner-img .avarta {
+    height: 100%;
+    aspect-ratio: 1/1;
+}
+/* End Manage Client */
+
+/* Client Detail */
+.frame-user {
+    z-index: 1;
+    border: 2px solid #ddd;
+    padding: 10px;
+    border-radius: 8px;
+}
+.frame-user .avarta-user {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 150px;
+    width: 100%;
+    aspect-ratio: 1/1;
+    margin: auto;
+}
+.frame-user .avarta-user img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+/* End Client Detail */
