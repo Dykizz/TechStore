@@ -59,7 +59,7 @@
 						<!-- LOGO -->
 						<div class="col-md-3">
 							<div class="header-logo">
-								<a href="#" class="logo">
+								<a href="index.html" class="logo">
 									<img src="./img/logo.png" alt="">
 								</a>
 							</div>
@@ -88,7 +88,7 @@
 									</a>
 									<ul class="dropdown-menu">
 										<li><a href="#">Thông tin cá nhân</a></li>
-										<li><a href="#">Lịch sử mua hàng</a></li>
+										<li><a href="lichsu_muahang.html">Lịch sử mua hàng</a></li>
 										<li><a href="#">Đăng xuất</a></li>
 									</ul>
 								</div>
@@ -105,33 +105,33 @@
 										<div class="cart-list">
 											<div class="product-widget">
 												<div class="product-img">
-													<img src="./img/product01.png" alt="">
+													<img src="./img/sp1_giohang.png" alt="">
 												</div>
 												<div class="product-body">
-													<h3 class="product-name"><a href="#">product name goes here</a></h3>
-													<h4 class="product-price"><span class="qty">1x</span>980.00 VND</h4>
+													<h3 class="product-name"><a href="#">Iphone 16 Pro Max 512GB | Chính hãng VN/A</a></h3>
+													<h4 class="product-price"><span class="qty">1x</span>40.990.000 VND</h4>
 												</div>
 												<button class="delete"><i class="fa fa-close"></i></button>
 											</div>
 
 											<div class="product-widget">
 												<div class="product-img">
-													<img src="./img/product02.png" alt="">
+													<img src="./img/sp2_giohang.png" alt="">
 												</div>
 												<div class="product-body">
-													<h3 class="product-name"><a href="#">product name goes here</a></h3>
-													<h4 class="product-price"><span class="qty">3x</span>980.00 VND</h4>
+													<h3 class="product-name"><a href="#">Tai nghe Bluetooth Apple AirPods 3 MagSafe</a></h3>
+													<h4 class="product-price"><span class="qty">3x</span>4.690.000 VND</h4>
 												</div>
 												<button class="delete"><i class="fa fa-close"></i></button>
 											</div>
 										</div>
 										<div class="cart-summary">
 											<small>4 sản phẩm được chọn</small>
-											<h5>SUBTOTAL: 2940.00 VND</h5>
+											<h5>TỔNG: 45.680.000 VND</h5>
 										</div>
 										<div class="cart-btns">
 											<a href="giohang.html">Xem giỏ hàng</a>
-											<a href="checkout.html"> Thanh toán  <i class="fa fa-arrow-circle-right"></i></a>
+											<a href="checkout.html"> Thanh toán <i class="fa fa-arrow-circle-right"></i></a>
 										</div>
 									</div>
 								</div>
@@ -166,11 +166,11 @@
 					<!-- NAV -->
 					<ul class="main-nav nav navbar-nav">
 						<li class="active"><a href="index.html">Trang chủ</a></li>
-						<li><a href="#">Sản phẩm</a></li>
-						<li><a href="#">Máy tính</a></li>
-						<li><a href="#">Điện thoại</a></li>
-						<li><a href="#">Máy ảnh</a></li>
-						<li><a href="#">Phụ kiện</a></li>
+						<li><a href="store.html">Sản phẩm</a></li>
+						<li><a href="store.html">Máy tính</a></li>
+						<li><a href="store.html">Điện thoại</a></li>
+						<li><a href="store.html">Máy ảnh</a></li>
+						<li><a href="store.html">Phụ kiện</a></li>
 					</ul>
 					<!-- /NAV -->
 				</div>
@@ -238,36 +238,7 @@
 						</div>
 						<!-- /Shipping Details -->
 		
-						<!-- Order notes -->
-						<div class="order-notes">
-							<textarea class="input" placeholder="Ghi chú đơn hàng"></textarea>
-						</div>
-						<!-- /Order notes -->
-					</div>
-		
-					<!-- Order Details -->
-					<div class="col-md-5 order-details">
-						<div class="section-title text-center">
-							<h3 class="title">Tóm Tắt Hóa Đơn</h3>
-						</div>
-						<div class="order-summary">
-							<div class="order-col">
-								<div><strong>Tổng tiền:</strong></div>
-								<div><strong><span id="grand-total-summary">4.480.000 VND</span></strong></div>
-							</div>
-							<div class="order-col">
-								<div><strong>Tên người nhận: </strong></div>
-								<div><span id="grand-total-summary"></span></div>
-							</div>
-							<div class="order-col">
-								<div><strong>Địa chỉ giao hàng:</strong></div>
-								<div><span id="delivery-address-summary"></span></div>
-							</div>
-							<div class="order-col">
-								<div><strong>Phương thức thanh toán:</strong></div>
-								<div><span id="payment-method-summary"></span></div>
-							</div>
-						</div>
+						<!--Payment Method-->
 						<div class="payment-method">
 							<div class="section-title">
 								<h3 class="title">Chọn Phương Thức Thanh Toán</h3>
@@ -309,16 +280,71 @@
 								</div>
 							</div>
 						</div>
+						<!--Payment Method-->
+					</div>
+					
+					<!-- Order Details -->
+					<div class="col-md-5 order-details">
+						<div class="section-title text-center">
+							<h3 class="title">Tóm Tắt Hóa Đơn</h3>
+						</div>
+
+						<!-- Products List -->
+						<div class="product-list">
+							<h4>Danh sách sản phẩm</h4>
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Tên sản phẩm</th>
+										<th>Số lượng</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td><span id="product-name-1">Iphone 16 Pro Max 512GB | Chính hãng VN/A</span></td>
+										<td class = "text-center"><span id="product-quantity-1">x1</span></td>
+									</tr>
+									<tr>
+										<td><span id="product-name-2">Tai nghe Bluetooth Apple AirPods 3 MagSafe</span></td>
+										<td class = "text-center"><span id="product-quantity-2">x3</span></td>
+									</tr>
+									<!-- Thêm các sản phẩm khác nếu cần -->
+								</tbody>
+							</table>
+						</div>
+
+						<!-- Tóm tắt đơn hàng -->
+						<div class="order-summary">
+							<div class="order-col">
+								<div><strong>Tổng tiền:</strong></div>
+								<div><strong><span id="grand-total-summary">45.680.000 VND</span></strong></div>
+							</div>
+							<div class="order-col">
+								<div><strong>Tên người nhận:</strong></div>
+								<div><span id="recipient-name-summary"></span></div>
+							</div>
+							<div class="order-col">
+								<div><strong>Địa chỉ giao hàng:</strong></div>
+								<div><span id="delivery-address-summary"></span></div>
+							</div>
+							<div class="order-col">
+								<div><strong>Phương thức thanh toán:</strong></div>
+								<div><span id="payment-method-summary"></span></div>
+							</div>
+						</div>
+
+						<!-- Điều khoản và nút đặt hàng -->
 						<div class="input-checkbox">
 							<input type="checkbox" id="terms">
 							<label for="terms">
 								<span></span>
-								Tôi đã đọc và chấp nhận <a href="#">điều khoản và điều kiện</a>
+								Tôi đã đọc và chấp nhận điều khoản và điều kiện
 							</label>
 						</div>
 						<a href="#" class="primary-btn order-submit">Đặt hàng</a>
 					</div>
 					<!-- /Order Details -->
+
 				</div>
 				<!-- /row -->
 			</div>
@@ -387,10 +413,10 @@
 							<div class="footer">
 								<h3 class="footer-title">Sản phẩm</h3>
 								<ul class="footer-links">
-									<li><a href="#">Máy tính</a></li>
-									<li><a href="#">Điện thoại</a></li>
-									<li><a href="#">Máy ảnh</a></li>
-									<li><a href="#">Phụ kiện</a></li>
+									<li><a href="store.html">Máy tính</a></li>
+									<li><a href="store.html">Điện thoại</a></li>
+									<li><a href="store.html">Máy ảnh</a></li>
+									<li><a href="store.html">Phụ kiện</a></li>
 								</ul>
 							</div>
 						</div>
@@ -415,7 +441,7 @@
 								<h3 class="footer-title">Dịch vụ</h3>
 								<ul class="footer-links">
 									<li><a href="#">Tài khoản</a></li>
-									<li><a href="#">Giỏ hàng</a></li>
+									<li><a href="giohang.html">Giỏ hàng</a></li>
 									<li><a href="#">Trợ giúp</a></li>
 								</ul>
 							</div>
