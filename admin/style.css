@@ -360,6 +360,7 @@ textarea.description:focus {
 }
 /* End Client Detail */
 
+/* Order Detail */
 .section-title {
     position: relative;
     margin-bottom: 30px;
@@ -371,3 +372,73 @@ textarea.description:focus {
     text-transform: uppercase;
     margin: 0px;
 }
+/* End Order Detail */
+
+/* Login Admin */
+.body {
+    width: 100vw;
+    height: 100vh;
+    background: #2B2D42;
+    color: #fff;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
+
+::-webkit-input-placeholder {
+    color: #eee;
+}
+
+.wrapper {
+    position: relative;
+    width: 500px;
+    height: 60vh;
+    display: grid;
+    border: 3px solid #00ffff;
+    border-radius: 10px;
+    box-shadow: 0 0 50px 0 #00a6bc;
+}
+
+.wrapper form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.wrapper form .title{
+    font-size: 35px;
+    margin-top: 0;
+} 
+
+.input-wrapper{
+    width: 70%;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #eee;
+}
+
+.input-wrapper input {
+    border: none;
+    outline: none;
+    background: none;
+    width: calc(100% - 20px);
+    margin-top: 40px;
+    padding-right: 10px;
+    font-size: 20px;
+    color: #0ef;
+}
+
+
+button.submit {
+    border: none;
+    outline: none;
+    width: 288px;
+    margin-top: 25px;
+    padding: 10px 0;
+    font-size: 20px;
+    border-radius: 40px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    background: linear-gradient(80deg ,#0ef, orange);
+}
+/* End Login Admin */
