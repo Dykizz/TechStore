@@ -359,3 +359,15 @@ textarea.description:focus {
     object-fit: cover;
 }
 /* End Client Detail */
+
+.section-title {
+    position: relative;
+    margin-bottom: 30px;
+    margin-top: 15px;
+}
+
+.section-title .title {
+    display: inline-block;
+    text-transform: uppercase;
+    margin: 0px;
+}
