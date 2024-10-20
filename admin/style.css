@@ -378,7 +378,8 @@ textarea.description:focus {
 .body {
     width: 100vw;
     height: 100vh;
-    background: #2B2D42;
+    background: url(https://img.freepik.com/free-vector/gradient-network-connection-background_23-2148865393.jpg?t=st=1729186066~exp=1729189666~hmac=b2c9cd75c4d4690181916989dfb218b72efedc1810314ea60b2a2e306f033098&w=996);
+    background-size: cover;
     color: #fff;
     display: grid;
     justify-content: center;
@@ -393,6 +394,7 @@ textarea.description:focus {
     position: relative;
     width: 500px;
     height: 60vh;
+    backdrop-filter: blur(20px);
     display: grid;
     border: 3px solid #00ffff;
     border-radius: 10px;
