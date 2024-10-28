@@ -31,7 +31,86 @@
 		  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 		<![endif]-->
-
+		<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bảng Lịch Sử Mua Hàng</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .table-container {
+            width: 80%;
+            margin: 20px auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+        }
+        .table-container h2 {
+            margin: 0;
+            font-size: 1.2em;
+            color: #333;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            vertical-align: top;
+        }
+        th {
+            background-color: #f5f5f5;
+        }
+        .status-complete {
+            color: green;
+        }
+        .status-pending {
+            color: orange;
+        }
+        .icon {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        .icon-filled {
+            background-color: black;
+        }
+        .icon-empty {
+            background-color: #fff;
+            border: 1px solid #ddd;
+        }
+        .product {
+            display: flex;
+            align-items: center;
+        }
+        .product-img img {
+            width: 50px;
+            height: auto;
+            margin-right: 10px;
+        }
+        .product-body h3 {
+            font-size: 1em;
+            margin: 0;
+        }
+        .product-price-index {
+            font-size: 0.9em;
+        }
+        .product-old-price-index {
+            color: #888;
+            text-decoration: line-through;
+        }
+        .new-price-index {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+    </style>
     </head>
 	<body>
 		<!-- HEADER -->
@@ -57,7 +136,7 @@
 						<!-- LOGO -->
 						<div class="col-md-3">
 							<div class="header-logo">
-								<a href="#" class="logo">
+								<a href="index.html" class="logo">
 									<img src="./img/logo.png" alt="">
 								</a>
 							</div>
@@ -68,13 +147,12 @@
 						<div class="col-md-6">
 							<div class="header-search">
 								<form>
-									<input class="input" placeholder="Nhập sản phẩm muốn tìm kiếm ...">
+									<input class="input" placeholder="Nhập sản phẩm muốn tìm kiếm...">
 									<button class="search-btn">Tìm kiếm</button>
 								</form>
 							</div>
 						</div>
 						<!-- /SEARCH BAR -->
-
 						<!-- ACCOUNT -->
 						<div class="col-md-3 clearfix">
 							<div class="header-ctn">
@@ -86,18 +164,18 @@
 									</a>
 									<ul class="dropdown-menu">
 										<li><a href="#">Thông tin cá nhân</a></li>
-										<li><a href="#">Lịch sử mua hàng</a></li>
+										<li><a href="lichsu_muahang.html">Lịch sử mua hàng</a></li>
 										<li><a href="#">Đăng xuất</a></li>
 									</ul>
 								</div>
 								<!-- /Tài khoản -->
-
+								
 								<!-- Cart -->
 								<div class="dropdown">
 									<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
 										<i class="fa fa-shopping-cart"></i>
 										<span>Giỏ hàng</span>
-										<div class="qty">0</div>
+										<div class="qty">4</div>
 									</a>
 									<div class="cart-dropdown">
 										<div class="cart-list">
@@ -134,7 +212,7 @@
 									</div>
 								</div>
 								<!-- /Cart -->
-
+								
 								<!-- Menu Toogle -->
 								<div class="menu-toggle">
 									<a href="#">
@@ -143,6 +221,7 @@
 									</a>
 								</div>
 								<!-- /Menu Toogle -->
+
 							</div>
 						</div>
 						<!-- /ACCOUNT -->
@@ -150,7 +229,262 @@
 					<!-- row -->
 				</div>
 				<!-- container -->
+				 
 			</div>
 			<!-- /MAIN HEADER -->
 		</header>
 		<!-- /HEADER -->
+	<!-- NAVIGATION -->
+	<nav id="navigation">
+		<!-- container -->
+		<div class="container">
+			<!-- responsive-nav -->
+			<div id="responsive-nav">
+				<!-- NAV -->
+				<ul class="main-nav nav navbar-nav">
+					<li class="active"><a href="index.html">Trang chủ</a></li>
+					<li><a href="store.html">Sản phẩm</a></li>
+					<li><a href="store.html">Máy tính</a></li>
+					<li><a href="store.html">Điện thoại</a></li>
+					<li><a href="store.html">Máy ảnh</a></li>
+					<li><a href="store.html">Phụ kiện</a></li>
+				</ul>
+				<!-- /NAV -->
+			</div>
+			<!-- /responsive-nav -->
+		</div>
+		<!-- /container -->
+	</nav>
+<!-- SECTION -->
+<div class="section">
+	<!-- container -->
+			<div class="table-container">
+					<h2>Lịch sử mua hàng</h2>
+					<table>
+						<thead>
+							<tr>
+								<th>Sản phẩm</th>
+								<th>Trạng thái</th>
+								<th>Giao hàng</th>
+								<th>Thanh toán</th>
+								<th>Giá</th>
+								<th>Địa chỉ</th>
+								<th>Ngày ghi nhận</th>
+								<th>Cập nhật cuối</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									<div class="product">
+										<div class="product-img">
+											<img src="./img/sanphammoi_dt.png" alt="">
+										</div>
+										<div class="product-body">
+											<h3 class="product-name"><a href="#">Samsung Galaxy S24 Ultra 12GB 256GB</a></h3>
+											
+										</div>
+									</div>
+								</td>
+								<td class="status-complete">Hoàn thành</td>
+								<td><span class="icon icon-filled"></span></td>
+								<td><span class="icon icon-filled"></span></td>
+								<td>29.990.000 VNĐ</td>
+								<td>Trường đại học Sài Gòn</td>
+								<td>27/11/2019 11:52</td>
+								<td>01/12/2019 11:06</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="product">
+										<div class="product-img">
+											<img src="./img/product02.png" alt="">
+										</div>
+										<div class="product-body">
+											<h3 class="product-name"><a href="#">Tai nghe E-Dra EH412 Pro RGB USB 7.1 </a></h3>
+										</div>
+									</div>
+								</td>
+								<td class="status-pending">Đang giao dịch</td>
+								<td><span class="icon icon-empty"></span></td>
+								<td><span class="icon icon-empty"></span></td>
+								<td>$980.00</td>
+								<td>Trường đại học Sài Gòn</td>
+								<td>24/11/2019 19:14</td>
+								<td>24/11/2019 19:14</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="product">
+										<div class="product-img">
+											<img src="./img/product01.png" alt="">
+										</div>
+										<div class="product-body">
+											<h3 class="product-name"><a href="#">Laptop ASUS TUF GAMING 2023</a></h3>
+											
+										</div>
+									</div>
+								</td>
+								<td class="status-pending">Đang giao dịch</td>
+								<td><span class="icon icon-empty"></span></td>
+								<td><span class="icon icon-empty"></span></td>
+								<td>$980.00</td>
+								<td>Trường đại học Sài Gòn</td>
+								<td>24/11/2019 19:14</td>
+								<td>24/11/2019 19:14</td>
+							</tr>
+						</tbody>
+					</table>
+					<!-- store bottom filter -->
+					<div class="store-filter clearfix">
+						<ul class="store-pagination">
+							<li class="active">1</li>
+							<li><a href="lichsu_muahang.html">2</a></li>
+							<li><a href="lichsu_muahang.html">3</a></li>
+							<li><a href="lichsu_muahang.html">4</a></li>
+							<li><a href="lichsu_muahang.html"><i class="fa fa-angle-right"></i></a></li>
+						</ul>
+					</div>
+					<!-- /store bottom filter -->
+			</div>
+			
+</div>
+
+<!-- NEWSLETTER -->
+<div id="newsletter" class="section">
+	<!-- container -->
+	<div class="container">
+		<!-- row -->
+		<div class="row">
+			<div class="col-md-12">
+				<div class="newsletter">
+					<p>Đăng ký để nhận <strong>THÔNG BÁO MỚI NHẤT</strong></p>
+					<form>
+						<input class="input" type="email" placeholder="Nhập email">
+						<button class="newsletter-btn"><i class="fa fa-envelope"></i> Đăng ký</button>
+					</form>
+					<ul class="newsletter-follow">
+						<li>
+							<a href="#"><i class="fa fa-facebook"></i></a>
+						</li>
+						<li>
+							<a href="#"><i class="fa fa-twitter"></i></a>
+						</li>
+						<li>
+							<a href="#"><i class="fa fa-instagram"></i></a>
+						</li>
+						<li>
+							<a href="#"><i class="fa fa-pinterest"></i></a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- /row -->
+	</div>
+	<!-- /container -->
+</div>
+<!-- /NEWSLETTER -->
+<!-- FOOTER -->
+<footer id="footer">
+	<!-- top footer -->
+	<div class="section">
+		<!-- container -->
+		<div class="container">
+			<!-- row -->
+			<div class="row">
+				<div class="col-md-3 col-xs-6">
+					<div class="footer">
+						<h3 class="footer-title">Về chúng tôi</h3>
+						<p>Chất lượng làm nên thương hiệu.</p>
+						<ul class="footer-links">
+							<li><a href="#"><i class="fa fa-map-marker"></i>1734 Stonecoal Road</a></li>
+							<li><a href="#"><i class="fa fa-phone"></i>+021-95-51-84</a></li>
+							<li><a href="#"><i class="fa fa-envelope-o"></i>nhom6@email.com</a></li>
+						</ul>
+					</div>
+				</div>
+
+				<div class="col-md-3 col-xs-6">
+					<div class="footer">
+						<h3 class="footer-title">Sản phẩm</h3>
+						<ul class="footer-links">
+							<li><a href="store.html">Máy tính</a></li>
+							<li><a href="store.html">Điện thoại</a></li>
+							<li><a href="store.html">Máy ảnh</a></li>
+							<li><a href="store.html">Phụ kiện</a></li>
+						</ul>
+					</div>
+				</div>
+
+				<div class="clearfix visible-xs"></div>
+
+				<div class="col-md-3 col-xs-6">
+					<div class="footer">
+						<h3 class="footer-title">Thông tin</h3>
+						<ul class="footer-links">
+							<li><a href="#">Về chúng tôi</a></li>
+							<li><a href="#">Liên hệ với chúng tôi</a></li>
+							<li><a href="#">Chính sách bảo mật</a></li>
+							<li><a href="#">Đơn hàng & Hoàn trả</a></li>
+							<li><a href="#">Điều khoản & Điều kiện</a></li>
+						</ul>
+					</div>
+				</div>
+
+				<div class="col-md-3 col-xs-6">
+					<div class="footer">
+						<h3 class="footer-title">Dịch vụ</h3>
+						<ul class="footer-links">
+							<li><a href="#">Tài khoản</a></li>
+							<li><a href="giohang.html">Giỏ hàng</a></li>
+							<li><a href="#">Trợ giúp</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+	</div>
+	<!-- /top footer -->
+
+	<!-- bottom footer -->
+	<div id="bottom-footer" class="section">
+		<div class="container">
+			<!-- row -->
+			<div class="row">
+				<div class="col-md-12 text-center">
+					<ul class="footer-payments">
+						<li><a href="#"><i class="fa fa-cc-visa"></i></a></li>
+						<li><a href="#"><i class="fa fa-credit-card"></i></a></li>
+						<li><a href="#"><i class="fa fa-cc-paypal"></i></a></li>
+						<li><a href="#"><i class="fa fa-cc-mastercard"></i></a></li>
+						<li><a href="#"><i class="fa fa-cc-discover"></i></a></li>
+						<li><a href="#"><i class="fa fa-cc-amex"></i></a></li>
+					</ul>
+					<span class="copyright">
+						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+						Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+					<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+					</span>
+				</div>
+			</div>
+				<!-- /row -->
+		</div>
+		<!-- /container -->
+	</div>
+	<!-- /bottom footer -->
+</footer>
+	<!-- /FOOTER -->
+
+		<!-- jQuery Plugins -->
+			<script src="js/jquery.min.js"></script>
+			<script src="js/bootstrap.min.js"></script>
+			<script src="js/slick.min.js"></script>
+			<script src="js/nouislider.min.js"></script>
+			<script src="js/jquery.zoom.min.js"></script>
+			<script src="js/main.js"></script>
+
+	</body>
+</html>
