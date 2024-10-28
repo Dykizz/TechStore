@@ -2204,4 +2204,48 @@ textarea.input {
 }
 
 
+.col-md-7 {
+  max-height: 600px;  
+  overflow-y: auto;
+  border-radius: 10px;
+}
+
+.col-md-7::-webkit-scrollbar {
+  width: 8px;  
+}
+
+.col-md-7::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+  border-radius: 10px;  
+}
+.col-md-7::-webkit-scrollbar-thumb {
+  background-color: #888; 
+  border-radius: 10px;    
+}
+
+.col-md-7::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+.product-price-index {
+  display: flex;
+  flex-direction: column; 
+  align-items: center; 
+
+.product-old-price-index {
+  font-size: 14px; 
+  color: #999; 
+  margin-bottom: 5px;
+  text-align: center; 
+}
+
+.new-price-index {
+  font-size: 18px; 
+  font-weight: bold;
+  color: #D10024;   
+  text-align: center; 
+}
+
+
+
 

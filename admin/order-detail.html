@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Admin</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <div class="inner-logo">
+            <a href="./index.html">
+                <img src="../img/logo.png" alt="Logo" srcset="">
+            </a>
+        </div>
+        <div class="inner-user">
+            <div class="notification">
+                <i class="fa-regular fa-bell"></i>
+                <span>Thông báo</span>
+            </div>
+            <div class="infor-user">
+                <div class="avatar">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <span>Admin</span>
+            </div>
+        </div>
+    </header>
+
+    <ul class="sider">
+        <li>
+            <div class="inner-icon">
+                <i class="fa-solid fa-gauge-high"></i>
+            </div>
+            <a href="./index.html">Tổng quan</a>
+        </li>
+        <li>
+            <div class="inner-icon">
+                <i class="fa-solid fa-people-group"></i>
+            </div>
+            <a href="./manage-client.html">Quản lý người dùng</a>
+        </li>
+        <li>
+            <div class="inner-icon">
+                <i class="fa-solid fa-list"></i>
+            </div>
+            <a href="./manage-category.html">Quản lý danh mục</a>
+        </li>
+        <li>
+            <div class="inner-icon">
+                <i class="fa-brands fa-product-hunt"></i>
+            </div>
+            <a href="./manage-product.html">Quản lý sản phẩm</a>
+        </li>
+        <li class="active">
+            <div class="inner-icon">
+                <i class="fa-solid fa-clipboard-list"></i>
+            </div>
+            <a href="./manage-order.html">Quản lý đơn hàng</a>
+        </li>
+        <li>
+            <div class="inner-icon">
+                <i class="fa-solid fa-chart-line"></i>
+            </div>
+            <a href="./statistic.html">Thống kê kinh doanh</a>
+        </li>
+    </ul>
+    <div class="content">
+        <h2>Chi tiết đơn hàng</h2>
+
+        <div class="card">
+            <div class="card-header">Thông tin chi tiết đơn hàng</div>
+            <div class="card-body">
+                <p>Tình trạng đơn hàng :
+                    <span class="badge badge-success"> Giao thành công</span>
+                    lúc 
+                    <strong>23/01/2023 9:30:34</strong>
+                </p>
+
+                <p>Thời gian đặt :
+                    <strong>20/01/2023 17:30:24</strong>
+                </p>
+
+                <p>Tên tài khoản đặt hàng :
+                    <strong >
+                        <a class="text-primary" href="./client-detail.html">Nguyễn Thế Anh</a>
+                    </strong>
+                </p>
+
+                <div class="section-title">
+                    <h4 class="title">Thông tin người nhận</h4>
+                </div>
+
+                <p>Tên người nhận :
+                    <strong>Nguyễn Văn A</strong>
+                </p>
+
+                <p>Số điện thoại :
+                    <strong>097891084</strong>
+                </p>
+                <div class="form-group">
+                    <label for="address">Địa chỉ giao hàng : </label>
+                    <textarea class="form-control" name="address" id="address" rows="3" readonly>123 Đường Nguyễn Thị Minh Khai, Phường 6, Quận 3, TP. Hồ Chí Minh
+                    </textarea>
+                </div>
+                <div class="form-group">
+                    <label for="note">Ghi chú : </label>
+                    <textarea class="form-control" name="note" id="note" rows="3" readonly>Gọi trước khi giao
+                    </textarea>
+                </div>
+
+                <div class="section-title">
+                    <h4 class="title">phương thức thanh toán</h4>
+                </div>
+
+                <p>Thanh toán bằng :
+                    <strong> Thẻ tín dụng</strong>
+                </p>
+
+                <p>Tên chủ thẻ :
+                    <strong>Nguyễn Thế Anh</strong>
+                </p>
+
+                <p>Số thẻ :
+                    <strong>5555 5555 5555 4444</strong>
+                </p>
+
+                <p>Ngày hết hạn :
+                    <strong>25/12</strong>
+                </p>
+
+                <div class="section-title">
+                    <h4 class="title ">Chi tiết hóa đơn</h4>
+                </div>
+                <table class="table table-hover text-center">
+                    <thead>
+                        <th class="text-left">Tên sản phẩm</th>
+                        <th>Số lượng</th>
+                        <th>Giá</th>
+                        <th>Tổng</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-left">Iphone 16 Pro Max 512GB | Chính hãng VN/A</td>
+                            <td>1</td>
+                            <td>40.682.000 VND</td>
+                            <td>40.682.000 VND</td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Tai nghe Bluetooth Apple AirPods 3 MagSafe</td>
+                            <td>3</td>
+                            <td>1.666.000 VND</td>
+                            <td>4.998.000 VND</td>
+
+                        </tr>
+                    </tbody>
+                </table>
+                <p>Tổng tiền : 
+                    <strong>4.568.000 VND</strong>
+                </p>
+
+                </select>
+
+            </div>
+        </div>
+
+
+
+
+    </div>
+</body>
+
+</html>
