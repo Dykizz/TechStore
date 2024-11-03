@@ -2260,3 +2260,14 @@ textarea.input {
 }
 
 }
+.btn-filter{
+  border: 2px solid transparent;
+  height: 40px;
+  padding: 10px 30px;
+  background-color: #ef233c;
+  color: #FFF;
+  text-transform: uppercase;
+  font-weight: 700;
+  border-radius: 40px;
+  
+}
