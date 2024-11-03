@@ -28,11 +28,13 @@ header {
     position: sticky;
     top: 0;
     left: 0;
-    background: #ddd;
+    background: #15161D;
+    color: #FFF;
     padding: 20px 50px;
     display: flex;
     justify-content: space-between;
     height: 115px;
+    border-bottom: 3px solid #D10024;;
 }
 
 .inner-logo {
@@ -61,9 +63,12 @@ header {
 
 .inner-user>div:hover {
     background: beige;
+    color: #15161D;
 }
 
-
+.infor-user .avatar i {
+    color: #333;
+}
 .infor-user .avatar {
     background: white;
     display: flex;
@@ -88,7 +93,7 @@ header {
     padding: 20px 10px;
     padding-left: 0;
     list-style-type: none;
-
+    border-right: 3px solid #D10024;
 }
 
 .sider .inner-icon {
