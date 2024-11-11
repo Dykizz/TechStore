@@ -1094,7 +1094,8 @@ textarea.input {
 }
 
 .product-widget .product-img>img {
-  width: 100%;
+  width: 50px;
+  height: auto
 }
 
 .product-widget .product-body {
@@ -1568,18 +1569,32 @@ textarea.input {
   visibility: visible;
 }
 
+.product-details .add-to-cart {
+  display: flex;
+  flex-direction: column; /* Chia thành 2 phần: phần chỉnh số lượng và phần nút giỏ hàng */
+}
+
 .product-details .add-to-cart .qty-label {
-  display: inline-block;
+  display: flex; /* Đặt thành flex để căn chỉnh các phần tử nằm ngang */
+  align-items: center;
   font-weight: 500;
   font-size: 12px;
   text-transform: uppercase;
-  margin-right: 15px;
-  margin-bottom: 0px;
+  margin-bottom: 10px; /* Thêm khoảng cách giữa phần chỉnh số lượng và nút giỏ hàng */
 }
 
 .product-details .add-to-cart .qty-label .input-number {
   width: 90px;
   display: inline-block;
+}
+
+.product-details .add-to-cart .qty-label .quantity-control {
+  display: flex; /* Đặt thành flex để căn chỉnh các nút điều chỉnh và số lượng */
+  gap: 5px; /* Khoảng cách giữa các nút */
+}
+
+.product-details .add-to-cart-btn {
+  margin-top: 10px; /* Khoảng cách từ phần chỉnh số lượng */
 }
 
 .product-details .product-btns li {
@@ -2245,29 +2260,151 @@ textarea.input {
   color: #D10024;   
   text-align: center; 
 }
+/* Áp dụng cho bảng */
 .table {
   width: 100%;
   margin-top: 20px;
-  border-collapse: collapse;
+  border-collapse: collapse; /* Đảm bảo không có khoảng cách giữa các đường viền */
+  font-family: 'Times New Roman', Times, serif;
+  border: 1px solid #ddd; /* Thêm đường viền cho bảng */
 }
-#table thead th {
+
+/* Áp dụng cho các tiêu đề trong bảng */
+.table thead th {
   background-color: #d22121;
   color: white;
-  padding: 15px;
+  padding: 20px;
   text-align: center;
   font-weight: bold;
-  border: 1px solid #ddd;
+  border: 1px solid #ddd; /* Đảm bảo đường viền cho các thẻ th */
+  font-family: 'Times New Roman', Times, serif;
+}
+
+/* Áp dụng cho các ô trong bảng */
+.table td {
+  padding: 15px;
+  border: 1px solid #ddd; /* Đảm bảo đường viền cho các ô td */
+  text-align: left;
 }
 
 }
 .btn-filter{
   border: 2px solid transparent;
   height: 40px;
+  width: 100%;
+  margin: 0 auto;
   padding: 10px 30px;
   background-color: #ef233c;
   color: #FFF;
   text-transform: uppercase;
   font-weight: 700;
   border-radius: 40px;
-  
 }
+
+/* ------------------------------------------------------------------------------- */
+
+/* Định dạng cho "product.html" */
+/* Định dạng cho phần tử chứa chữ "Số lượng" */
+.qty-text {
+  margin-right: 20px; /* Tạo khoảng cách giữa "Số lượng" và các nút điều chỉnh */
+}
+
+/* Định dạng cho các nút điều chỉnh */
+.qty-buttons {
+  display: inline-flex; /* Đảm bảo các nút nằm ngang */
+  align-items: center;  /* Căn giữa các nút với số lượng */
+}
+
+/* Nếu muốn thêm khoảng cách giữa các nút với số lượng */
+.qty-buttons span {
+  margin: 0 10px; /* Tạo khoảng cách giữa các nút và số lượng */
+}
+
+/* Định dạng cho "căn giữa" cho nội dung */
+.justified-text {
+  text-align: justify;
+}
+
+/* ------------------------------------------------------------------- */
+ 
+/* Định dạng cho "phân trang" */
+.store-filter {
+  width: 100%; /* Đảm bảo phần tử chiếm đủ không gian ngang */
+  display: flex;
+  justify-content: center; /* Căn giữa nội dung bên trong */
+  margin-right: 20px 0; /* Tạo khoảng cách với các phần tử khác */
+}
+
+.store-filter .store-pagination {
+  display: inline-flex; /* Giữ các mục trong hàng ngang */
+}
+
+/* --------------------------------------------------------------------- */
+
+/* Định dạng cho "giohang.html" */
+/* CSS cho bảng với class table-giohang */
+.table-giohang {
+  width: 100%;
+  border-collapse: collapse; /* Tạo ra các đường biên không có khoảng cách giữa các ô */
+  margin: 20px 0;
+}
+
+/* CSS cho các hàng trong bảng */
+.table-giohang th, .table-giohang td {
+  padding: 20px;
+  text-align: center;
+  border: 1px solid #ddd; /* Đường biên nhẹ cho các ô */
+}
+
+
+/* CSS cho các cột hình ảnh */
+.table-giohang .product-table .product-img img {
+  max-width: 100px; /* Giới hạn kích thước ảnh */
+  height: auto;
+}
+
+/* CSS cho các nút + và - */
+.table-giohang .btn-secondary {
+  padding: 5px 10px;
+  border: none;
+  background-color:white; /* Màu nền xám */
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+/* CSS cho nút xóa */
+.table-giohang .remove-btn {
+  background-color: #dc3545; /* Màu nền đỏ cho nút xóa */
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.table-giohang .remove-btn:hover {
+  background-color: #c82333; /* Màu nền đỏ khi hover */
+}
+
+/* CSS cho phần tổng tiền */
+.table-giohang tfoot .total-row td {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.product-table {
+  display: flex;
+  justify-content: center; /* Căn giữa theo chiều ngang */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  height: 100%; /* Đảm bảo chiều cao đầy đủ của ô */
+}
+
+.product-table .product-img > img {
+  text-align: center;
+  width: 100px; /* Chỉnh kích thước ảnh */
+  height: auto; /* Đảm bảo tỷ lệ ảnh không bị biến dạng */
+}
+
+/* ------------------------------------------------------------------ */
+
