@@ -2408,3 +2408,49 @@ textarea.input {
 
 /* ------------------------------------------------------------------ */
 
+/* Định dạng cho "blank.html" thông báo đã đặt hàng thành công */
+.success-notification {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  color: black; /* Màu chữ xanh */
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  border: 1px solid white;
+  text-align: center;
+}
+
+.primary-btn .continue-shopping {
+  display: inline-block;
+  color: white; /* Màu chữ trắng */
+  padding: 12px 12px; /* Giảm padding để nút nhỏ hơn */
+  border-radius: 3px; /* Giảm độ bo tròn */
+  text-decoration: none;
+  font-size: 14px; /* Giảm kích thước chữ */
+  font-weight: bold;
+  border: none; /* Loại bỏ viền */
+  transition: background-color 0.3s;
+  justify-content: center; /* Căn giữa theo chiều ngang */
+  align-items: center; 
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: center; /* Căn giữa theo chiều ngang */
+  align-items: center; /* Căn giữa theo chiều dọc */
+}
+
+#newsletter {
+  display: none; 
+}
+
+#newsletter + .section {
+  margin-top: 200px; /* Thêm khoảng trống phía trên phần tiếp theo */
+}
+
+
