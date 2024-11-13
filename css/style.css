@@ -2489,7 +2489,7 @@ textarea.input {
   border: none; /* Loại bỏ viền */
   transition: background-color 0.3s;
   justify-content: center; /* Căn giữa theo chiều ngang */
-  align-items: center; 
+  align-items: center;
 }
 
 .button-wrapper {
@@ -2499,7 +2499,7 @@ textarea.input {
 }
 
 #newsletter {
-  display: none; 
+  display: none;
 }
 
 #newsletter + .section {
@@ -2517,7 +2517,7 @@ textarea.input {
   z-index: 100;
   top: 15px;
   right: 15px;
-  animation: show 4s ease-in 1;
+  animation: show 2.5s ease-in 1;
 }
 @keyframes show {
   from {
@@ -2539,4 +2539,3 @@ textarea.input {
   }
 }
 /* End Announce */
-

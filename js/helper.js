@@ -13,7 +13,7 @@ if (elements) {
         element_anounce.textContent = mess;
         setTimeout(() => {
           element_anounce.classList.remove("active");
-        }, 5000);
+        }, 4000);
       }
     });
   });
