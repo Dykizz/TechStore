@@ -293,37 +293,36 @@ textarea.description:focus {
 }
 /* End Edit Product */
 
-/* Edit Success */
+/*Announce */
 .announce {
   display: none;
 }
 .alert-show.active {
   display: block;
-  position: absolute;
-  animation: show 5s ease-out 1;
+  position: fixed;
+  width: auto;
+  z-index: 1000;
+  top: 120px;
+  right: 30px;
+  animation: show 1s ease-in 1;
 }
 @keyframes show {
   from {
     opacity: 0;
     visibility: hidden;
-    top: 15px;
-    right: -50%;
+    right: -100px;
   }
 
-  40% {
+  30% {
     opacity: 1;
     visibility: visible;
-    right: 15px;
   }
 
   to {
-    opacity: 0;
-    visibility: hidden;
-    top: 15px;
-    right: 15px;
+    right: 30px;
   }
 }
-/* End Edit Success */
+/* End Announce */
 
 /* Add Product  */
 #form-add {

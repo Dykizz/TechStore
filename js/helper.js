@@ -9,7 +9,7 @@ if (elements) {
         element_anounce.classList.add("active");
         const type = element.getAttribute("type-announce");
         const mess = element.getAttribute("message");
-        element_anounce.setAttribute("type-announce", type);
+        element_anounce.classList.add(`alert-${type}`);
         element_anounce.textContent = mess;
         setTimeout(() => {
           element_anounce.classList.remove("active");
@@ -19,7 +19,7 @@ if (elements) {
   });
 }
 /* 
--Thêm <div class="alert alert-success alert-show announce" role="alert"></div>; vào trang muốn thông báo
+-Thêm <div class="alert alert-show announce" role="alert"></div>; vào trang muốn thông báo
 -Thêm class btn-announce, type-announce = 1 trong 3 loại [success , danger , warning]
 -Thêm message = "đoạn mess muốn thông báo"
 
