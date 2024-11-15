@@ -1,182 +1,201 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Trang Admin</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+      integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
     <header>
-        <div class="inner-logo">
-            <a href="./index.html">
-                <img src="../img/logo.png" alt="Logo" srcset="">
-            </a>
+      <div class="inner-logo">
+        <a href="./index.html">
+          <img src="../img/logo.png" alt="Logo" srcset="" />
+        </a>
+      </div>
+      <div class="inner-user">
+        <div class="notification">
+          <i class="fa-regular fa-bell"></i>
+          <span>Thông báo</span>
         </div>
-        <div class="inner-user">
-            <div class="notification">
-                <i class="fa-regular fa-bell"></i>
-                <span>Thông báo</span>
-            </div>
-            <div class="infor-user">
-                <div class="avatar">
-                    <i class="fa-solid fa-user"></i>
-                </div>
-                <span>Admin</span>
-            </div>
+        <div class="infor-user">
+          <div class="avatar">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <span>Admin</span>
         </div>
+      </div>
     </header>
 
     <ul class="sider">
-            <li>
-                <div class="inner-icon">
-                    <i class="fa-solid fa-gauge-high"></i>
-                </div>
-                <a href="./index.html">Tổng quan</a>
-            </li>
-            <li>
-                <div class="inner-icon">
-                    <i class="fa-solid fa-people-group"></i>
-                </div>
-                <a href="./manage-client.html">Quản lý người dùng</a>
-            </li>
-            <li>
-                <div class="inner-icon">
-                    <i class="fa-solid fa-list"></i>
-                </div>
-                <a href="./manage-category.html">Quản lý danh mục</a>
-            </li>
-            <li>
-                <div class="inner-icon">
-                    <i class="fa-brands fa-product-hunt"></i>
-                </div>
-                <a href="./manage-product.html">Quản lý sản phẩm</a>
-            </li>
-            <li>
-                <div class="inner-icon">
-                    <i class="fa-solid fa-clipboard-list"></i>
-                </div>
-                <a href="./manage-order.html">Quản lý đơn hàng</a>
-            </li>
-            <li class="active">
-                <div class="inner-icon">
-                    <i class="fa-solid fa-chart-line"></i>
-                </div>
-                <a href="./statistic.html">Thống kê kinh doanh</a>
-            </li>
-     </ul>
+      <li>
+        <div class="inner-icon">
+          <i class="fa-solid fa-gauge-high"></i>
+        </div>
+        <a href="./index.html">Tổng quan</a>
+      </li>
+      <li>
+        <div class="inner-icon">
+          <i class="fa-solid fa-people-group"></i>
+        </div>
+        <a href="./manage-client.html">Quản lý người dùng</a>
+      </li>
+      <li>
+        <div class="inner-icon">
+          <i class="fa-brands fa-product-hunt"></i>
+        </div>
+        <a href="./manage-product.html">Quản lý sản phẩm</a>
+      </li>
+      <li>
+        <div class="inner-icon">
+          <i class="fa-solid fa-clipboard-list"></i>
+        </div>
+        <a href="./manage-order.html">Quản lý đơn hàng</a>
+      </li>
+      <li class="active">
+        <div class="inner-icon">
+          <i class="fa-solid fa-chart-line"></i>
+        </div>
+        <a href="./statistic.html">Thống kê kinh doanh</a>
+      </li>
+    </ul>
     <div class="content">
-        <h2>Thống kê kinh doanh</h2>
-        <div class="card mb-3">
-            <div class="card-header bg-success font-weight-bold">Bộ lọc</div>
-            <div class="card-body">
-                <form action="./statistic.html">
-                    <div class="row">
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label for="date-start">Thời gian bắt đầu</label>
-                                <input class="form-control" type="date" value="2023-01-20" name="date-start" id="date-start">
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label for="date-end">Thời gian kết thúc</label>
-                                <input class="form-control" type="date" value="2023-02-20" name="date-end" id="date-end">
-                            </div>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary">
-                        Thống kê
-                    </button>
-                </form>
+      <h2>Thống kê kinh doanh</h2>
+      <div class="card mb-3">
+        <div class="card-header bg-success font-weight-bold">Bộ lọc</div>
+        <div class="card-body">
+          <form action="./statistic.html">
+            <div class="row">
+              <div class="col-4">
+                <div class="form-group">
+                  <label for="date-start">Thời gian bắt đầu</label>
+                  <input
+                    class="form-control"
+                    type="date"
+                    value="2023-01-20"
+                    name="date-start"
+                    id="date-start"
+                  />
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group">
+                  <label for="date-end">Thời gian kết thúc</label>
+                  <input
+                    class="form-control"
+                    type="date"
+                    value="2023-02-20"
+                    name="date-end"
+                    id="date-end"
+                  />
+                </div>
+              </div>
             </div>
+            <button type="submit" class="btn btn-primary">Thống kê</button>
+          </form>
         </div>
-        <h4>Danh sách mặt hàng được bán ra</h4>
-        <table class="table table-hover table-bordered text-center">
-            <thead class="bg-success">
-                <th>STT</th>
-                <th>Tên sản phẩm</th>
-                <th>Hình ảnh</th>
-                <th>Giá</th>
-                <th>Số lượng</th>
-                <th>Tổng tiền</th>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>sản phẩm test</td>
-                    <td class="table_inner-img">
-                        <img src="../img/product01.png" alt="" srcset="">
-                    </td>
-                    <td>10.000 VND</td>
-                    <td>12</td>
-                    <td>120.000 VND</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>sản phẩm test</td>
-                    <td class="table_inner-img">
-                        <img src="../img/product02.png" alt="" srcset="">
-                    </td>
-                    <td>10.000 VND</td>
-                    <td>12</td>
-                    <td>120.000 VND</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>sản phẩm test</td>
-                    <td class="table_inner-img">
-                        <img src="../img/product03.png" alt="" srcset="">
-                    </td>
-                    <td>10.000 VND</td>
-                    <td>12</td>
-                    <td>120.000 VND</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>sản phẩm test</td>
-                    <td class="table_inner-img">
-                        <img src="../img/product04.png" alt="" srcset="">
-                    </td>
-                    <td>10.000 VND</td>
-                    <td>12</td>
-                    <td>120.000 VND</td>
-                </tr>
-            </tbody>
-        </table>
-        <div class="inner-pagination">
-            <ul class="pagination">
-                <li class="page-item ">
-                    <a href="./statistic.html" class="page-link"><<</a>
-                </li>
-                <li class="page-item active">
-                    <a href="./statistic.html" class="page-link">1</a>
-                </li>
-                <li class="page-item">
-                    <a href="./statistic.html" class="page-link">2</a>
-                </li>
-                <li class="page-item">
-                    <a href="./statistic.html" class="page-link">3</a>
-                </li>
-                <li class="page-item">
-                    <a href="./statistic.html" class="page-link">>></a>
-                </li>
-            </ul>
-        </div>
-        <p>Tổng tiền thu được :
-            <strong>120.000.000 VND</strong>
-        </p>
-        <ul >Top 5 mặt hàng bán chạy :
-            <li>Sản phẩm A</li>
-            <li>Sản phẩm A</li>
-            <li>Sản phẩm A</li>
-            <li>Sản phẩm A</li>
-            <li>Sản phẩm A</li>
+      </div>
+      <h4>Danh sách mặt hàng được bán ra</h4>
+      <table class="table table-hover table-bordered text-center">
+        <thead class="bg-success">
+          <th>STT</th>
+          <th>Tên sản phẩm</th>
+          <th>Hình ảnh</th>
+          <th>Giá</th>
+          <th>Số lượng</th>
+          <th>Tổng tiền</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>sản phẩm test</td>
+            <td class="table_inner-img">
+              <img src="../img/product01.png" alt="" srcset="" />
+            </td>
+            <td>10.000 VND</td>
+            <td>12</td>
+            <td>120.000 VND</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>sản phẩm test</td>
+            <td class="table_inner-img">
+              <img src="../img/product02.png" alt="" srcset="" />
+            </td>
+            <td>10.000 VND</td>
+            <td>12</td>
+            <td>120.000 VND</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>sản phẩm test</td>
+            <td class="table_inner-img">
+              <img src="../img/product03.png" alt="" srcset="" />
+            </td>
+            <td>10.000 VND</td>
+            <td>12</td>
+            <td>120.000 VND</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>sản phẩm test</td>
+            <td class="table_inner-img">
+              <img src="../img/product04.png" alt="" srcset="" />
+            </td>
+            <td>10.000 VND</td>
+            <td>12</td>
+            <td>120.000 VND</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="inner-pagination">
+        <ul class="pagination">
+          <li class="page-item">
+            <a href="./statistic.html" class="page-link"><<</a>
+          </li>
+          <li class="page-item active">
+            <a href="./statistic.html" class="page-link">1</a>
+          </li>
+          <li class="page-item">
+            <a href="./statistic.html" class="page-link">2</a>
+          </li>
+          <li class="page-item">
+            <a href="./statistic.html" class="page-link">3</a>
+          </li>
+          <li class="page-item">
+            <a href="./statistic.html" class="page-link">>></a>
+          </li>
         </ul>
-        
+      </div>
+      <p>
+        Tổng tiền thu được :
+        <strong>120.000.000 VND</strong>
+      </p>
+      <ul>
+        Top 5 mặt hàng bán chạy :
+        <li>Sản phẩm A</li>
+        <li>Sản phẩm A</li>
+        <li>Sản phẩm A</li>
+        <li>Sản phẩm A</li>
+        <li>Sản phẩm A</li>
+      </ul>
     </div>
-</body>
+  </body>
 </html>
