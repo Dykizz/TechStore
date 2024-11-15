@@ -135,28 +135,72 @@
         </div>
       </div>
       <h4>Danh sách đơn hàng</h4>
-      <div class="card mb-3">
-        <div class="card-header bg-success">Bộ sắp xếp</div>
-        <div class="card-body">
-          <div class="form-group">
-            <label for="sort">Sắp xếp theo</label>
-            <select class="form-control" name="" id="">
-              <option value="" selected disabled>
-                --Chọn tiêu chí sắp xếp
-              </option>
-              <option value="default">Mặc định</option>
-              <option value="money-increase">Giá tiền tăng dần</option>
-              <option value="money-decrease">Giá tiền giảm dần</option>
-              <option value="province">Tỉnh/Thành phố</option>
-              <option value="districts">Quận/Huyện</option>
-              <option value="ward">Phường/Xã</option>
-            </select>
+      <div class="row">
+        <div class="col-6">
+          <div class="card">
+            <div class="card-header mb-0 bg-success">Bộ sắp xếp</div>
+            <div class="card-body mb-0">
+              <div class="form-group">
+                <label for="sort">Sắp xếp theo</label>
+                <select class="form-control" name="" id="">
+                  <option value="" selected disabled>
+                    --Chọn tiêu chí sắp xếp
+                  </option>
+                  <option value="default">Mặc định</option>
+                  <option value="money-increase">Giá tiền tăng dần</option>
+                  <option value="money-decrease">Giá tiền giảm dần</option>
+                  <option value="province">Tỉnh/Thành phố</option>
+                  <option value="districts">Quận/Huyện</option>
+                  <option value="ward">Phường/Xã</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="card">
+            <div class="card-header mb-0 bg-success">
+              Cập nhật trạng thái đơn hàng
+            </div>
+            <div class="card-body mb-0">
+              <div class="form-group">
+                <label for="status-order">Tình trạng đơn hàng</label>
+                <select
+                  class="form-control mb-3"
+                  name="status-order"
+                  id="status-order"
+                >
+                  <option value="" selected disabled>
+                    --Chọn tình trạng--
+                  </option>
+                  <option value="default">Chưa xử lý</option>
+                  <option value="money-increase">Đã xác nhận</option>
+                  <option value="money-decrease">Giao thành công</option>
+                  <option value="province">Đã huỷ</option>
+                </select>
+                <div>
+                  <span>Các mã đơn hàng :</span>
+                  <div class="d-flex">
+                    <span class="badge badge-secondary mr-2">8J5X2</span>
+                    <span class="badge badge-secondary">B2A3P</span>
+                  </div>
+                </div>
+                <div class="d-flex mb-0 flex-column">
+                  <button class="btn btn-primary">Cập nhật</button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
+
       <table class="table table-hover table-bordered text-center">
         <thead class="bg-success">
+          <th>
+            <input type="checkbox" name="" id="" />
+          </th>
           <th>STT</th>
+          <th>Mã đơn hàng</th>
           <th>Tên người nhận</th>
           <th>Thời gian</th>
           <th>Giá trị đơn hàng</th>
@@ -165,7 +209,11 @@
         </thead>
         <tbody>
           <tr>
+            <td>
+              <input type="checkbox" name="" id="" />
+            </td>
             <td>1</td>
+            <td>8J5X2</td>
             <td>Nguyễn Thế Anh</td>
             <td>20/01/2023</td>
             <td>2.000.000 VND</td>
@@ -173,16 +221,17 @@
               <div class="badge badge-success">Giao thành công</div>
             </td>
             <td>
-              <button class="btn btn-sm btn-secondary disabled">
-                Hủy xác nhận
-              </button>
               <button class="btn btn-sm btn-primary">
                 <a href="./order-detail.html">Chi tiết</a>
               </button>
             </td>
           </tr>
           <tr>
+            <td>
+              <input type="checkbox" name="" id="" />
+            </td>
             <td>2</td>
+            <td>B2A3P</td>
             <td>Nguyễn Văn B</td>
             <td>23/01/2023</td>
             <td>1.000.000 VND</td>
@@ -190,16 +239,17 @@
               <div class="badge badge-danger">Đã hủy</div>
             </td>
             <td>
-              <button class="btn btn-sm btn-secondary disabled">
-                Hủy xác nhận
-              </button>
               <button class="btn btn-sm btn-primary">
                 <a href="./order-detail.html">Chi tiết</a>
               </button>
             </td>
           </tr>
           <tr>
+            <td>
+              <input type="checkbox" name="" id="" />
+            </td>
             <td>3</td>
+            <td>X7TQC</td>
             <td>Nguyễn Văn C</td>
             <td>20/01/2023</td>
             <td>2.500.000 VND</td>
@@ -207,14 +257,17 @@
               <div class="badge badge-secondary">Chưa xử lý</div>
             </td>
             <td>
-              <button class="btn btn-sm btn-warning">Xác nhận</button>
               <button class="btn btn-sm btn-primary">
                 <a href="./order-detail.html">Chi tiết</a>
               </button>
             </td>
           </tr>
           <tr>
+            <td>
+              <input type="checkbox" name="" id="" />
+            </td>
             <td>4</td>
+            <td>MKY84</td>
             <td>Nguyễn Văn D</td>
             <td>20/01/2023</td>
             <td>2.000.000 VND</td>
@@ -222,14 +275,17 @@
               <div class="badge badge-info">Đã xác nhận</div>
             </td>
             <td>
-              <button class="btn btn-sm btn-warning">Hủy xác nhận</button>
               <button class="btn btn-sm btn-primary">
                 <a href="./order-detail.html">Chi tiết</a>
               </button>
             </td>
           </tr>
           <tr>
+            <td>
+              <input type="checkbox" name="" id="" />
+            </td>
             <td>5</td>
+            <td>W6P3L</td>
             <td>Nguyễn Văn A</td>
             <td>20/01/2023</td>
             <td>400.000 VND</td>
@@ -237,16 +293,17 @@
               <div class="badge badge-success">Giao thành công</div>
             </td>
             <td>
-              <button class="btn btn-sm btn-secondary disabled">
-                Hủy xác nhận
-              </button>
               <button class="btn btn-sm btn-primary">
                 <a href="./order-detail.html">Chi tiết</a>
               </button>
             </td>
           </tr>
           <tr>
+            <td>
+              <input type="checkbox" name="" id="" />
+            </td>
             <td>6</td>
+            <td>Z1R9B</td>
             <td>Nguyễn Văn B</td>
             <td>23/01/2023</td>
             <td>3.000.000 VND</td>
@@ -254,16 +311,17 @@
               <div class="badge badge-danger">Đã hủy</div>
             </td>
             <td>
-              <button class="btn btn-sm btn-secondary disabled">
-                Hủy xác nhận
-              </button>
               <button class="btn btn-sm btn-primary">
                 <a href="./order-detail.html">Chi tiết</a>
               </button>
             </td>
           </tr>
           <tr>
+            <td>
+              <input type="checkbox" name="" id="" />
+            </td>
             <td>7</td>
+            <td>HYX2M</td>
             <td>Nguyễn Văn C</td>
             <td>20/01/2023</td>
             <td>2.500.000 VND</td>
@@ -271,14 +329,17 @@
               <div class="badge badge-secondary">Chưa xử lý</div>
             </td>
             <td>
-              <button class="btn btn-sm btn-warning">Xác nhận</button>
               <button class="btn btn-sm btn-primary">
                 <a href="./order-detail.html">Chi tiết</a>
               </button>
             </td>
           </tr>
           <tr>
+            <td>
+              <input type="checkbox" name="" id="" />
+            </td>
             <td>8</td>
+            <td>CD4J5</td>
             <td>Nguyễn Văn D</td>
             <td>20/01/2023</td>
             <td>2.000.000 VND</td>
@@ -286,14 +347,17 @@
               <div class="badge badge-info">Đã xác nhận</div>
             </td>
             <td>
-              <button class="btn btn-sm btn-warning">Hủy xác nhận</button>
               <button class="btn btn-sm btn-primary">
                 <a href="./order-detail.html">Chi tiết</a>
               </button>
             </td>
           </tr>
           <tr>
+            <td>
+              <input type="checkbox" name="" id="" />
+            </td>
             <td>9</td>
+            <td>TQ9W8</td>
             <td>Nguyễn Văn E</td>
             <td>20/01/2023</td>
             <td>2.000.000 VND</td>
@@ -301,14 +365,17 @@
               <div class="badge badge-info">Đã xác nhận</div>
             </td>
             <td>
-              <button class="btn btn-sm btn-warning">Hủy xác nhận</button>
               <button class="btn btn-sm btn-primary">
                 <a href="./order-detail.html">Chi tiết</a>
               </button>
             </td>
           </tr>
           <tr>
+            <td>
+              <input type="checkbox" name="" id="" />
+            </td>
             <td>10</td>
+            <td>F7LK2</td>
             <td>Nguyễn Văn F</td>
             <td>20/01/2023</td>
             <td>2.000.000 VND</td>
@@ -316,7 +383,6 @@
               <div class="badge badge-info">Đã xác nhận</div>
             </td>
             <td>
-              <button class="btn btn-sm btn-warning">Hủy xác nhận</button>
               <button class="btn btn-sm btn-primary">
                 <a href="./order-detail.html">Chi tiết</a>
               </button>
