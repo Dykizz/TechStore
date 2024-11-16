@@ -61,12 +61,6 @@
       </li>
       <li>
         <div class="inner-icon">
-          <i class="fa-solid fa-list"></i>
-        </div>
-        <a href="./manage-category.html">Quản lý danh mục</a>
-      </li>
-      <li>
-        <div class="inner-icon">
           <i class="fa-brands fa-product-hunt"></i>
         </div>
         <a href="./manage-product.html">Quản lý sản phẩm</a>
@@ -86,100 +80,101 @@
     </ul>
     <div class="content">
       <h2 class="mb-3">Chỉnh sửa thông tin người dùng</h2>
-
-      <!-- <form action="./client-edit.html" id="form-edit" method="get"> -->
-      <div class="form-group">
-        <label for="name">Họ và tên</label>
-        <input
-          class="form-control"
-          type="text"
-          name="name"
-          id="name"
-          value="Nguyễn Thế Anh"
-          required
-        />
-      </div>
-
-      <div class="row">
-        <div class="col-6">
-          <div>Trạng thái</div>
-          <label>
-            <input type="radio" name="status" value="active" checked />
-            Hoạt động
-          </label>
-          <label class="ml-3">
-            <input type="radio" name="status" value="inactive" />
-            Dừng hoạt động
-          </label>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-4">
-          <label for="email">Email </label>
-          <input type="email" name="email" id="email" class="form-control" />
-        </div>
-        <div class="col-4">
-          <label for="birthday">Ngày sinh </label>
+      <div id="form-edit">
+        <!-- <form action="./client-edit.html" id="form-edit" method="get"> -->
+        <div class="form-group">
+          <label for="name">Họ và tên</label>
           <input
-            type="date"
-            name="birthday"
-            id="birthday"
             class="form-control"
+            type="text"
+            name="name"
+            id="name"
+            value="Nguyễn Thế Anh"
+            required
           />
         </div>
-        <div class="col-4">
-          <label for="phone"> Số điện thoại </label>
-          <input type="text" id="phone" name="phone" class="form-control" />
-        </div>
-      </div>
 
-      <div class="row">
-        <div class="col-6">
-          <label for="img-client">Ảnh đại diện</label>
-          <div class="custom-file">
+        <div class="row">
+          <div class="col-6">
+            <div>Trạng thái</div>
+            <label>
+              <input type="radio" name="status" value="active" checked />
+              Hoạt động
+            </label>
+            <label class="ml-3">
+              <input type="radio" name="status" value="inactive" />
+              Dừng hoạt động
+            </label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-4">
+            <label for="email">Email </label>
+            <input type="email" name="email" id="email" class="form-control" />
+          </div>
+          <div class="col-4">
+            <label for="birthday">Ngày sinh </label>
             <input
-              type="file"
-              name="img-client"
-              class="custom-file-input"
-              id="img-client"
-              aria-describedby="inputGroupFileAddon01"
+              type="date"
+              name="birthday"
+              id="birthday"
+              class="form-control"
             />
-            <label class="custom-file-label" for="img-client"
-              >Chọn hình ảnh từ máy</label
-            >
           </div>
-          <div class="inner-img">
-            <img src="../img/avarta-man.png" alt="Ảnh đại diện" srcset="" />
-            <span class="cancel">x</span>
+          <div class="col-4">
+            <label for="phone"> Số điện thoại </label>
+            <input type="text" id="phone" name="phone" class="form-control" />
           </div>
         </div>
-      </div>
 
-      <div class="row">
-        <div class="col-12">
-          <label for="address-default">Địa chỉ giao hàng mặc định</label>
-          <textarea
-            name="address-default"
-            class="description"
-            id="address-default"
-            rows="3"
-          >
+        <div class="row">
+          <div class="col-6">
+            <label for="img-client">Ảnh đại diện</label>
+            <div class="custom-file">
+              <input
+                type="file"
+                name="img-client"
+                class="custom-file-input"
+                id="img-client"
+                aria-describedby="inputGroupFileAddon01"
+              />
+              <label class="custom-file-label" for="img-client"
+                >Chọn hình ảnh từ máy</label
+              >
+            </div>
+            <div class="inner-img">
+              <img src="../img/avarta-man.png" alt="Ảnh đại diện" srcset="" />
+              <span class="cancel">x</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <label for="address-default">Địa chỉ giao hàng mặc định</label>
+            <textarea
+              name="address-default"
+              class="description"
+              id="address-default"
+              rows="3"
+            >
 123 Đường Nguyễn Thị Minh Khai, Phường 6, Quận 3, TP. Hồ Chí Minh
                 </textarea
-          >
+            >
+          </div>
         </div>
-      </div>
 
-      <button
-        class="btn btn-warning btn-announce"
-        type-announce="success"
-        message="Sửa thông tin thành công!"
-        type="submit"
-      >
-        Xác nhận thay đổi
-      </button>
-      <!-- </form> -->
+        <button
+          class="btn btn-warning btn-announce"
+          type-announce="success"
+          message="Sửa thông tin thành công!"
+          type="submit"
+        >
+          Xác nhận thay đổi
+        </button>
+        <!-- </form> -->
+      </div>
     </div>
   </body>
   <script src="../js/helper.js"></script>
