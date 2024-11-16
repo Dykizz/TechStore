@@ -380,70 +380,102 @@ textarea.description:focus {
 
 /* Login Admin */
 .body {
-  width: 100vw;
-  height: 100vh;
-  background: url(https://img.freepik.com/free-vector/gradient-network-connection-background_23-2148865393.jpg?t=st=1729186066~exp=1729189666~hmac=b2c9cd75c4d4690181916989dfb218b72efedc1810314ea60b2a2e306f033098&w=996);
-  background-size: cover;
-  color: #fff;
-  display: grid;
+  /* font-family: Arial, sans-serif; */
+  margin: 0;
+  padding: 0;
+  display: flex;
   justify-content: center;
   align-items: center;
+  height: calc(100vh - 115px);
+  background-color: #f8f8f8;
 }
 
-::-webkit-input-placeholder {
-  color: #eee;
-}
-
-.wrapper {
-  position: relative;
-  width: 500px;
-  height: 60vh;
-  backdrop-filter: blur(20px);
-  display: grid;
-  border: 3px solid #00ffff;
+.login-container {
+  width: 100%;
+  max-width: 450px;
+  background: #fff;
+  padding: 30px;
   border-radius: 10px;
-  box-shadow: 0 0 50px 0 #00a6bc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.wrapper form {
+.login-title {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.login-form {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 
-.wrapper form .title {
-  font-size: 35px;
-  margin-top: 0;
+.login-form label {
+  font-size: 18px;
+  color: #666;
+  margin: 0;
 }
 
 .input-wrapper {
-  width: 70%;
-  padding-bottom: 10px;
-  border-bottom: 2px solid #eee;
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid red;
+  margin-bottom: 30px;
+}
+
+.input-wrapper i {
+  position: absolute;
+  left: 10px;
+  color: #aaa;
+  font-size: 18px;
 }
 
 .input-wrapper input {
+  width: 100%;
+  padding: 10px 10px 10px 35px;
   border: none;
+  border-radius: 5px;
+  font-size: 18px;
   outline: none;
-  background: none;
-  width: calc(100% - 20px);
-  margin-top: 40px;
-  padding-right: 10px;
-  font-size: 20px;
-  color: #0ef;
+  transition: border 0.3s;
 }
 
-button.submit {
+.input-wrapper:focus-within {
+  border-color: #007bff;
+}
+
+.login-button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 15px;
   border: none;
-  outline: none;
-  width: 288px;
-  margin-top: 25px;
-  padding: 10px 0;
-  font-size: 20px;
-  border-radius: 40px;
-  letter-spacing: 1px;
+  border-radius: 25px;
+  /* background: linear-gradient(45deg, #6a11cb, #2575fc);
+  background: linear-gradient(45deg, #ff0000, #8b0000, #000000); */
+  background: linear-gradient(45deg, #ff0000, #808080);
+
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
   cursor: pointer;
-  background: linear-gradient(80deg, #0ef, orange);
+  transition: background 0.3s;
+}
+
+.login-button:hover {
+  background: linear-gradient(45deg, #2575fc, #6a11cb);
 }
 /* End Login Admin */
+.btn-logout a {
+  padding: 15px;
+}
+.btn-logout:hover i,
+.btn-logout:hover span {
+  color: red;
+}
+
+.btn-logout i,
+.btn-logout span {
+  color: white;
+}
