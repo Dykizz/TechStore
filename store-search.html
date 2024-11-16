@@ -63,11 +63,11 @@
 					<!-- SEARCH BAR -->
 					<div class="col-md-6">
 						<div class="header-search">
-							<form action="./store-search.html">
-							  <input name="keyword" class="input" placeholder="Nhập sản phẩm muốn tìm kiếm ...">
-							  <button class="search-btn">Tìm kiếm</button>
-							</form>
-						  </div>
+                            <form action="./store-search.html">
+                              <input name="keyword" class="input" placeholder="Nhập sản phẩm muốn tìm kiếm ...">
+                              <button class="search-btn">Tìm kiếm</button>
+                            </form>
+                          </div>
 					</div>
 					<!-- /SEARCH BAR -->
 					<!-- ACCOUNT -->
@@ -194,13 +194,14 @@
 		<!-- container -->
 		<div class="container">
 			<!-- row -->
+            <div class="alert alert-success">Kết quả : Tìm thấy <strong>20</strong> sản phẩm phù hợp với yêu cầu tìm kiếm</div>
 			<div class="row">
 				<!-- ASIDE -->
 				<div id="aside" class="col-md-3">
 					 <div class="aside border-red">
 						<h3 class="aside-title text-center">Tìm kiếm nâng cao</h3>
 						<label for="product-name">Tên sản phẩm</label>
-						<input class="form-control" style="margin-bottom: 10px;" name="product-name" id="product-name" type="text" placeholder="Nhập tên sản phẩm muốn tìm">
+						<input class="form-control" value="Aa" style="margin-bottom: 10px;" name="product-name" id="product-name" type="text" placeholder="Nhập tên sản phẩm muốn tìm">
 						<label>Loại sản phẩm</label>
 						<select class="form-control" style="margin-bottom: 10px;">
 							<option value="1">Tất cả</option>
@@ -210,8 +211,8 @@
 							<option value="5">Phụ kiện</option>
 						  </select>
 						<label>Giá (VND)</label>
-						<input class="form-control" style="margin-bottom: 10px;" type="number" min="0" placeholder="Giá nhỏ nhất">
-						<input class="form-control" style="margin-bottom: 10px;" type="number" min="0" placeholder="Giá lớn nhất">
+						<input class="form-control" value="0" style="margin-bottom: 10px;" type="number" min="0" placeholder="Giá nhỏ nhất">
+						<input class="form-control" value="100000000" style="margin-bottom: 10px;" type="number" min="0" placeholder="Giá lớn nhất">
 						<a class="btn btn-filter" href="./store-search.html">Tìm kiếm</a>
 					 </div>
 					<!-- <div class="aside">

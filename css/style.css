@@ -2539,3 +2539,8 @@ textarea.input {
   }
 }
 /* End Announce */
+.border-red {
+  border: 2px solid red;
+  border-radius: 8px;
+  padding: 10px;
+}
