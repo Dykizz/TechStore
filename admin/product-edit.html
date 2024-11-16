@@ -88,8 +88,7 @@
             type="text"
             name="name"
             id="name"
-            value="Sản phẩm test"
-            required
+            value="Iphone 16 Pro Max 512GB"
           />
         </div>
 
@@ -108,15 +107,10 @@
 
           <div class="col-6">
             <label for="category">Danh mục sản phẩm </label>
-            <select
-              class="custom-select"
-              name="category"
-              id="category"
-              required
-            >
+            <select class="custom-select" name="category" id="category">
               <option disabled>--- Chọn danh mục ---</option>
-              <option selected value="laptop">Máy tính</option>
-              <option value="phone">Điện thoại</option>
+              <option value="laptop">Máy tính</option>
+              <option selected value="phone">Điện thoại</option>
               <option value="camera">Máy ảnh</option>
               <option value="accessory">Phụ kiện</option>
             </select>
@@ -139,7 +133,7 @@
               >
             </div>
             <div class="inner-img">
-              <img src="../img/product01.png" alt="sản phẩm" srcset="" />
+              <img src="../img/sp1_giohang.png" alt="sản phẩm" srcset="" />
               <span class="cancel">x</span>
             </div>
           </div>
@@ -155,8 +149,7 @@
                 name="price"
                 id="price"
                 min="0"
-                value="1"
-                required
+                value="43250000"
               />
               <div class="input-group-append">
                 <span class="input-group-text">VND</span>
@@ -172,8 +165,7 @@
                 name="stock"
                 id="stock"
                 min="0"
-                value="3"
-                required
+                value="78"
               />
             </div>
           </div>
@@ -188,13 +180,68 @@
                   step="0.01"
                   id="discount"
                   min="0"
-                  value="10"
-                  required
+                  value="5"
                 />
                 <div class="input-group-append">
                   <span class="input-group-text">%</span>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+        <h4>Thông số kĩ thuật</h4>
+        <div id="specifications">
+          <div class="card mb-3">
+            <div class="card-header">Thông số kĩ thuật của điện thoại</div>
+            <div class="card-body">
+              <label for="color">Màu sắc</label>
+              <input
+                class="form-control mb-2"
+                name="color"
+                id="color"
+                type="text"
+                value="Space Black"
+              />
+              <label for="system">Hệ điều hành</label>
+              <input
+                class="form-control mb-2"
+                name="system"
+                id="system"
+                type="text"
+                value="iOS 17"
+              />
+              <label for="cpu">Chip xử lý (CPU)</label>
+              <input
+                class="form-control mb-2"
+                name="cpu"
+                id="cpu"
+                type="text"
+                value="Apple A17 Pro"
+              />
+              <label for="speed-cpu">Tốc độ CPU</label>
+              <input
+                class="form-control mb-2"
+                name="speed-cpu"
+                id="speed-cpu"
+                type="text"
+                value="3.46 GHz"
+              />
+              <label for="gpu">Chip đồ họa (GPU)</label>
+              <input
+                class="form-control mb-2"
+                name="gpu"
+                id="gpu"
+                type="text"
+                value="Apple GPU (6-core)"
+              />
+              <label for="ram">RAM</label>
+              <input
+                class="form-control mb-2"
+                name="ram"
+                id="ram"
+                type="text"
+                value="8 GB"
+              />
             </div>
           </div>
         </div>
@@ -208,8 +255,9 @@
               id="description"
               rows="10"
             >
-Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aperiam maiores reprehenderit officia, corporis excepturi dolor pariatur esse non quo eveniet velit minima quas distinctio reiciendis rem nihil. Obcaecati, voluptatem consequatur!
-                </textarea
+iPhone 16 Pro Max 512GB mang đến hiệu suất vượt trội với chip Apple A17 Pro, màn hình sắc nét và sống động với công nghệ Super Retina XDR, hệ thống camera chuyên nghiệp cho những bức ảnh chất lượng cao, và dung lượng bộ nhớ trong lên đến 512GB. Đây là lựa chọn lý tưởng cho những ai yêu thích công nghệ tiên tiến, hiệu năng mạnh mẽ và thiết kế sang trọng.
+Máy còn có khả năng hoạt động ổn định trong nhiều năm, đảm bảo mang lại trải nghiệm tuyệt vời cho người dùng.
+</textarea
             >
           </div>
         </div>
@@ -219,4 +267,5 @@ Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aperiam maiores repreh
     </div>
   </body>
   <script src="../js/helper.js"></script>
+  <script src="../js/handleCategories.js"></script>
 </html>

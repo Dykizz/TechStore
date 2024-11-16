@@ -87,7 +87,7 @@
       </div>
       <div class="card">
         <div class="card-header bg-info text-white">
-          <h4 class="d-inline-block">Sản phẩm test</h4>
+          <h4 class="d-inline-block">Iphone 16 Pro Max 512GB</h4>
           <span class="badge badge-success ml-2">Hoạt động</span>
         </div>
         <div class="card-body">
@@ -95,7 +95,7 @@
             <div class="col-6">
               <div>Hình ảnh sản phẩm</div>
               <div class="inner-img">
-                <img src="../img/product01.png" alt="sản phẩm" srcset="" />
+                <img src="../img/sp1_giohang.png" alt="sản phẩm" srcset="" />
               </div>
             </div>
             <div class="col-6">
@@ -117,7 +117,7 @@
                 <div>
                   <div class="d-inline-block">Thuộc danh mục :</div>
                   <span>
-                    <strong>Máy tính</strong>
+                    <strong>Điện thoại</strong>
                   </span>
                 </div>
               </div>
@@ -125,38 +125,100 @@
           </div>
           <div class="row">
             <div class="col-4">
-              <div class="form-group">
-                <label for="price">Giá (VND)</label>
-                <input
-                  class="form-control"
-                  type="number"
-                  id="price"
-                  value="1"
-                  readonly
-                />
-              </div>
+              <label for="price">Giá (VND)</label>
+
+              <input
+                class="form-control"
+                type="number"
+                name="price"
+                id="price"
+                min="0"
+                value="43250000"
+                disabled
+              />
             </div>
             <div class="col-4">
               <div class="form-group">
-                <label for="stock">Số lượng </label>
+                <label for="stock">Số lượng</label>
                 <input
                   class="form-control"
                   type="number"
+                  name="stock"
                   id="stock"
-                  value="3"
-                  readonly
+                  min="0"
+                  value="78"
+                  disabled
                 />
               </div>
             </div>
             <div class="col-4">
               <div class="form-group">
-                <label for="discount">Giảm giá (%)</label>
+                <label for="discount"> Giảm giá(%)</label>
                 <input
                   class="form-control"
                   type="number"
+                  name="discount"
+                  step="0.01"
                   id="discount"
-                  value="10"
-                  readonly
+                  min="0"
+                  value="5"
+                  disabled
+                />
+              </div>
+            </div>
+          </div>
+          <h4>Thông số kĩ thuật</h4>
+          <div id="specifications">
+            <div class="card mb-3">
+              <div class="card-header">Thông số kĩ thuật của điện thoại</div>
+              <div class="card-body">
+                <label for="color">Màu sắc</label>
+                <input
+                  class="form-control mb-2"
+                  name="color"
+                  id="color"
+                  type="text"
+                  value="Space Black"
+                />
+                <label for="system">Hệ điều hành</label>
+                <input
+                  class="form-control mb-2"
+                  name="system"
+                  id="system"
+                  type="text"
+                  value="iOS 17"
+                />
+                <label for="cpu">Chip xử lý (CPU)</label>
+                <input
+                  class="form-control mb-2"
+                  name="cpu"
+                  id="cpu"
+                  type="text"
+                  value="Apple A17 Pro"
+                />
+                <label for="speed-cpu">Tốc độ CPU</label>
+                <input
+                  class="form-control mb-2"
+                  name="speed-cpu"
+                  id="speed-cpu"
+                  type="text"
+                  value="3.46 GHz"
+                />
+                <label for="gpu">Chip đồ họa (GPU)</label>
+                <input
+                  class="form-control mb-2"
+                  name="gpu"
+                  id="gpu"
+                  type="text"
+                  value="Apple GPU (6-core)"
+                />
+                <label for="ram">RAM</label>
+                <input
+                  class="form-control mb-2"
+                  name="ram"
+                  id="ram"
+                  type="text"
+                  value="8 GB"
                 />
               </div>
             </div>
@@ -172,9 +234,9 @@
                 class=""
                 readonly
               >
-Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aperiam maiores reprehenderit officia, corporis excepturi dolor pariatur esse non quo eveniet velit minima quas distinctio reiciendis rem nihil. Obcaecati, voluptatem consequatur!
-                        </textarea
-              >
+iPhone 16 Pro Max 512GB mang đến hiệu suất vượt trội với chip Apple A17 Pro, màn hình sắc nét và sống động với công nghệ Super Retina XDR, hệ thống camera chuyên nghiệp cho những bức ảnh chất lượng cao, và dung lượng bộ nhớ trong lên đến 512GB. Đây là lựa chọn lý tưởng cho những ai yêu thích công nghệ tiên tiến, hiệu năng mạnh mẽ và thiết kế sang trọng.
+Máy còn có khả năng hoạt động ổn định trong nhiều năm, đảm bảo mang lại trải nghiệm tuyệt vời cho người dùng.
+              </textarea>
             </div>
           </div>
           <a class="btn btn-warning" href="./product-edit.html"
