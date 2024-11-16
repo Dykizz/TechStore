@@ -113,6 +113,24 @@
         </div>
       </div>
       <h4>Danh sách mặt hàng được bán ra</h4>
+      <div class="card mb-3">
+        <div class="card-header mb-0 bg-success">Bộ sắp xếp</div>
+        <div class="card-body mb-0">
+          <div class="form-group">
+            <label for="sort">Sắp xếp theo</label>
+            <select class="form-control" name="" id="">
+              <option value="" selected disabled>
+                --Chọn tiêu chí sắp xếp
+              </option>
+              <option value="default">Mặc định</option>
+              <option value="money-increase">Số lượng mua tăng dần</option>
+              <option value="money-decrease">Số lượng mua giảm dần</option>
+              <option value="province">Doanh thu giảm dần</option>
+              <option value="districts">Doanh thu tăng dần</option>
+            </select>
+          </div>
+        </div>
+      </div>
       <table class="table table-hover table-bordered text-center">
         <thead class="bg-success">
           <th>STT</th>
@@ -120,48 +138,84 @@
           <th>Hình ảnh</th>
           <th>Giá</th>
           <th>Số lượng</th>
-          <th>Tổng tiền</th>
+          <th>Doanh thu</th>
+          <th>Các đơn liên quan</th>
         </thead>
         <tbody>
           <tr>
             <td>1</td>
-            <td>sản phẩm test</td>
+            <td>Iphone 16 Pro Max 512GB</td>
             <td class="table_inner-img">
-              <img src="../img/product01.png" alt="" srcset="" />
+              <img src="../img/iphone-15-pro-max_3.png" alt="" srcset="" />
             </td>
-            <td>10.000 VND</td>
-            <td>12</td>
-            <td>120.000 VND</td>
+            <td>40.990.000 VND</td>
+            <td>40</td>
+            <td>1.639.600.000 VND</td>
+            <td>
+              <a class="btn btn-primary btn-sm" href="./order-relate.html"
+                >Xem</a
+              >
+            </td>
           </tr>
           <tr>
             <td>2</td>
-            <td>sản phẩm test</td>
+            <td>Samsung Galaxy Z Flip5 512GB</td>
             <td class="table_inner-img">
-              <img src="../img/product02.png" alt="" srcset="" />
+              <img src="../img/sp1_sanpham.png" alt="" srcset="" />
             </td>
-            <td>10.000 VND</td>
-            <td>12</td>
-            <td>120.000 VND</td>
+            <td>2.390.000 VND</td>
+            <td>3</td>
+            <td>7.170.000 VND</td>
+            <td>
+              <a class="btn btn-primary btn-sm" href="./order-relate.html"
+                >Xem</a
+              >
+            </td>
           </tr>
           <tr>
             <td>3</td>
-            <td>sản phẩm test</td>
+            <td>Máy ảnh Sony ZV</td>
             <td class="table_inner-img">
-              <img src="../img/product03.png" alt="" srcset="" />
+              <img src="../img/sp6_sanpham.png" alt="" srcset="" />
             </td>
-            <td>10.000 VND</td>
-            <td>12</td>
-            <td>120.000 VND</td>
+            <td>17.490.000 VND</td>
+            <td>2</td>
+            <td>34.980.000 VND</td>
+            <td>
+              <a class="btn btn-primary btn-sm" href="./order-relate.html"
+                >Xem</a
+              >
+            </td>
           </tr>
           <tr>
             <td>4</td>
-            <td>sản phẩm test</td>
+            <td>Laptop ASUS Expertbook</td>
             <td class="table_inner-img">
-              <img src="../img/product04.png" alt="" srcset="" />
+              <img src="../img/sp5_sanpham.png" alt="" srcset="" />
             </td>
-            <td>10.000 VND</td>
-            <td>12</td>
-            <td>120.000 VND</td>
+            <td>12.990.000 VND</td>
+            <td>10</td>
+            <td>129.900.000 VND</td>
+            <td>
+              <a class="btn btn-primary btn-sm" href="./order-relate.html"
+                >Xem</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>Laptop Dell Inspiron 15</td>
+            <td class="table_inner-img">
+              <img src="../img/sp4_sanpham.png" alt="" srcset="" />
+            </td>
+            <td>22.490.000 VND</td>
+            <td>10</td>
+            <td>224.900.000 VND</td>
+            <td>
+              <a class="btn btn-primary btn-sm" href="./order-relate.html"
+                >Xem</a
+              >
+            </td>
           </tr>
         </tbody>
       </table>
@@ -186,16 +240,128 @@
       </div>
       <p>
         Tổng tiền thu được :
-        <strong>120.000.000 VND</strong>
+        <strong>2.520.480.000 VND</strong>
       </p>
-      <ul>
-        Top 5 mặt hàng bán chạy :
-        <li>Sản phẩm A</li>
-        <li>Sản phẩm A</li>
-        <li>Sản phẩm A</li>
-        <li>Sản phẩm A</li>
-        <li>Sản phẩm A</li>
-      </ul>
+      <h4>Danh sách khách hàng đã mua sản phẩm</h4>
+      <div class="card mb-3">
+        <div class="card-header mb-0 bg-success">Bộ sắp xếp</div>
+        <div class="card-body mb-0">
+          <div class="form-group">
+            <label for="sort">Sắp xếp theo</label>
+            <select class="form-control" name="" id="">
+              <option value="" selected disabled>
+                --Chọn tiêu chí sắp xếp
+              </option>
+              <option value="default">Mặc định</option>
+              <option value="order-increase">Số lượng đơn tăng dần</option>
+              <option value="order-decrease">Số lượng đơn giảm dần</option>
+              <option value="revenue-decrease">Doanh thu giảm dần</option>
+              <option value="revenue-increase">Doanh thu tăng dần</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <table class="table table-hover table-bordered text-center">
+        <thead class="bg-success">
+          <th>STT</th>
+          <th>Tên khách hàng</th>
+          <th>Hình ảnh</th>
+          <th>Số lượng đơn hàng</th>
+          <th>Doanh thu</th>
+          <th>Các đơn đã mua</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Nguyễn Thế Anh</td>
+            <td class="table_inner-img">
+              <img src="../img/avarta-man.png" alt="" srcset="" />
+            </td>
+            <td>10</td>
+            <td>193.500.000 VND</td>
+            <td>
+              <a class="btn btn-primary btn-sm" href="./orderClient-relate.html"
+                >Xem</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Nguyễn Ngọc Trân</td>
+            <td class="table_inner-img">
+              <img src="../img/avarta-woman.svg" alt="" srcset="" />
+            </td>
+            <td>5</td>
+            <td>45.580.000 VND</td>
+            <td>
+              <a class="btn btn-primary btn-sm" href="./orderClient-relate.html"
+                >Xem</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Đoàn Thế Hải</td>
+            <td class="table_inner-img">
+              <img src="../img/avarta-man.png" alt="" srcset="" />
+            </td>
+            <td>7</td>
+            <td>90.450.000 VND</td>
+            <td>
+              <a class="btn btn-primary btn-sm" href="./orderClient-relate.html"
+                >Xem</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Nguyễn Đức Thuận</td>
+            <td class="table_inner-img">
+              <img src="../img/avarta-man.png" alt="" srcset="" />
+            </td>
+            <td>15</td>
+            <td>101.500.000 VND</td>
+            <td>
+              <a class="btn btn-primary btn-sm" href="./orderClient-relate.html"
+                >Xem</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>Trần Thảo Uyên</td>
+            <td class="table_inner-img">
+              <img src="../img/avarta-woman.svg" alt="" srcset="" />
+            </td>
+            <td>3</td>
+            <td>20.450.000 VND</td>
+            <td>
+              <a class="btn btn-primary btn-sm" href="./orderClient-relate.html"
+                >Xem</a
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="inner-pagination">
+        <ul class="pagination">
+          <li class="page-item">
+            <a href="./statistic.html" class="page-link"><<</a>
+          </li>
+          <li class="page-item active">
+            <a href="./statistic.html" class="page-link">1</a>
+          </li>
+          <li class="page-item">
+            <a href="./statistic.html" class="page-link">2</a>
+          </li>
+          <li class="page-item">
+            <a href="./statistic.html" class="page-link">3</a>
+          </li>
+          <li class="page-item">
+            <a href="./statistic.html" class="page-link">>></a>
+          </li>
+        </ul>
+      </div>
     </div>
   </body>
 </html>
