@@ -14,6 +14,7 @@
       href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="css/font-awesome.min.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
@@ -101,7 +102,7 @@
         </div>
 
         <div class="row">
-          <div class="col-6">
+          <div class="col-6 col-lg-4">
             <div>Trạng thái</div>
             <label>
               <input type="radio" name="status" value="active" checked />
@@ -112,12 +113,29 @@
               Dừng hoạt động
             </label>
           </div>
+          <div class="col-6 col-lg-4">
+            <div>Giới tính</div>
+            <label>
+              <input type="radio" name="sex" value="man" checked />
+              Nam
+            </label>
+            <label class="ml-3">
+              <input type="radio" name="sex" value="woman" />
+              Nữ
+            </label>
+          </div>
         </div>
 
         <div class="row">
           <div class="col-4">
             <label for="email">Email </label>
-            <input type="email" name="email" id="email" class="form-control" />
+            <input
+              type="email"
+              name="email"
+              id="email"
+              value="theanhng95@gmail.com"
+              class="form-control"
+            />
           </div>
           <div class="col-4">
             <label for="birthday">Ngày sinh </label>
@@ -126,11 +144,18 @@
               name="birthday"
               id="birthday"
               class="form-control"
+              value="2005-03-15"
             />
           </div>
           <div class="col-4">
             <label for="phone"> Số điện thoại </label>
-            <input type="text" id="phone" name="phone" class="form-control" />
+            <input
+              type="text"
+              id="phone"
+              name="phone"
+              value="0934 191 384"
+              class="form-control"
+            />
           </div>
         </div>
 
