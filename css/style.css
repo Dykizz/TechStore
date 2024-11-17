@@ -2657,3 +2657,134 @@ textarea.input {
 .login-button:hover {
   background: linear-gradient(45deg, #2575fc, #6a11cb);
 }
+/* --------------------------------------------------------------------------- */
+/* Đinh dạng cho "account-information" */
+/* Styles cho phần upload avatar */
+.avatar-upload {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.avatar-preview {
+  width: 150px;
+  height: 150px;
+  margin: 0 auto 15px;
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #f1f1f1;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.avatar-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-edit {
+  margin-top: 10px;
+}
+
+.upload-button {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #f1f1f1;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.upload-button:hover {
+  background-color: #e4e4e4;
+}
+
+.upload-button i {
+  margin-right: 8px;
+}
+
+/* Điều chỉnh margin cho form */
+.form-group:first-of-type {
+  margin-top: 20px;
+}
+
+.account-info-form {
+  max-width: 600px;
+  margin: auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.account-info-form h2 {
+  margin-bottom: 5px;
+  font-size: 24px;
+}
+
+.account-info-form p {
+  margin-bottom: 20px;
+  color: #666;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+/* Căn chỉnh cho phần Giới tính với radio buttons */
+.form-group#sex-group {
+  display: flex;
+  align-items: center;   /* Canh giữa phần tử theo chiều dọc */
+  gap: 20px;             /* Khoảng cách giữa các lựa chọn */
+}
+
+/* Định dạng cho label trong phần Giới tính */
+.form-group#sex-group label {
+  margin: 0;  /* Xóa margin mặc định của label */
+  font-weight: bold;
+}
+
+/* Định dạng cho nhóm radio buttons */
+.radio-group label {
+  display: inline-flex;
+  align-items: center;  /* Canh giữa nút radio và text */
+  gap: 5px;             /* Khoảng cách giữa nút radio và text */
+  cursor: pointer;     /* Chỉ thị người dùng có thể click vào */
+}
+
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.form-group textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+  resize: vertical; /* Cho phép người dùng thay đổi kích thước theo chiều dọc */
+}
+
+/* Định dạng cho button với cả hai lớp custom-btn và primary-btn */
+.custom-btn.primary-btn {
+  position: relative;  /* Đảm bảo nút có thể định vị */
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  display: block; /* Đảm bảo button là block-level element */
+  margin: 30px auto; 
+  width: fit-content
+}
+
+.form-group:last-of-type {
+  margin-bottom: 30px;
+}
