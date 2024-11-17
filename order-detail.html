@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Bảng Lịch Sử Mua Hàng</title>
+    <title>Electro - HTML Ecommerce Template</title>
 
     <!-- Google font -->
     <link
@@ -28,11 +28,19 @@
     <!-- Custom stlylesheet -->
     <link type="text/css" rel="stylesheet" href="css/style.css" />
 
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bảng Lịch Sử Mua Hàng</title>
   </head>
 
   <body>
+    <div class="alert alert-show announce" role="alert"></div>
     <!-- HEADER -->
     <header>
       <!-- TOP HEADER -->
@@ -222,177 +230,83 @@
     <div class="container">
       <div class="section">
         <!-- container -->
-        <h2 class="text-center">Lịch sử mua hàng</h2>
-        <p>Bạn đã mua tổng cộng <strong>20</strong> đơn hàng!</p>
-        <div class="panel panel-default">
-          <div class="panel-body">
+        <h2 class="text-center">Chi tiết đơn hàng</h2>
+        <div class="border">
+          <p>
+            Tình trạng :
             <span class="badge">Đã đặt</span>
-            <p>
-              Thời gian :
-              <strong>23/01/2023 9:30:34</strong>
-            </p>
-            <p>
-              Mã đơn :
-              <strong>8J5X2</strong>
-            </p>
-            <p>
-              Tên người nhận :
-              <strong>Nguyễn Thế Anh</strong>
-            </p>
-            <p>Các sản phẩm :</p>
-            <ul>
-              <li>
-                Iphone 16 Pro Max 512GB
-                <b>x1</b>
-              </li>
-              <li>
-                Tai nghe Bluetooth Apple AirPods 3 MagSafe
-                <b>x3</b>
-              </li>
-            </ul>
-            <p>
-              Tổng tiền :
-              <strong>52.960.000 VND</strong>
-            </p>
-            <a
-              class="text-primary"
-              href="./order-detail.html"
-              style="color: #337ab7"
-            >
-              Xem chi tiết</a
-            >
-          </div>
-        </div>
-        <div class="panel panel-default">
-          <div class="panel-body">
-            <span class="badge badge-info mb-3">Đã được chuẩn bi</span>
-            <p>
-              Thời gian :
-              <strong>20/01/2023 7:40:45</strong>
-            </p>
-            <p>
-              Mã đơn :
-              <strong>8J5X2</strong>
-            </p>
-            <p>
-              Tên người nhận :
-              <strong>Nguyễn Thế Anh</strong>
-            </p>
-            <p>Các sản phẩm :</p>
-            <ul>
-              <li>
-                Máy ảnh Canon EOS R50
-                <b>x2</b>
-              </li>
-              <li>
-                Samsung Galaxy Z Flip5 512GB
-                <b>x1</b>
-              </li>
-            </ul>
-            <p>
-              Tổng tiền :
-              <strong>22.500.000 VND</strong>
-            </p>
-            <a
-              class="text-primary"
-              href="./order-detail.html"
-              style="color: #337ab7"
-            >
-              Xem chi tiết</a
-            >
-          </div>
-        </div>
-        <div class="panel panel-default">
-          <div class="panel-body">
-            <span class="badge badge-success mb-3">Giao thành công</span>
-            <p>
-              Thời gian :
-              <strong>01/01/2023 10:35:34</strong>
-            </p>
-            <p>
-              Mã đơn :
-              <strong>8J5X2</strong>
-            </p>
-            <p>
-              Tên người nhận :
-              <strong>Nguyễn Thế Anh</strong>
-            </p>
-            <p>Các sản phẩm :</p>
-            <ul>
-              <li>
-                Tai nghe Bluetooth True Wireless OPPO Enco Air 2
-                <b>x1</b>
-              </li>
-              <li>
-                Macbook Air 15 inch M2 2023 8GB 256GB
-                <b>x1</b>
-              </li>
-            </ul>
-            <p>
-              Tổng tiền :
-              <strong>32.960.000 VND</strong>
-            </p>
-            <a
-              class="text-primary"
-              href="./order-detail.html"
-              style="color: #337ab7"
-            >
-              Xem chi tiết</a
-            >
-          </div>
+          </p>
+          <p>
+            Thời gian :
+            <strong> 23/01/2023 9:30:34 </strong>
+          </p>
+          <h3>Thông tin người nhận</h3>
+          <p>
+            Tên người nhận :
+            <strong>Nguyễn Văn A</strong>
+          </p>
+          <p>
+            Số điện thoại :
+            <strong>0967284905</strong>
+          </p>
+          <p>Địa chỉ giao hàng</p>
+          <textarea name="" id="" rows="3" style="width: 100%" readonly>
+123 Đường Nguyễn Thị Minh Khai, Phường 6, Quận 3, TP. Hồ Chí Minh
+        </textarea
+          >
+          <p>Ghi chú giao hàng :</p>
+          <textarea style="width: 100%" name="" id="" rows="3" readonly>
+Gọi trước khi giao
+        </textarea
+          >
+          <h3>Phương thức thanh toán</h3>
+          <p>
+            Thanh toán bằng :
+            <strong>Thẻ tín dụng </strong>
+          </p>
+          <p>Tên chủ thẻ : <strong>Nguyễn Thế Anh</strong></p>
+          <p>Số thẻ : <strong>5555 5555 5555 4444</strong></p>
+          <p>Ngày hết hạn : <strong>25/12</strong></p>
+          <h3>Danh sách sản phẩm</h3>
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Tên sản phẩm</th>
+                <th>Số lượng</th>
+                <th>Giá</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Iphone 16 Pro Max 512GB</td>
+                <td>x1</td>
+                <td>40.990.000 VND</td>
+              </tr>
+              <tr>
+                <td>Tai nghe Bluetooth Apple AirPods 3 MagSafe</td>
+                <td>x3</td>
+                <td>3.990.000 VND</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>Tổng tiền : <strong>52.960.000 VND</strong></p>
+          <i style="color: red"
+            >Lưu ý : Đơn hàng chỉ được phép hủy khi người bán chưa xác nhận đơn
+            hàng</i
+          >
+          <br />
+          <button
+            class="btn btn-danger btn-announce"
+            type-announce="success"
+            message="Đơn hàng của bạn đã được hủy ! <br> Số tiền sẽ được hoàn lại trong vài tiếng.</br>"
+            style="margin-top: 10px"
+          >
+            Hủy đơn
+          </button>
         </div>
       </div>
-      <!-- store bottom filter -->
-      <div class="store-filter clearfix">
-        <ul class="store-pagination">
-          <li class="active">1</li>
-          <li><a href="lichsu_muahang.html">2</a></li>
-          <li><a href="lichsu_muahang.html">3</a></li>
-          <li><a href="lichsu_muahang.html">4</a></li>
-          <li>
-            <a href="lichsu_muahang.html"><i class="fa fa-angle-right"></i></a>
-          </li>
-        </ul>
-      </div>
-      <!-- /store bottom filter -->
     </div>
-    <!-- NEWSLETTER -->
-    <div id="newsletter" class="section">
-      <!-- container -->
-      <div class="container">
-        <!-- row -->
-        <div class="row">
-          <div class="col-md-12">
-            <div class="newsletter">
-              <p>Đăng ký để nhận <strong>THÔNG BÁO MỚI NHẤT</strong></p>
-              <form>
-                <input class="input" type="email" placeholder="Nhập email" />
-                <button class="newsletter-btn">
-                  <i class="fa fa-envelope"></i> Đăng ký
-                </button>
-              </form>
-              <ul class="newsletter-follow">
-                <li>
-                  <a href="#"><i class="fa fa-facebook"></i></a>
-                </li>
-                <li>
-                  <a href="#"><i class="fa fa-twitter"></i></a>
-                </li>
-                <li>
-                  <a href="#"><i class="fa fa-instagram"></i></a>
-                </li>
-                <li>
-                  <a href="#"><i class="fa fa-pinterest"></i></a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <!-- /row -->
-      </div>
-      <!-- /container -->
-    </div>
-    <!-- /NEWSLETTER -->
+
     <!-- FOOTER -->
     <footer id="footer">
       <!-- top footer -->
@@ -508,7 +422,7 @@
     </footer>
     <!-- /FOOTER -->
 
-    <!-- jQuery Plugins -->
+    <script src="js/helper.js"></script>
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/slick.min.js"></script>
