@@ -10,7 +10,7 @@ if (elements) {
         const type = element.getAttribute("type-announce");
         const mess = element.getAttribute("message");
         element_anounce.classList.add(`alert-${type}`);
-        element_anounce.textContent = mess;
+        element_anounce.innerHTML = mess;
         setTimeout(() => {
           element_anounce.classList.remove("active");
         }, 4000);

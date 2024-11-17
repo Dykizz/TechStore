@@ -40,6 +40,7 @@
   </head>
 
   <body>
+    <div class="alert alert-show announce" role="alert"></div>
     <!-- HEADER -->
     <header>
       <!-- TOP HEADER -->
@@ -229,58 +230,82 @@
       <div class="section">
         <!-- container -->
         <h2 class="text-center">Chi tiết đơn hàng</h2>
-      </div>
-      <!-- store bottom filter -->
-      <div class="store-filter clearfix">
-        <ul class="store-pagination">
-          <li class="active">1</li>
-          <li><a href="lichsu_muahang.html">2</a></li>
-          <li><a href="lichsu_muahang.html">3</a></li>
-          <li><a href="lichsu_muahang.html">4</a></li>
-          <li>
-            <a href="lichsu_muahang.html"><i class="fa fa-angle-right"></i></a>
-          </li>
-        </ul>
-      </div>
-      <!-- /store bottom filter -->
-    </div>
-    <!-- NEWSLETTER -->
-    <div id="newsletter" class="section">
-      <!-- container -->
-      <div class="container">
-        <!-- row -->
-        <div class="row">
-          <div class="col-md-12">
-            <div class="newsletter">
-              <p>Đăng ký để nhận <strong>THÔNG BÁO MỚI NHẤT</strong></p>
-              <form>
-                <input class="input" type="email" placeholder="Nhập email" />
-                <button class="newsletter-btn">
-                  <i class="fa fa-envelope"></i> Đăng ký
-                </button>
-              </form>
-              <ul class="newsletter-follow">
-                <li>
-                  <a href="#"><i class="fa fa-facebook"></i></a>
-                </li>
-                <li>
-                  <a href="#"><i class="fa fa-twitter"></i></a>
-                </li>
-                <li>
-                  <a href="#"><i class="fa fa-instagram"></i></a>
-                </li>
-                <li>
-                  <a href="#"><i class="fa fa-pinterest"></i></a>
-                </li>
-              </ul>
-            </div>
-          </div>
+        <div class="border">
+          <p>
+            Tình trạng :
+            <span class="badge">Đã đặt</span>
+          </p>
+          <p>
+            Thời gian :
+            <strong> 23/01/2023 9:30:34 </strong>
+          </p>
+          <h3>Thông tin người nhận</h3>
+          <p>
+            Tên người nhận :
+            <strong>Nguyễn Văn A</strong>
+          </p>
+          <p>
+            Số điện thoại :
+            <strong>0967284905</strong>
+          </p>
+          <p>Địa chỉ giao hàng</p>
+          <textarea name="" id="" rows="3" style="width: 100%" readonly>
+123 Đường Nguyễn Thị Minh Khai, Phường 6, Quận 3, TP. Hồ Chí Minh
+        </textarea
+          >
+          <p>Ghi chú giao hàng :</p>
+          <textarea style="width: 100%" name="" id="" rows="3" readonly>
+Gọi trước khi giao
+        </textarea
+          >
+          <h3>Phương thức thanh toán</h3>
+          <p>
+            Thanh toán bằng :
+            <strong>Thẻ tín dụng </strong>
+          </p>
+          <p>Tên chủ thẻ : <strong>Nguyễn Thế Anh</strong></p>
+          <p>Số thẻ : <strong>5555 5555 5555 4444</strong></p>
+          <p>Ngày hết hạn : <strong>25/12</strong></p>
+          <h3>Danh sách sản phẩm</h3>
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Tên sản phẩm</th>
+                <th>Số lượng</th>
+                <th>Giá</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Iphone 16 Pro Max 512GB</td>
+                <td>x1</td>
+                <td>40.990.000 VND</td>
+              </tr>
+              <tr>
+                <td>Tai nghe Bluetooth Apple AirPods 3 MagSafe</td>
+                <td>x3</td>
+                <td>3.990.000 VND</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>Tổng tiền : <strong>52.960.000 VND</strong></p>
+          <i style="color: red"
+            >Lưu ý : Đơn hàng chỉ được phép hủy khi người bán chưa xác nhận đơn
+            hàng</i
+          >
+          <br />
+          <button
+            class="btn btn-danger btn-announce"
+            type-announce="success"
+            message="Đơn hàng của bạn đã được hủy ! <br> Số tiền sẽ được hoàn lại trong vài tiếng.</br>"
+            style="margin-top: 10px"
+          >
+            Hủy đơn
+          </button>
         </div>
-        <!-- /row -->
       </div>
-      <!-- /container -->
     </div>
-    <!-- /NEWSLETTER -->
+
     <!-- FOOTER -->
     <footer id="footer">
       <!-- top footer -->
@@ -396,7 +421,7 @@
     </footer>
     <!-- /FOOTER -->
 
-    <!-- jQuery Plugins -->
+    <script src="js/helper.js"></script>
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/slick.min.js"></script>

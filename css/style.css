@@ -2511,11 +2511,12 @@ textarea.input {
 /*Announce */
 .announce {
   display: none;
+  width: 350px;
+  text-wrap: wrap;
 }
 .alert-show.active {
   display: block;
   position: fixed;
-  width: auto;
   z-index: 100;
   top: 15px;
   right: 15px;
@@ -2541,6 +2542,11 @@ textarea.input {
   }
 }
 /* End Announce */
+.border {
+  border: 2px solid #ddd;
+  padding: 15px;
+  border-radius: 8px;
+}
 .border-red {
   border: 2px solid red;
   border-radius: 8px;
@@ -2553,6 +2559,9 @@ textarea.input {
 .badge-info {
   color: #fff;
   background-color: #17a2b8;
+}
+.mb-2 {
+  margin-bottom: 0.5rem;
 }
 .mb-3 {
   margin-bottom: 1rem;
