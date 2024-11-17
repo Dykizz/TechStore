@@ -2398,12 +2398,15 @@ textarea.input {
 
 /* Định dạng cho "giohang.html" */
 /* CSS cho bảng với class table-giohang */
+
 .table-giohang {
   width: 100%;
   border-collapse: collapse; /* Tạo ra các đường biên không có khoảng cách giữa các ô */
   margin: 20px 0;
 }
-
+.table-giohang .inner-counter {
+  min-width: 95px;
+}
 /* CSS cho các hàng trong bảng */
 .table-giohang th,
 .table-giohang td {
