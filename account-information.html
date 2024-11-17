@@ -32,6 +32,7 @@
   </head>
 
   <body>
+    <div class="alert alert-show announce" role="alert"></div>
     <!-- HEADER -->
     <header>
       <!-- TOP HEADER -->
@@ -263,7 +264,10 @@
                     <textarea id="address" rows="3">123 Đường Nguyễn Thị Minh Khai, Phường 6, Quận 3, TP. Hồ Chí Minh</textarea>
                 </div>
                 <div>
-                    <button type="button" class="custom-btn primary-btn">Cập nhật thay đổi</button>
+                    <button type="button" class="custom-btn primary-btn btn-announce"
+                    type-announce = "success"
+                    message = "Đã cập nhật thông cá nhân thành công!"
+                    >Cập nhật thay đổi</button>
                 </div>
             </form>
         </div>
@@ -423,6 +427,7 @@
     <!-- /FOOTER -->
 
     <!-- jQuery Plugins -->
+     <script src="js/helper.js"></script>
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/slick.min.js"></script>
