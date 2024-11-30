@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 
 <head>
 	<meta charset="utf-8">
@@ -175,8 +175,8 @@
 				<!-- NAV -->
 				<ul class="main-nav nav navbar-nav">
 					<li><a href="./index.html">Trang chủ</a></li>
-					<li ><a href="./store-latop.html">Máy tính</a></li>
-					<li class="active"><a href="./store-smartphone.html">Điện thoại</a></li>
+					<li class="active"><a href="./store-latop.html">Máy tính</a></li>
+					<li><a href="./store-smartphone.html">Điện thoại</a></li>
 					<li><a href="./store-camera.html">Máy ảnh</a></li>
 					<li><a href="./store-accessories.html">Phụ kiện</a></li>
 				</ul>
@@ -192,169 +192,27 @@
 		<!-- container -->
 		<div class="container">
 			<!-- row -->
-            <div class="alert alert-success">Kết quả : Tìm thấy <strong>20</strong> sản phẩm phù hợp với yêu cầu tìm kiếm</div>
 			<div class="row">
 				<!-- ASIDE -->
 				<div id="aside" class="col-md-3">
 					 <div class="aside border-red">
 						<h3 class="aside-title text-center">Tìm kiếm nâng cao</h3>
 						<label for="product-name">Tên sản phẩm</label>
-						<input class="form-control" value="Aa" style="margin-bottom: 10px;" name="product-name" id="product-name" type="text" placeholder="Nhập tên sản phẩm muốn tìm">
+						<input class="form-control" style="margin-bottom: 10px;" name="product-name" id="product-name" type="text" placeholder="Nhập tên sản phẩm muốn tìm">
 						<label>Loại sản phẩm</label>
 						<select class="form-control" style="margin-bottom: 10px;">
 							<option value="1">Tất cả</option>
 							<option value="2">Máy tính</option>
-							<option value="3" selected>Điện thoại</option>
+							<option value="3">Điện thoại</option>
 							<option value="4">Máy ảnh</option>
 							<option value="5">Phụ kiện</option>
 						  </select>
 						<label>Giá (VND)</label>
-						<input class="form-control" value="0" style="margin-bottom: 10px;" type="number" min="0" placeholder="Giá nhỏ nhất">
-						<input class="form-control" value="100000000" style="margin-bottom: 10px;" type="number" min="0" placeholder="Giá lớn nhất">
+						<input class="form-control" style="margin-bottom: 10px;" type="number" min="0" placeholder="Giá nhỏ nhất">
+						<input class="form-control" style="margin-bottom: 10px;" type="number" min="0" placeholder="Giá lớn nhất">
 						<a class="btn btn-filter" href="./store-search.html">Tìm kiếm</a>
 					 </div>
-					<!-- <div class="aside">
-						<h3 class="aside-title">Sản phẩm</h3>
-						<div class="checkbox-filter">
-
-							<div class="input-checkbox">
-								<input type="checkbox" id="category-1">
-								<label for="category-1">
-									<span></span>
-									Máy tính
-									<small>(600)</small>
-								</label>
-							</div>
-
-							<div class="input-checkbox">
-								<input type="checkbox" id="category-2">
-								<label for="category-2">
-									<span></span>
-									Điện thoại
-									<small>(412)</small>
-								</label>
-							</div>
-
-							<div class="input-checkbox">
-								<input type="checkbox" id="category-3">
-								<label for="category-3">
-									<span></span>
-									Máy ảnh
-									<small>(270)</small>
-								</label>
-							</div>
-
-							<div class="input-checkbox">
-								<input type="checkbox" id="category-4">
-								<label for="category-4">
-									<span></span>
-									Phụ kiện
-									<small>(126)</small>
-								</label>
-							</div>
-						</div>
-					</div> -->
 					
-
-<!-- 					
-					<div class="aside">
-						<h3 class="aside-title">Giá</h3>
-						<div class="checkbox-filter">
-							<div class="input-checkbox">
-								<input type="checkbox" id="price-1">
-								<label for="price-1">
-									<span></span>
-									3-5 triệu
-								</label>
-							</div>
-							<div class="input-checkbox">
-								<input type="checkbox" id="price-2">
-								<label for="price-2">
-									<span></span>
-									5-10 triệu
-								</label>
-							</div>
-							<div class="input-checkbox">
-								<input type="checkbox" id="price-3">
-								<label for="price-3">
-									<span></span>
-									10-15 triệu
-								</label>
-							</div>
-							<div class="input-checkbox">
-								<input type="checkbox" id="price-4">
-								<label for="price-4">
-									<span></span>
-									15-20 triệu
-								</label>
-							</div>
-							<div class="input-checkbox">
-								<input type="checkbox" id="price-5">
-								<label for="price-5">
-									<span></span>
-									20 triệu trở lên
-								</label>
-							</div>
-						</div>
-					</div> -->
-					
-
-					
-					<!-- <div class="aside">
-						<h3 class="aside-title">Thương hiệu</h3>
-						<div class="checkbox-filter">
-							<div class="input-checkbox">
-								<input type="checkbox" id="brand-1">
-								<label for="brand-1">
-									<span></span>
-									Asus
-									<small>(378)</small>
-								</label>
-							</div>
-							<div class="input-checkbox">
-								<input type="checkbox" id="brand-2">
-								<label for="brand-2">
-									<span></span>
-									Dell
-									<small>(225)</small>
-								</label>
-							</div>
-							<div class="input-checkbox">
-								<input type="checkbox" id="brand-3">
-								<label for="brand-3">
-									<span></span>
-									Samsung
-									<small>(256)</small>
-								</label>
-							</div>
-							<div class="input-checkbox">
-								<input type="checkbox" id="brand-4">
-								<label for="brand-4">
-									<span></span>
-									Apple
-									<small>(156)</small>
-								</label>
-							</div>
-							<div class="input-checkbox">
-								<input type="checkbox" id="brand-5">
-								<label for="brand-5">
-									<span></span>
-									Canon
-									<small>(142)</small>
-								</label>
-							</div>
-							<div class="input-checkbox">
-								<input type="checkbox" id="brand-6">
-								<label for="brand-6">
-									<span></span>
-									Sony
-									<small>(128)</small>
-								</label>
-							</div>
-						</div>
-					</div> -->
-					<!-- <br>
-					<a class="btn btn-filter" href="./store.html">Lọc</a> -->
 					
 					<div class="aside">
 						<h3 class="aside-title">Sản phẩm bán chạy</h3>
