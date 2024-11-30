@@ -25,6 +25,7 @@
   </head>
 
   <body>
+    <div class="alert alert-show announce" role="alert"></div>
     <header>
       <div class="inner-logo">
         <a href="./index.html">
@@ -81,6 +82,12 @@
           <i class="fa-solid fa-chart-line"></i>
         </div>
         <a href="./statistic.html">Thống kê kinh doanh</a>
+      </li>
+      <li>
+        <div class="inner-icon">
+          <i class="fa-solid fa-medal"></i>
+        </div>
+        <a href="./top5-client.html">Top 5 khách hàng</a>
       </li>
     </ul>
     <div class="content">
@@ -148,17 +155,22 @@
             <div class="card-body mb-0">
               <div class="form-group">
                 <label for="sort">Sắp xếp theo</label>
-                <select class="form-control" name="" id="">
-                  <option value="" selected disabled>
-                    --Chọn tiêu chí sắp xếp--
-                  </option>
-                  <option value="default">Mặc định</option>
-                  <option value="money-increase">Giá tiền tăng dần</option>
-                  <option value="money-decrease">Giá tiền giảm dần</option>
-                  <option value="province">Tỉnh/Thành phố</option>
-                  <option value="districts">Quận/Huyện</option>
-                  <option value="ward">Phường/Xã</option>
-                </select>
+                <div class="input-group">
+                  <select class="form-control" name="" id="">
+                    <option value="" selected disabled>
+                      --Chọn tiêu chí sắp xếp--
+                    </option>
+                    <option value="default">Mặc định</option>
+                    <option value="money-increase">Giá tiền tăng dần</option>
+                    <option value="money-decrease">Giá tiền giảm dần</option>
+                    <option value="province">Tỉnh/Thành phố</option>
+                    <option value="districts">Quận/Huyện</option>
+                    <option value="ward">Phường/Xã</option>
+                  </select>
+                  <a href="./manage-order.html" class="btn btn-success">
+                    Sắp xếp
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -223,7 +235,13 @@
                   </div>
                 </div>
                 <div class="d-flex mb-0 flex-column">
-                  <button class="btn btn-primary">Cập nhật</button>
+                  <button
+                    class="btn btn-primary btn-announce"
+                    type-announce="success"
+                    message="Đã cập nhật trạng thái đơn hàng"
+                  >
+                    Cập nhật
+                  </button>
                 </div>
               </div>
             </div>
@@ -448,5 +466,6 @@
         </ul>
       </div>
     </div>
+    <script src="../js/helper.js"></script>
   </body>
 </html>
