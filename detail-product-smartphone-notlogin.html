@@ -4,25 +4,32 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
     <title>Electro - HTML Ecommerce Template</title>
-    <!--Favicon-->
-    <link rel="shortcut icon" href="./img/logo.png" type="image/x-icon" />
+
     <!-- Google font -->
     <link
       href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700"
       rel="stylesheet"
     />
+
     <!-- Bootstrap -->
     <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" />
+
     <!-- Slick -->
     <link type="text/css" rel="stylesheet" href="css/slick.css" />
     <link type="text/css" rel="stylesheet" href="css/slick-theme.css" />
+
     <!-- nouislider -->
     <link type="text/css" rel="stylesheet" href="css/nouislider.min.css" />
+
     <!-- Font Awesome Icon -->
     <link rel="stylesheet" href="css/font-awesome.min.css" />
+
     <!-- Custom stlylesheet -->
     <link type="text/css" rel="stylesheet" href="css/style.css" />
+
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -30,6 +37,7 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
+
   <body>
     <div class="alert alert-show announce" role="alert"></div>
     <!-- HEADER -->
@@ -88,23 +96,23 @@
               <div class="header-ctn">
                 <!-- Tài khoản -->
                 <div>
-                  <a
-                    href="./login.html"
-                    class="btn btn-primary"
-                    aria-expanded="true"
-                  >
-                    <span>Đăng nhập</span>
-                  </a>
-                </div>
-                <div>
-                  <a
-                    href="./register.html"
-                    class="btn btn-primary"
-                    aria-expanded="true"
-                  >
-                    <span>Đăng kí</span>
-                  </a>
-                </div>
+                    <a
+                      href="./login.html"
+                      class="btn btn-primary"
+                      aria-expanded="true"
+                    >
+                      <span>Đăng nhập</span>
+                    </a>
+                  </div>
+                  <div>
+                    <a
+                      href="./register.html"
+                      class="btn btn-primary"
+                      aria-expanded="true"
+                    >
+                      <span>Đăng kí</span>
+                    </a>
+                  </div>
                 <!-- /Tài khoản -->
 
                 <!-- Menu Toogle -->
@@ -134,11 +142,9 @@
         <div id="responsive-nav">
           <!-- NAV -->
           <ul class="main-nav nav navbar-nav">
-            <li class="active"><a href="./index-notlogin.html">Trang chủ</a></li>
+            <li><a href="./index-notlogin.html">Trang chủ</a></li>
             <li><a href="./store-laptop-notlogin.html">Máy tính</a></li>
-            <li>
-              <a href="./store-smartphone-notlogin.html">Điện thoại</a>
-            </li>
+            <li class="active"><a href="./store-smartphone-notlogin.html">Điện thoại</a></li>
             <li><a href="./store-camera-notlogin.html">Máy ảnh</a></li>
             <li><a href="./store-accessories-notlogin.html">Phụ kiện</a></li>
           </ul>
@@ -155,86 +161,397 @@
       <div class="container">
         <!-- row -->
         <div class="row">
-          <!-- shop -->
-          <div class="col-md-3 col-xs-6">
-            <div class="shop">
-              <div class="shop-img">
-                <img src="./img/shop01.png" alt="" />
-              </div>
-              <div class="shop-body">
-                <h3>Máy tính</h3>
-                <a href="./store-laptop-notlogin.html" class="cta-btn">
-                  Mua ngay <i class="fa fa-arrow-circle-right"></i>
-                </a>
-              </div>
+          <!-- Product main img -->
+          <div class="col-md-6">
+            <div id="product-main-img">
+              <img src="./img/sanphammoi_samsung-z-lip5.png" alt="product" />
             </div>
           </div>
-          <!-- /shop -->
-          <!-- shop -->
-          <div class="col-md-3 col-xs-6">
-            <div class="shop">
-              <div class="shop-img">
-                <img src="./img/shop02.png" alt="" />
+          <!-- /Product main img -->
+
+          <!-- Product details -->
+          <div class="col-md-6">
+            <div class="product-details">
+              <h2 class="product-name">Samsung Galaxy Z Flip5 512GB</h2>
+              <div>
+                <div class="product-rating">
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star-o"></i>
+                </div>
+                <a class="review-link">200 đánh giá </a>
               </div>
-              <div class="shop-body">
-                <h3>Điện thoại</h3>
-                <a href="./store-smartphone-notlogin.html" class="cta-btn">
-                  Mua ngay <i class="fa fa-arrow-circle-right"></i>
-                </a>
+
+              <div>
+                <h3 class="product-price">
+                  <del class="product-old-price">29.990.000 VND</del>
+                </h3>
+                <br />
+                <h3 class="product-price">16.490.000 VND</h3>
+                <span class="product-available">Còn hàng</span>
               </div>
+              <div class="justified-text">
+                Điện thoại Samsung Galaxy Z Flip 5 mang đến cải tiến đáng chú ý
+                về công nghệ màn hình ngoài với tên gọi Flex Window. Đây là một
+                tính năng độc đáo cho phép người dùng sử dụng điện thoại theo
+                những cách mới và thú vị. Trong khi màn hình ngoài của người
+                "anh em" tiền nhiệm Galaxy Z Flip 4 bị giới hạn bởi cụm camera
+                nằm dọc nên chỉ có kích thước 1.9 inch. Thì với Z Flip 5, cụm
+                camera được sắp xếp nằm ngang và kéo sát gần bản lề để chừa chỗ
+                cho Flex Window, nên chúng có kích thước ấn tượng lên đến 3.4
+                inch - kích thước lớn nhất từ trước đến nay trên các dòng Galaxy
+                Z Flip để người dùng thao tác nhanh chóng và chính xác hơn.
+                Chúng được sử dụng để thực hiện nhiều tác vụ khác nhau trong khi
+                máy đang gập bao gồm: Xem thời tiết, xem thông báo và trả lời
+                tin nhắn, chụp ảnh & quay video,... và nhiều tác vụ khác.
+              </div>
+              <br />
+              <div class="add-to-cart">
+                <div class="qty-label">
+                  <span class="qty-text">Số lượng</span>
+                  <div class="text-center qty-buttons">
+                    <button class="btn btn-secondary">-</button>
+                    <span>1</span>
+                    <button class="btn btn-secondary">+</button>
+                  </div>
+                </div>
+                <div class="add-to-cart">
+                  <button
+                    class="add-to-cart-btn btn-announce"
+                    type-announce="success"
+                    message="Vui lòng đăng nhập/đăng kí tài khoản để mua hàng!"
+                  >
+                    <i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng
+                  </button>
+                </div>
+              </div>
+              <ul class="product-links">
+                <li>Danh mục:</li>
+                <li><a href="./store-smartphone-notlogin.html"> Điện thoại</a></li>
+              </ul>
+              <ul class="product-links">
+                <li>Share:</li>
+                <li>
+                  <a href="#"><i class="fa fa-facebook"></i></a>
+                </li>
+                <li>
+                  <a href="#"><i class="fa fa-twitter"></i></a>
+                </li>
+                <li>
+                  <a href="#"><i class="fa fa-google-plus"></i></a>
+                </li>
+                <li>
+                  <a href="#"><i class="fa fa-envelope"></i></a>
+                </li>
+              </ul>
             </div>
           </div>
-          <!-- /shop -->
-          <!-- shop -->
-          <div class="col-md-3 col-xs-6">
-            <div class="shop">
-              <div class="shop-img">
-                <img src="./img/shop03.png" alt="" />
+          <!-- /Product details -->
+
+          <!-- Product tab -->
+          <div class="col-md-12">
+            <div id="product-tab">
+              <!-- product tab nav -->
+              <ul class="tab-nav">
+                <li class="active">
+                  <a data-toggle="tab" href="#tab1">Thông số kĩ thuật</a>
+                </li>
+                <li><a data-toggle="tab" href="#tab2">Nhận xét</a></li>
+              </ul>
+              <!-- /product tab nav -->
+
+              <!-- product tab content -->
+              <div class="tab-content">
+                <!-- tab1  -->
+                <div id="tab1" class="tab-pane fade in active">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <table class="table">
+                        <tr>
+                          <td>Màu sắc:</td>
+                          <td>Xanh bạc hà, Tím, Xám, Kem</td>
+                        </tr>
+                        <tr>
+                          <td>Hệ điều hành:</td>
+                          <td>Android 13</td>
+                        </tr>
+                        <tr>
+                          <td>Chip xử lí (CPU):</td>
+                          <td>Snapdragon 8 Gen 2 for Galaxy</td>
+                        </tr>
+                        <tr>
+                          <td>Tốc độ CPU:</td>
+                          <td>
+                            1 nhân 3.36 GHz, 4 nhân 2.8 GHz & 3 nhân 2 GHz
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Chip đồ họa (GPU):</td>
+                          <td>Adreno 740</td>
+                        </tr>
+                        <tr>
+                          <td>RAM:</td>
+                          <td>8GB</td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <!-- /tab1  -->
+                <!-- tab2  -->
+                <div id="tab2" class="tab-pane fade in">
+                  <div class="row">
+                    <!-- Rating -->
+                    <div class="col-md-3">
+                      <div id="rating">
+                        <div class="rating-avg">
+                          <span>4.5</span>
+                          <div class="rating-stars">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o"></i>
+                          </div>
+                        </div>
+                        <ul class="rating">
+                          <li>
+                            <div class="rating-stars">
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                            </div>
+                            <div class="rating-progress">
+                              <div style="width: 80%"></div>
+                            </div>
+                            <span class="sum">3</span>
+                          </li>
+                          <li>
+                            <div class="rating-stars">
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star-o"></i>
+                            </div>
+                            <div class="rating-progress">
+                              <div style="width: 60%"></div>
+                            </div>
+                            <span class="sum">2</span>
+                          </li>
+                          <li>
+                            <div class="rating-stars">
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star-o"></i>
+                              <i class="fa fa-star-o"></i>
+                            </div>
+                            <div class="rating-progress">
+                              <div></div>
+                            </div>
+                            <span class="sum">0</span>
+                          </li>
+                          <li>
+                            <div class="rating-stars">
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star-o"></i>
+                              <i class="fa fa-star-o"></i>
+                              <i class="fa fa-star-o"></i>
+                            </div>
+                            <div class="rating-progress">
+                              <div></div>
+                            </div>
+                            <span class="sum">0</span>
+                          </li>
+                          <li>
+                            <div class="rating-stars">
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star-o"></i>
+                              <i class="fa fa-star-o"></i>
+                              <i class="fa fa-star-o"></i>
+                              <i class="fa fa-star-o"></i>
+                            </div>
+                            <div class="rating-progress">
+                              <div></div>
+                            </div>
+                            <span class="sum">0</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <!-- /Rating -->
+
+                    <!-- Reviews -->
+                    <div class="col-md-6">
+                      <div id="reviews">
+                        <ul class="reviews">
+                          <li>
+                            <div class="review-heading">
+                              <h5 class="name">Đoàn Ngọc Nhi</h5>
+                              <p class="date">27 DEC 2018, 8:0 PM</p>
+                              <div class="review-rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                              </div>
+                            </div>
+                            <div class="review-body">
+                              <p>
+                                Mình thật sự ấn tượng với thiết kế gập của
+                                Galaxy Z Flip5. Khi gập lại thì nhỏ gọn, dễ bỏ
+                                túi, còn khi mở ra thì màn hình lớn, tiện dụng.
+                                Rất hợp với người thích điện thoại nhỏ gọn nhưng
+                                vẫn muốn màn hình rộng khi dùng.
+                              </p>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="review-heading">
+                              <h5 class="name">Nguyễn Văn Ngọc</h5>
+                              <p class="date">27 DEC 2018, 8:0 PM</p>
+                              <div class="review-rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                              </div>
+                            </div>
+                            <div class="review-body">
+                              <p>
+                                Cảm giác mở và gập máy rất thú vị, giống như
+                                trải nghiệm của các điện thoại nắp gập ngày xưa
+                                nhưng với công nghệ hiện đại. Mình cảm thấy
+                                thích thú mỗi lần gập máy lại.
+                              </p>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="review-heading">
+                              <h5 class="name">Trần Văn Nhân</h5>
+                              <p class="date">27 DEC 2018, 8:0 PM</p>
+                              <div class="review-rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star-o empty"></i>
+                              </div>
+                            </div>
+                            <div class="review-body">
+                              <p>
+                                Với thiết kế gập, mình vẫn lo lắng về độ bền lâu
+                                dài của màn hình và bản lề. Hy vọng Samsung đã
+                                cải thiện hơn so với các phiên bản trước.
+                              </p>
+                            </div>
+                          </li>
+                        </ul>
+                        <ul class="reviews-pagination">
+                          <li class="active">1</li>
+                          <li><a href="#">2</a></li>
+                          <li><a href="#">3</a></li>
+                          <li><a href="#">4</a></li>
+                          <li>
+                            <a href="#"><i class="fa fa-angle-right"></i></a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <!-- /Reviews -->
+
+                    <!-- Review Form -->
+                    <div class="col-md-3">
+                      <div id="review-form">
+                        <form class="review-form">
+                          <input
+                            class="input"
+                            type="text"
+                            placeholder="Họ và tên"
+                          />
+                          <input
+                            class="input"
+                            type="email"
+                            placeholder="Email"
+                          />
+                          <textarea
+                            class="input"
+                            placeholder="Nhận xét"
+                          ></textarea>
+                          <div class="input-rating">
+                            <span>Đánh giá của bạn: </span>
+                            <div class="stars">
+                              <input
+                                id="star5"
+                                name="rating"
+                                value="5"
+                                type="radio"
+                              /><label for="star5"></label>
+                              <input
+                                id="star4"
+                                name="rating"
+                                value="4"
+                                type="radio"
+                              /><label for="star4"></label>
+                              <input
+                                id="star3"
+                                name="rating"
+                                value="3"
+                                type="radio"
+                              /><label for="star3"></label>
+                              <input
+                                id="star2"
+                                name="rating"
+                                value="2"
+                                type="radio"
+                              /><label for="star2"></label>
+                              <input
+                                id="star1"
+                                name="rating"
+                                value="1"
+                                type="radio"
+                              /><label for="star1"></label>
+                            </div>
+                          </div>
+                          <button class="primary-btn">Gửi</button>
+                        </form>
+                      </div>
+                    </div>
+                    <!-- /Review Form -->
+                  </div>
+                </div>
+                <!-- /tab3  -->
               </div>
-              <div class="shop-body">
-                <h3>Máy ảnh</h3>
-                <a href="./store-camera-notlogin.html" class="cta-btn">
-                  Mua ngay <i class="fa fa-arrow-circle-right"></i>
-                </a>
-              </div>
+              <!-- /product tab content  -->
             </div>
           </div>
-          <!-- /shop -->
-          <!-- shop -->
-          <div class="col-md-3 col-xs-6">
-            <div class="shop">
-              <div class="shop-img">
-                <img src="./img/shop04.png" alt="" />
-              </div>
-              <div class="shop-body">
-                <h3>Phụ kiện</h3>
-                <a href="./store-accessories-notlogin.html" class="cta-btn">
-                  Mua ngay <i class="fa fa-arrow-circle-right"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-          <!-- /shop -->
+          <!-- /product tab -->
         </div>
         <!-- /row -->
       </div>
       <!-- /container -->
     </div>
     <!-- /SECTION -->
-    <!-- SECTION -->
+
+    <!-- Section -->
     <div class="section">
       <!-- container -->
       <div class="container">
         <!-- row -->
         <div class="row">
-          <!-- section title -->
           <div class="col-md-12">
-            <div class="section-title">
-              <h3 class="title">Sản phẩm mới</h3>
+            <div class="section-title text-center">
+              <h3 class="title">Sản phẩm liên quan</h3>
             </div>
           </div>
-          <!-- /section title -->
-          <!-- Products tab & slick -->
           <div class="col-md-12">
             <div class="row">
               <div class="products-tabs">
@@ -242,7 +559,7 @@
                 <div id="tab1" class="tab-pane active">
                   <div class="products-slick" data-nav="#slick-nav-1">
                     <!-- product -->
-                    <div class="product">
+                    <div class="product" style="margin-bottom: 50px">
                       <div class="product-img">
                         <img src="./img/sanphammoi_samsung-z-lip5.png" alt="" />
                         <div class="product-label">
@@ -360,7 +677,7 @@
                     </div>
                     <!-- /product -->
                     <!-- product -->
-                    <div class="product" style="margin-bottom: 50px">
+                    <div class="product">
                       <div class="product-img">
                         <img src="./img/sanphammoi_canon.png" alt="" />
                         <div class="product-label">
@@ -406,271 +723,14 @@
               </div>
             </div>
           </div>
-          <!-- Products tab & slick -->
+          <!-- product -->
         </div>
         <!-- /row -->
       </div>
       <!-- /container -->
     </div>
-    <!-- /SECTION -->
-    <!-- HOT DEAL SECTION -->
-    <div id="hot-deal" class="section">
-      <!-- container -->
-      <div class="container">
-        <!-- row -->
-        <div class="row">
-          <div class="col-md-12">
-            <div class="hot-deal">
-              <ul class="hot-deal-countdown">
-                <li>
-                  <div>
-                    <h3>02</h3>
-                    <span>Ngày</span>
-                  </div>
-                </li>
-                <li>
-                  <div>
-                    <h3>10</h3>
-                    <span>Giờ</span>
-                  </div>
-                </li>
-                <li>
-                  <div>
-                    <h3>34</h3>
-                    <span>Phút</span>
-                  </div>
-                </li>
-                <li>
-                  <div>
-                    <h3>60</h3>
-                    <span>Giây</span>
-                  </div>
-                </li>
-              </ul>
-              <h2 class="text-uppercase">Ưu đãi tuần này!</h2>
-              <p>Giảm tới 50%</p>
-              <a class="primary-btn cta-btn" href="#">Mua ngay</a>
-            </div>
-          </div>
-        </div>
-        <!-- /row -->
-      </div>
-      <!-- /container -->
-    </div>
-    <!-- /HOT DEAL SECTION -->
-    <!-- SECTION -->
-    <div class="section">
-      <!-- container -->
-      <div class="container">
-        <!-- row -->
-        <div class="row">
-          <!-- section title -->
-          <div class="col-md-12">
-            <div class="section-title">
-              <h3 class="title">Sản phẩm bán chạy</h3>
-            </div>
-          </div>
-          <!-- /section title -->
-          <!-- Products tab & slick -->
-          <div class="col-md-12">
-            <div class="row">
-              <div class="products-tabs">
-                <!-- tab -->
-                <div id="tab2" class="tab-pane fade in active">
-                  <div class="products-slick" data-nav="#slick-nav-2">
-                    <!-- product -->
-                    <div class="product">
-                      <div class="product-img">
-                        <img src="./img/iphone-15-pro-max_3.png" alt="" />
-                        <div class="product-label">
-                          <span class="sale">-16%</span>
-                        </div>
-                      </div>
-                      <div class="product-body">
-                        <h3 class="product-name">
-                          <a href="./detail-product-smartphone-notlogin.html"
-                            >iPhone 15 Pro Max 256GB | Chính hãng VN/A</a
-                          >
-                        </h3>
-                        <h4 class="product-price-index">
-                          <del class="product-old-price-index"
-                            >34.990.000 VND</del
-                          >
-                          <span class="new-price-index">29.490.000 VND</span>
-                        </h4>
-                        <div class="product-rating">
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                        </div>
-                      </div>
-                      <div class="add-to-cart">
-                        <button
-                          class="add-to-cart-btn btn-announce"
-                          type-announce="success"
-                          message="Vui lòng đăng nhập/đăng kí tài khoản để mua hàng!"
-                        >
-                          <i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng
-                        </button>
-                      </div>
-                    </div>
-                    <!-- /product -->
-                    <!-- product -->
-                    <div class="product" style="margin-bottom: 50px">
-                      <div class="product-img">
-                        <img src="./img/sanphambanchay_asus.png" alt="" />
-                        <div class="product-label">
-                          <span class="sale">4%</span>
-                        </div>
-                      </div>
-                      <div class="product-body">
-                        <h3 class="product-name">
-                          <a href="./detail-product-laptop-notlogin.html"
-                            >Laptop ASUS TUF Gaming A14 FA401WV-RG061WS</a
-                          >
-                        </h3>
-                        <h4 class="product-price-index">
-                          <del class="product-old-price-index"
-                            >46.990.000 VND</del
-                          >
-                          <span class="new-price-index">44.990.000 VND</span>
-                        </h4>
-                        <div class="product-rating">
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                        </div>
-                      </div>
-                      <div class="add-to-cart">
-                        <button
-                          class="add-to-cart-btn btn-announce"
-                          type-announce="success"
-                          message="Vui lòng đăng nhập/đăng kí tài khoản để mua hàng!"
-                        >
-                          <i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng
-                        </button>
-                      </div>
-                    </div>
-                    <!-- /product -->
-                    <!-- product -->
-                    <div class="product">
-                      <div class="product-img">
-                        <img
-                          src="./img/apple-airpods-pro-2-usb-c_1_.png"
-                          alt=""
-                        />
-                        <div class="product-label">
-                          <span class="sale">-6%</span>
-                        </div>
-                      </div>
-                      <div class="product-body">
-                        <h3 class="product-name">
-                          <a href="./detail-product-accessories-notlogin.html"
-                            >Tai nghe Bluetooth Apple AirPods Pro 2 2023 USB-C
-                          </a>
-                        </h3>
-                        <h4 class="product-price-index">
-                          <del class="product-old-price-index"
-                            >6.190.000 VND</del
-                          >
-                          <span class="new-price-index">5.790.000 VND</span>
-                        </h4>
-                        <div class="product-rating">
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                        </div>
-                      </div>
-                      <div class="add-to-cart">
-                        <button
-                          class="add-to-cart-btn btn-announce"
-                          type-announce="success"
-                          message="Vui lòng đăng nhập/đăng kí tài khoản để mua hàng!"
-                        >
-                          <i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng
-                        </button>
-                      </div>
-                    </div>
-                    <!-- /product -->
-                    <!-- product -->
-                    <div class="product">
-                      <div class="product-img">
-                        <img
-                          src="./img/Máy ảnh Canon EOS R10 kit RF-S18-45mm F4.5-6.3 IS STM.png"
-                          alt=""
-                        />
-                        <div class="product-label">
-                          <span class="sale">-23%</span>
-                        </div>
-                      </div>
-                      <div class="product-body">
-                        <h3 class="product-name">
-                          <a href="./detail-product-camera-notlogin.html"
-                            >Máy ảnh Canon EOS R10 kit RF-S18-45mm F4.5-6.3 IS
-                            STM</a
-                          >
-                        </h3>
-                        <h4 class="product-price-index">
-                          <del class="product-old-price-index"
-                            >28.330.000 VND</del
-                          >
-                          <span class="new-price-index">21.900.000 VND</span>
-                        </h4>
-                        <div class="product-rating">
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star-o"></i>
-                        </div>
-                      </div>
-                      <div class="add-to-cart">
-                        <button
-                          class="add-to-cart-btn btn-announce"
-                          type-announce="success"
-                          message="Vui lòng đăng nhập/đăng kí tài khoản để mua hàng!"
-                        >
-                          <i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng
-                        </button>
-                      </div>
-                    </div>
-                    <!-- /product -->
-                  </div>
-                  <div id="slick-nav-2" class="products-slick-nav"></div>
-                </div>
-                <!-- /tab -->
-              </div>
-            </div>
-          </div>
-          <!-- /Products tab & slick -->
-        </div>
-        <!-- /row -->
-      </div>
-      <!-- /container -->
-    </div>
-    <!-- /SECTION -->
-    <!-- SECTION -->
+    <!-- /Section -->
 
-    <!-- /SECTION -->
-    <!-- store bottom filter -->
-    <div class="store-filter clearfix">
-      <ul class="store-pagination">
-        <li class="active">1</li>
-        <li><a href="index-notlogin.html">2</a></li>
-        <li><a href="index-notlogin.html">3</a></li>
-        <li><a href="index-notlogin.html">4</a></li>
-        <li>
-          <a href="index-notlogin.html"><i class="fa fa-angle-right"></i></a>
-        </li>
-      </ul>
-    </div>
-    <!-- store bottom filter -->
     <!-- NEWSLETTER -->
     <div id="newsletter" class="section">
       <!-- container -->
@@ -742,14 +802,10 @@
               <div class="footer">
                 <h3 class="footer-title">Sản phẩm</h3>
                 <ul class="footer-links">
-                  <li><a href="/store-laptop-notlogin.html">Máy tính</a></li>
-                  <li>
-                    <a href="./store-smartphone-notlogin.html">Điện thoại</a>
-                  </li>
+                  <li><a href="./store-laptop-notlogin.html">Máy tính</a></li>
+                  <li><a href="./store-smartphone-notlogin.html">Điện thoại</a></li>
                   <li><a href="./store-camera-notlogin.html">Máy ảnh</a></li>
-                  <li>
-                    <a href="./store-accessories-notlogin.html">Phụ kiện</a>
-                  </li>
+                  <li><a href="./store-accessories-notlogin.html">Phụ kiện</a></li>
                 </ul>
               </div>
             </div>
@@ -770,8 +826,8 @@
               <div class="footer">
                 <h3 class="footer-title">Dịch vụ</h3>
                 <ul class="footer-links">
-                  <li><a href="#">Tài khoản</a></li>
-                  <li><a href="#">Giỏ hàng</a></li>
+                  <li><a href="./account-information.html">Tài khoản</a></li>
+                  <li><a href="./shopping-cart.html">Giỏ hàng</a></li>
                   <li><a href="#">Trợ giúp</a></li>
                 </ul>
               </div>
@@ -826,12 +882,14 @@
       <!-- /bottom footer -->
     </footer>
     <!-- /FOOTER -->
+
     <!-- jQuery Plugins -->
     <script src="js/helper.js"></script>
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/slick.min.js"></script>
     <script src="js/nouislider.min.js"></script>
+    <script src="js/jquery.zoom.min.js"></script>
     <script src="js/main.js"></script>
   </body>
 </html>

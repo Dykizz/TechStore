@@ -71,7 +71,7 @@
             <!-- LOGO -->
             <div class="col-md-3">
               <div class="header-logo">
-                <a href="./index.html" class="logo">
+                <a href="./index-notlogin.html" class="logo">
                   <img src="./img/logo.png" alt="" />
                 </a>
               </div>
@@ -95,91 +95,25 @@
             <div class="col-md-3 clearfix">
               <div class="header-ctn">
                 <!-- Tài khoản -->
-                <div class="dropdown">
-                  <a
-                    class="dropdown-toggle"
-                    data-toggle="dropdown"
-                    aria-expanded="true"
-                  >
-                    <i class="fa fa-user-o"></i>
-                    <span>Nguyễn Thế Anh</span>
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li>
-                      <a href="./account-information.html">Thông tin cá nhân</a>
-                    </li>
-                    <li>
-                      <a href="./purchasing-history.html">Lịch sử mua hàng</a>
-                    </li>
-                    <li><a href="./change-password.html">Đổi mật khẩu</a></li>
-                    <li><a href="./index-notlogin.html">Đăng xuất</a></li>
-                  </ul>
-                </div>
-                <!-- /Tài khoản -->
-
-                <!-- Giỏ hàng -->
-                <div class="dropdown">
-                  <a
-                    class="dropdown-toggle"
-                    data-toggle="dropdown"
-                    aria-expanded="true"
-                  >
-                    <i class="fa fa-shopping-cart"></i>
-                    <span>Giỏ hàng</span>
-                    <div class="qty">4</div>
-                  </a>
-                  <div class="cart-dropdown">
-                    <div class="cart-list">
-                      <div class="product-widget">
-                        <div class="product-img">
-                          <img src="./img/sp1_giohang.png" alt="" />
-                        </div>
-                        <div class="product-body">
-                          <h3 class="product-name">
-                            <a href="./detail-product-smartphone.html"
-                              >Iphone 16 Pro Max 512GB | Chính hãng VN/A</a
-                            >
-                          </h3>
-                          <h4 class="product-price">
-                            <span class="qty">1x</span>40.990.000 VND
-                          </h4>
-                        </div>
-                        <button class="delete">
-                          <i class="fa fa-close"></i>
-                        </button>
-                      </div>
-                      <div class="product-widget">
-                        <div class="product-img">
-                          <img src="./img/sp2_giohang.png" alt="" />
-                        </div>
-                        <div class="product-body">
-                          <h3 class="product-name">
-                            <a href="./detail-product-accessories.html"
-                              >Tai nghe Bluetooth Apple AirPods 3 MagSafe</a
-                            >
-                          </h3>
-                          <h4 class="product-price">
-                            <span class="qty">3x</span>3.990.000 VND
-                          </h4>
-                        </div>
-                        <button class="delete">
-                          <i class="fa fa-close"></i>
-                        </button>
-                      </div>
-                    </div>
-                    <div class="cart-summary">
-                      <small>4 sản phẩm được chọn</small>
-                      <h5>TỔNG: 52.960.000 VND</h5>
-                    </div>
-                    <div class="cart-btns">
-                      <a href="./shopping-cart.html">Xem giỏ hàng</a>
-                      <a href="./checkout.html">
-                        Thanh toán <i class="fa fa-arrow-circle-right"></i>
-                      </a>
-                    </div>
+                <div>
+                    <a
+                      href="./login.html"
+                      class="btn btn-primary"
+                      aria-expanded="true"
+                    >
+                      <span>Đăng nhập</span>
+                    </a>
                   </div>
-                </div>
-                <!-- /Giỏ hàng -->
+                  <div>
+                    <a
+                      href="./register.html"
+                      class="btn btn-primary"
+                      aria-expanded="true"
+                    >
+                      <span>Đăng kí</span>
+                    </a>
+                  </div>
+                <!-- /Tài khoản -->
 
                 <!-- Menu Toogle -->
                 <div class="menu-toggle">
@@ -208,13 +142,11 @@
         <div id="responsive-nav">
           <!-- NAV -->
           <ul class="main-nav nav navbar-nav">
-            <li><a href="./index.html">Trang chủ</a></li>
-            <li><a href="./store-latop.html">Máy tính</a></li>
-            <li><a href="./store-smartphone.html">Điện thoại</a></li>
-            <li><a href="./store-camera.html">Máy ảnh</a></li>
-            <li class="active">
-              <a href="./store-accessories.html">Phụ kiện</a>
-            </li>
+            <li><a href="./index-notlogin.html">Trang chủ</a></li>
+            <li class="active"><a href="./store-laptop-notlogin.html">Máy tính</a></li>
+            <li><a href="./store-smartphone-notlogin.html">Điện thoại</a></li>
+            <li><a href="./store-camera-notlogin.html">Máy ảnh</a></li>
+            <li><a href="./store-accessories-notlogin.html">Phụ kiện</a></li>
           </ul>
           <!-- /NAV -->
         </div>
@@ -232,7 +164,7 @@
           <!-- Product main img -->
           <div class="col-md-6">
             <div id="product-main-img">
-              <img src="./img/sp7_sanpham.png" alt="product" />
+              <img src="./img/product_maytinh.png" alt="product" />
             </div>
           </div>
           <!-- /Product main img -->
@@ -241,7 +173,7 @@
           <div class="col-md-6">
             <div class="product-details">
               <h2 class="product-name">
-                Tai nghe Bluetooth chụp tai Edifier W800BT Pro
+                Laptop ASUS Expertbook B1402CBA-NK2669W
               </h2>
               <div>
                 <div class="product-rating">
@@ -251,34 +183,31 @@
                   <i class="fa fa-star"></i>
                   <i class="fa fa-star-o"></i>
                 </div>
-                <a class="review-link">200 đánh giá </a>
+                <a class="review-link">121 đánh giá </a>
               </div>
 
               <div>
                 <h3 class="product-price">
-                  <del class="product-old-price">1.399.000 VND</del>
+                  <del class="product-old-price">19.990.000 VND</del>
                 </h3>
                 <br />
-                <h3 class="product-price">980.000 VND</h3>
+                <h3 class="product-price">12.990.000 VND</h3>
                 <span class="product-available">Còn hàng</span>
               </div>
               <div class="justified-text">
-                Kết nối Bluetooth 5.4 tiên tiến đảm bảo kết nối ổn định, cho
-                trải nghiệm nghe mượt mà.<br />
-                Chống ồn chủ động ANC mang đến không gian yên tĩnh để tập trung
-                làm việc, học tập.<br />
-                Driver kích thước 40mm cung cấp âm thanh chất lượng cao, chi
-                tiết với dải tần số rộng.<br />
-                Thời lượng pin ấn tượng đến 45 giờ, thoải mái sử dụng cả ngày
-                dài, không lo hết pin.<br />
-                Tai nghe chụp tai Edifier W800BT Pro với con chip Qualcomm cùng
-                mang loa 40 mm giúp mang lại những âm thanh sống động, chất
-                lượng cao. Tai nghe với thiết kế chụp tài cùng nút bấm vật lý
-                mang lại khả năng điều khiển tiện dụng, cùng với đó là 3 màu sắc
-                trắng, đen và đỏ. Tai nghe với pin Li-Polymer dung lượng lớn hỗ
-                trợ mang lại thời gian sử dụng nhiều giờ. Lưu ý: Sản phẩm tai
-                nghe Edifier W800BT Pro chưa chính thức ra mắt, bài đánh giá
-                được tổng hợp trên các nguồn tin đồn tổng hợp.
+                Laptop Asus ExpertBook B1402CBA-NK2669W là một chiếc laptop văn
+                phòng mỏng nhẹ, thanh lịch với hiệu năng mạnh mẽ. Máy phù hợp
+                với những người thường xuyên di chuyển và cần một chiếc laptop
+                Asus ExpertBook để làm việc hiệu quả. Chắc chắn khi sở hữu bạn
+                sẽ có được trải nghiệm hoàn hảo và trọn vẹn nhất. Laptop ASUS
+                ExpertBook B1402CBA-NK2669W ấn tượng với thiết kế mỏng nhẹ và
+                thanh lịch. Với trọng lượng chỉ nặng 1.49kg, tạo điều kiện thuận
+                lợi cho việc di chuyển và mang theo bất cứ nơi nào. Bên cạnh đó
+                chất liệu vỏ nhôm cao cấp, máy tính không chỉ đẹp mắt mà còn đảm
+                bảo độ bền và cứng cáp. Màu sắc chủ đạo của laptop là màu đen,
+                tạo nên một vẻ ngoài sang trọng và hiện đại. Đặc biệt, màu sắc
+                này cũng tạo điểm nhấn cho thiết kế tối giản và đẳng cấp của
+                laptop.
               </div>
               <br />
               <div class="add-to-cart">
@@ -302,7 +231,7 @@
               </div>
               <ul class="product-links">
                 <li>Danh mục:</li>
-                <li><a href="./store-accessories.html"> Phụ kiện</a></li>
+                <li><a href="./store-laptop-notlogin.html">Máy tính</a></li>
               </ul>
               <ul class="product-links">
                 <li>Share:</li>
@@ -343,28 +272,28 @@
                     <div class="col-md-12">
                       <table class="table">
                         <tr>
-                          <td>Công suất:</td>
-                          <td>30mW</td>
+                          <td>Chip xử lí (CPU):</td>
+                          <td>Intel Core i5-1235U</td>
                         </tr>
                         <tr>
-                          <td>Nguồn điện sử dụng:</td>
-                          <td>5V - 1A</td>
+                          <td>Chip đồ họa (GPU):</td>
+                          <td>Intel UHD Graphics</td>
                         </tr>
                         <tr>
-                          <td>Cổng kết nối:</td>
-                          <td>Bluetooth V5.4</td>
+                          <td>RAM:</td>
+                          <td>16GB</td>
                         </tr>
                         <tr>
-                          <td>Tương thích thiết bị:</td>
-                          <td>Mọi thiết bị có sử dụng Bluetooth</td>
+                          <td>Ô cứng (Bộ nhớ lưu trữ):</td>
+                          <td>512GB M.2 2280 NVMe PCIe 4.0 SSD</td>
                         </tr>
                         <tr>
-                          <td>Độ bền:</td>
-                          <td>Chịu được va đập, chống trầy xước</td>
+                          <td>Kích thước màn hình:</td>
+                          <td>14 inches</td>
                         </tr>
                         <tr>
-                          <td>Bảo hàng:</td>
-                          <td>12 tháng</td>
+                          <td>Hệ điều hành:</td>
+                          <td>Windows 11 Home</td>
                         </tr>
                       </table>
                     </div>
@@ -630,7 +559,7 @@
                 <div id="tab1" class="tab-pane active">
                   <div class="products-slick" data-nav="#slick-nav-1">
                     <!-- product -->
-                    <div class="product" style="margin-bottom: 50px">
+                    <div class="product">
                       <div class="product-img">
                         <img src="./img/sanphammoi_samsung-z-lip5.png" alt="" />
                         <div class="product-label">
@@ -640,7 +569,7 @@
                       </div>
                       <div class="product-body">
                         <h3 class="product-name">
-                          <a href="./detail-product-smartphone.html"
+                          <a href="./detail-product-smartphone-notlogin.html"
                             >Samsung Galaxy Z Flip5 512GB</a
                           >
                         </h3>
@@ -662,7 +591,7 @@
                         <button
                           class="add-to-cart-btn btn-announce"
                           type-announce="success"
-                          message="Thêm sản phẩm vào giỏ hàng thành công!"
+                          message="Vui lòng đăng nhập/đăng kí tài khoản để mua hàng!"
                         >
                           <i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng
                         </button>
@@ -680,7 +609,7 @@
                       </div>
                       <div class="product-body">
                         <h3 class="product-name">
-                          <a href="./detail-product-laptop.html"
+                          <a href="./detail-product-laptop-notlogin.html"
                             >Laptop ASUS Gaming VivoBook K3605ZC-RP564W</a
                           >
                         </h3>
@@ -702,7 +631,7 @@
                         <button
                           class="add-to-cart-btn btn-announce"
                           type-announce="success"
-                          message="Thêm sản phẩm vào giỏ hàng thành công!"
+                          message="Vui lòng đăng nhập/đăng kí tài khoản để mua hàng!"
                         >
                           <i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng
                         </button>
@@ -710,7 +639,7 @@
                     </div>
                     <!-- /product -->
                     <!-- product -->
-                    <div class="product">
+                    <div class="product" style="margin-bottom: 50px">
                       <div class="product-img">
                         <img src="./img/sanphammoi_banphim.png" alt="" />
                         <div class="product-label">
@@ -720,7 +649,7 @@
                       </div>
                       <div class="product-body">
                         <h3 class="product-name">
-                          <a href="./detail-product-accessories.html"
+                          <a href="./detail-product-accessories-notlogin.html"
                             >Bàn phím cơ E-DRA EK375 Alpha Đen Đỏ</a
                           >
                         </h3>
@@ -740,7 +669,7 @@
                         <button
                           class="add-to-cart-btn btn-announce"
                           type-announce="success"
-                          message="Thêm sản phẩm vào giỏ hàng thành công!"
+                          message="Vui lòng đăng nhập/đăng kí tài khoản để mua hàng!"
                         >
                           <i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng
                         </button>
@@ -758,7 +687,7 @@
                       </div>
                       <div class="product-body">
                         <h3 class="product-name">
-                          <a href="./detail-product-camera.html"
+                          <a href="./detail-product-camera-notlogin.html"
                             >Canon EOS R8, Mới 100% (Chính hãng Canon)</a
                           >
                         </h3>
@@ -780,7 +709,7 @@
                         <button
                           class="add-to-cart-btn btn-announce"
                           type-announce="success"
-                          message="Thêm sản phẩm vào giỏ hàng thành công!"
+                          message="Vui lòng đăng nhập/đăng kí tài khoản để mua hàng!"
                         >
                           <i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng
                         </button>
@@ -873,10 +802,10 @@
               <div class="footer">
                 <h3 class="footer-title">Sản phẩm</h3>
                 <ul class="footer-links">
-                  <li><a href="./store-latop.html">Máy tính</a></li>
-                  <li><a href="./store-smartphone.html">Điện thoại</a></li>
-                  <li><a href="./store-camera.html">Máy ảnh</a></li>
-                  <li><a href="./store-accessories.html">Phụ kiện</a></li>
+                  <li><a href="./store-laptop-notlogin.html">Máy tính</a></li>
+                  <li><a href="./store-smartphone-notlogin.html">Điện thoại</a></li>
+                  <li><a href="./store-camera-notlogin.html">Máy ảnh</a></li>
+                  <li><a href="./store-accessories-notlogin.html">Phụ kiện</a></li>
                 </ul>
               </div>
             </div>
@@ -896,8 +825,7 @@
             <div class="col-md-3 col-xs-6">
               <div class="footer">
                 <h3 class="footer-title">Dịch vụ</h3>
-                <ul class="footer-links">
-                  <li><a href="./account-information.html">Tài khoản</a></li>
+                <u<li><a href="./account-information.html">Tài khoản</a></li>
                   <li><a href="./shopping-cart.html">Giỏ hàng</a></li>
                   <li><a href="#">Trợ giúp</a></li>
                 </ul>
