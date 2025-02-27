@@ -1,0 +1,66 @@
+-- Câu lệnh tạo bảng dữ liệu
+CREATE DATABASE teachstore;
+use techstore
+
+CREATE TABLE User (
+    userId INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100),
+    password VARCHAR(255),
+    phoneNumber VARCHAR(20),
+    gender ENUM('MALE', 'FEMALE'),
+    avatar VARCHAR(255),
+    isAdmin BOOLEAN DEFAULT FALSE
+);
+
+CREATE TABLE UserAddress (
+    shippingAddressId INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    isDefault BOOLEAN DEFAULT FALSE
+);
+
+CREATE TABLE Orders (
+    orderId INT AUTO_INCREMENT PRIMARY KEY,
+    userId INT,
+    orderDate DATETIME,
+    status VARCHAR(20),
+    totalAmount DECIMAL(10,2),
+    shippingAddressId INT,
+    paymentMethod VARCHAR(50),
+    FOREIGN KEY (userId) REFERENCES User(userId),
+    FOREIGN KEY (shippingAddressId) REFERENCES UserAddress(shippingAddressId)
+);
+
+CREATE TABLE Category (
+    categoryId INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100)
+);
+
+CREATE TABLE Product (
+    productId INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    categoryId INT,
+    FOREIGN KEY (categoryId) REFERENCES Category(categoryId)
+);
+
+
+CREATE TABLE ProductAttribute (
+    attributeId INT AUTO_INCREMENT PRIMARY KEY,
+    productId INT,
+    attributeName VARCHAR(100),
+    attributeValue VARCHAR(255),
+    categoryId INT,
+    FOREIGN KEY (productId) REFERENCES Product(productId),
+    FOREIGN KEY (categoryId) REFERENCES Category(categoryId)
+);
+
+CREATE TABLE CartItem (
+    cartItemId INT AUTO_INCREMENT PRIMARY KEY,
+    userId INT,
+    productId INT,
+    quantity INT,
+    addedDate DATETIME,
+    FOREIGN KEY (userId) REFERENCES User(userId),
+    FOREIGN KEY (productId) REFERENCES Product(productId)
+);
+
