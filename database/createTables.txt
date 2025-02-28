@@ -1,5 +1,5 @@
 -- Câu lệnh tạo bảng dữ liệu
-CREATE DATABASE teachstore;
+CREATE DATABASE techstore;
 use techstore
 
 CREATE TABLE User (
@@ -8,28 +8,44 @@ CREATE TABLE User (
     email VARCHAR(100),
     password VARCHAR(255),
     phoneNumber VARCHAR(20),
-    gender ENUM('MALE', 'FEMALE'),
+    gender ENUM('MALE', 'FEMALE') DEFAULT 'MALE',
     avatar VARCHAR(255),
     isAdmin BOOLEAN DEFAULT FALSE
 );
 
+
 CREATE TABLE UserAddress (
     shippingAddressId INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100),
+    address VARCHAR(255) NOT NULL,
     isDefault BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE Orders (
     orderId INT AUTO_INCREMENT PRIMARY KEY,
     userId INT,
+    orderCode VARCHAR(20) UNIQUE NOT NULL, -- Mã đơn hàng duy nhất
     orderDate DATETIME,
-    status VARCHAR(20),
-    totalAmount DECIMAL(10,2),
-    shippingAddressId INT,
+    status ENUM('Pending', 'Confirmed', 'Delivered', 'Cancelled') NOT NULL DEFAULT 'Pending',
+    totalAmount INT,
+    shippingAddressId INT NULL, -- Cho phép NULL khi khách nhập địa chỉ mới
+    customShippingAddress VARCHAR(255) NULL, -- Lưu địa chỉ nhập mới
     paymentMethod VARCHAR(50),
     FOREIGN KEY (userId) REFERENCES User(userId),
-    FOREIGN KEY (shippingAddressId) REFERENCES UserAddress(shippingAddressId)
+    FOREIGN KEY (shippingAddressId) REFERENCES UserAddress(shippingAddressId) ON DELETE SET NULL
 );
+
+CREATE TABLE OrderDetail (
+    orderDetailId INT AUTO_INCREMENT PRIMARY KEY, 
+    orderId INT, 
+    productId INT,
+    quantity INT NOT NULL CHECK (quantity > 0), -- Đảm bảo số lượng hợp lệ
+    price DECIMAL(10,2) NOT NULL CHECK (price >= 0), -- Đảm bảo giá không âm
+    subtotal DECIMAL(10,2) GENERATED ALWAYS AS (quantity * price) STORED, -- Tổng tiền
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP, -- Thời gian tạo
+    FOREIGN KEY (orderId) REFERENCES Orders(orderId), 
+    FOREIGN KEY (productId) REFERENCES Product(productId) 
+);
+
 
 CREATE TABLE Category (
     categoryId INT AUTO_INCREMENT PRIMARY KEY,
@@ -38,8 +54,15 @@ CREATE TABLE Category (
 
 CREATE TABLE Product (
     productId INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100),
+    name VARCHAR(100) NOT NULL,
     categoryId INT,
+    image VARCHAR(255),
+    description TEXT, -- Mô tả chi tiết sản phẩm
+    stock INT DEFAULT 0 CHECK (stock >= 0), -- Đảm bảo số lượng tồn kho >= 0
+    price INT NOT NULL CHECK (price >= 0), -- Giá không được âm
+    discountPercent DECIMAL(5,2) DEFAULT 0 CHECK (discountPercent BETWEEN 0 AND 100), -- Giảm giá hợp lệ
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP, -- Thời gian tạo
+    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- Cập nhật thời gian
     FOREIGN KEY (categoryId) REFERENCES Category(categoryId)
 );
 
@@ -58,9 +81,21 @@ CREATE TABLE CartItem (
     cartItemId INT AUTO_INCREMENT PRIMARY KEY,
     userId INT,
     productId INT,
-    quantity INT,
-    addedDate DATETIME,
+    quantity INT NOT NULL CHECK (quantity > 0),
+    addedDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (userId, productId),  -- Đảm bảo mỗi user chỉ có một dòng cho mỗi sản phẩm
+    FOREIGN KEY (userId) REFERENCES User(userId) ,
+    FOREIGN KEY (productId) REFERENCES Product(productId) 
+);
+
+
+CREATE TABLE Review (
+    reviewId INT AUTO_INCREMENT PRIMARY KEY,
+    userId INT,
+    productId INT,
+    rating INT CHECK (rating BETWEEN 1 AND 5),
+    comment TEXT,
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (userId) REFERENCES User(userId),
     FOREIGN KEY (productId) REFERENCES Product(productId)
 );
-
