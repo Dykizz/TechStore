@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Electro - HTML Ecommerce Template</title>
+    <!--Favicon-->
+    <link rel="shortcut icon" href="./img/logo.png" type="image/x-icon" />
+    <!-- Google font -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap -->
+    <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" />
+    <!-- Slick -->
+    <link type="text/css" rel="stylesheet" href="css/slick.css" />
+    <link type="text/css" rel="stylesheet" href="css/slick-theme.css" />
+    <!-- nouislider -->
+    <link type="text/css" rel="stylesheet" href="css/nouislider.min.css" />
+    <!-- Font Awesome Icon -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <!-- Custom stlylesheet -->
+    <link type="text/css" rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="alert alert-show announce" role="alert"></div>
+    <!-- HEADER -->
+    <header>
+      <!-- TOP HEADER -->
+      <div id="top-header">
+        <div class="container">
+          <ul class="header-links pull-left">
+            <li>
+              <a href="#"><i class="fa fa-phone"></i> 0975419019 </a>
+            </li>
+            <li>
+              <a href="#"><i class="fa fa-envelope-o"></i> nhom6@email.com </a>
+            </li>
+            <li>
+              <a href="#"
+                ><i class="fa fa-map-marker"></i> 273 An Dương Vương, Phường 3,
+                Quận 5
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!-- /TOP HEADER -->
+      <!-- MAIN HEADER -->
+      <div id="header" style="border-bottom: 3px solid red">
+        <!-- container -->
+        <div class="container">
+          <!-- row -->
+          <div class="row">
+            <!-- LOGO -->
+            <div class="col-md-3">
+              <div class="header-logo">
+                <a href="./index-notlogin.html" class="logo">
+                  <img src="./img/logo.png" alt="" />
+                </a>
+              </div>
+            </div>
+            <!-- /LOGO -->
+
+            <!-- ACCOUNT -->
+            <div class="col-md-9 clearfix">
+              <div class="header-ctn">
+                <!-- Tài khoản -->
+                <div>
+                  <a
+                    href="./login.html"
+                    class="btn btn-primary"
+                    aria-expanded="true"
+                  >
+                    <span>Đăng nhập</span>
+                  </a>
+                </div>
+                <div>
+                  <a
+                    href="./register.html"
+                    class="btn btn-primary"
+                    aria-expanded="true"
+                  >
+                    <span>Đăng kí</span>
+                  </a>
+                </div>
+                <!-- /Tài khoản -->
+              </div>
+            </div>
+            <!-- /ACCOUNT -->
+          </div>
+          <!-- row -->
+        </div>
+        <!-- container -->
+      </div>
+      <!-- /MAIN HEADER -->
+    </header>
+    <div class="body">
+      <div class="login-container">
+        <h2 class="login-title">Quên mật khẩu</h2>
+        <div class="login-form">
+          <div>
+            <label for="username">Tài khoản email</label>
+            <div class="input-wrapper">
+              <i class="fas fa-user"></i>
+              <input type="email" id="username" placeholder="Nhập tài khoản email đã đăng kí" />
+            </div>
+          </div>
+          
+          <button
+            style="margin-bottom: 10px"
+            type="submit"
+            class="login-button btn-announce"
+            type-announce="success"
+            message="Hệ thống đã gửi link xác nhận đến gmail của bạn! <br>Lưu ý link này chỉ có hiệu lực trong 3 phút. <br/>"
+          >
+            Xác nhận
+          </button>
+        </form>
+        <p class="text-center">
+          Bạn đã có tài khoản?
+          <a style="font-weight: bold; color: blue" href="./login.html"
+            >Đăng nhập</a
+          >
+        </p>
+      </div>
+    </div>
+  </body>
+  <script src="js/helper.js"></script>
+</html>

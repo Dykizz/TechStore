@@ -1,249 +1,321 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Trang Admin</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
-        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="style.css">
-</head>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+      integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-<body>
+  <body>
+    <div class="alert alert-show announce" role="alert"></div>
     <header>
-        <div class="inner-logo">
-            <a href="./index.html">
-                <img src="../img/logo.png" alt="Logo" srcset="">
-            </a>
+      <div class="inner-logo">
+        <a href="./index.html">
+          <img src="../img/logo.png" alt="Logo" srcset="" />
+        </a>
+      </div>
+      <div class="inner-user">
+        <div class="notification">
+          <i class="fa-regular fa-bell"></i>
+          <span>Thông báo</span>
         </div>
-        <div class="inner-user">
-            <div class="notification">
-                <i class="fa-regular fa-bell"></i>
-                <span>Thông báo</span>
-            </div>
-            <div class="infor-user">
-                <div class="avatar">
-                    <i class="fa-solid fa-user"></i>
-                </div>
-                <span>Admin</span>
-            </div>
+        <div class="infor-user">
+          <div class="avatar">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <span>Admin</span>
         </div>
+        <div href="./login.html" class="btn-logout">
+          <a href="./login.html">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>Đăng xuất</span>
+          </a>
+        </div>
+      </div>
     </header>
 
     <ul class="sider">
-        <li>
-            <div class="inner-icon">
-                <i class="fa-solid fa-gauge-high"></i>
-            </div>
-            <a href="./index.html">Tổng quan</a>
-        </li>
-        <li>
-            <div class="inner-icon">
-                <i class="fa-solid fa-people-group"></i>
-            </div>
-            <a href="./manage-client.html">Quản lý người dùng</a>
-        </li>
-        <li>
-            <div class="inner-icon">
-                <i class="fa-solid fa-list"></i>
-            </div>
-            <a href="./manage-category.html">Quản lý danh mục</a>
-        </li>
-        <li class="active">
-            <div class="inner-icon">
-                <i class="fa-brands fa-product-hunt"></i>
-            </div>
-            <a href="./manage-product.html">Quản lý sản phẩm</a>
-        </li>
-        <li>
-            <div class="inner-icon">
-                <i class="fa-solid fa-clipboard-list"></i>
-            </div>
-            <a href="./manage-order.html">Quản lý đơn hàng</a>
-        </li>
-        <li>
-            <div class="inner-icon">
-                <i class="fa-solid fa-chart-line"></i>
-            </div>
-            <a href="./statistic.html">Thống kê kinh doanh</a>
-        </li>
+      <li>
+        <div class="inner-icon">
+          <i class="fa-solid fa-gauge-high"></i>
+        </div>
+        <a href="./index.html">Tổng quan</a>
+      </li>
+      <li>
+        <div class="inner-icon">
+          <i class="fa-solid fa-people-group"></i>
+        </div>
+        <a href="./manage-client.html">Quản lý người dùng</a>
+      </li>
+      <li class="active">
+        <div class="inner-icon">
+          <i class="fa-brands fa-product-hunt"></i>
+        </div>
+        <a href="./manage-product.html">Quản lý sản phẩm</a>
+      </li>
+      <li>
+        <div class="inner-icon">
+          <i class="fa-solid fa-clipboard-list"></i>
+        </div>
+        <a href="./manage-order.html">Quản lý đơn hàng</a>
+      </li>
+      <li>
+        <div class="inner-icon">
+          <i class="fa-solid fa-chart-line"></i>
+        </div>
+        <a href="./statistic.html">Thống kê kinh doanh</a>
+      </li>
+      <li>
+        <div class="inner-icon">
+          <i class="fa-solid fa-medal"></i>
+        </div>
+        <a href="./top5-client.html">Top 5 khách hàng</a>
+      </li>
     </ul>
     <div class="content">
-        <h2 class="mb-4">Quản lý sản phẩm</h2>
+      <h2 class="mb-4">Quản lý sản phẩm</h2>
 
-        <div class="filter-search card mb-3">
-            <div class="card-header bg-success font-weight-bold">Lọc và tìm kiếm</div>
-            <div class="card-body row">
-                <div class="col-6">
-                    <div class="form-group">
-                        <label for="filter">Lọc theo danh mục</label>
-                        <select id="filter" class="form-control">
-                            <option value="all" selected>Tất cả</option>
-                            <option value="phone">Điện thoại</option>
-                            <option value="laptop">Máy tính</option>
-                            <option value="camera">Máy ảnh</option>
-                            <option value="accessory">Phụ kiện</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-6">
-                    <form action="./product-search.html" class="form-group">
-                        <label for="search">Tìm kiếm</label>
-                        <div class="input-group">
-                            <input id="search" class="form-control" type="text"
-                                placeholder="Nhập tên sản phẩm muốn tìm kiếm">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="submit">
-                                    <i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
+      <div class="filter-search card mb-3">
+        <div class="card-header bg-success font-weight-bold">
+          Lọc và tìm kiếm
         </div>
-
-        <h4 class="mb-3">Danh sách sản phẩm</h4>
-
-        <a href="./product-add.html" class="btn btn-outline-success mb-3">
-            <i class="fa-solid fa-plus"></i>
-            Thêm sản phẩm
-        </a>
-        <table class="table table-hover table-bordered text-center">
-            <thead class="bg-success">
-                <th>STT</th>
-                <th>Tên sản phẩm</th>
-                <th>Hình ảnh</th>
-                <th>Giá</th>
-                <th>Số lượng</th>
-                <th>Hành động</th>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>sản phẩm test</td>
-                    <td class="table_inner-img">
-                        <img src="../img/product01.png" alt="" srcset="">
-                    </td>
-                    <td>10000 VND</td>
-                    <td>12</td>
-                    <td class="table_inner-btn">
-                        <button class="btn btn-sm btn-warning">
-                            <a href="./product-edit.html">Sửa</a>
-                        </button>
-                        <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#exampleModal">Xóa</button>
-                        <button class="btn btn-sm btn-primary">
-                            <a href="./product-detail.html">Chi tiết</a>
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>sản phẩm test</td>
-                    <td class="table_inner-img">
-                        <img src="../img/product02.png" alt="" srcset="">
-                    </td>
-                    <td>10000 VND</td>
-                    <td>12</td>
-                    <td class="table_inner-btn">
-                        <button class="btn btn-sm btn-warning">
-                            <a href="./product-edit.html">Sửa</a>
-                        </button>
-                        <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#exampleModal">Xóa</button>
-                        <button class="btn btn-sm btn-primary">
-                            <a href="./product-detail.html">Chi tiết</a>
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>sản phẩm test</td>
-                    <td class="table_inner-img">
-                        <img src="../img/product03.png" alt="" srcset="">
-                    </td>
-                    <td>10000 VND</td>
-                    <td>12</td>
-                    <td class="table_inner-btn">
-                        <button class="btn btn-sm btn-warning">
-                            <a href="./product-edit.html">Sửa</a>
-                        </button>
-                        <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#exampleModal">Xóa</button>
-                        <button class="btn btn-sm btn-primary">
-                            <a href="./product-detail.html">Chi tiết</a>
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>sản phẩm test</td>
-                    <td class="table_inner-img">
-                        <img src="../img/product04.png" alt="" srcset="">
-                    </td>
-                    <td>10000 VND</td>
-                    <td>12</td>
-                    <td class="table_inner-btn">
-                        <button class="btn btn-sm btn-warning">
-                            <a href="./product-edit.html">Sửa</a>
-                        </button>
-                        <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#exampleModal">Xóa</button>
-                        <button class="btn btn-sm btn-primary">
-                            <a href="./product-detail.html">Chi tiết</a>
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <div class="inner-pagination">
-            <ul class="pagination">
-                <li class="page-item ">
-                    <a href="./manage-product.html" class="page-link"><<</a>
-                </li>
-                <li class="page-item active">
-                    <a href="./manage-product.html" class="page-link">1</a>
-                </li>
-                <li class="page-item">
-                    <a href="./manage-product.html" class="page-link">2</a>
-                </li>
-                <li class="page-item">
-                    <a href="./manage-product.html" class="page-link">3</a>
-                </li>
-                <li class="page-item">
-                    <a href="./manage-product.html" class="page-link">>></a>
-                </li>
-            </ul>
-        </div>
-        
-          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Xác nhận xóa sản phẩm</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  Bạn có chắc chắn muốn xóa sản phẩm này ?
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                  <button type="button" class="btn btn-primary">
-                        <a href="./manage-product.html">Xác nhận xóa</a>
-                    </button>
-                </div>
-              </div>
+        <div class="card-body row">
+          <div class="col-6">
+            <div class="form-group">
+              <label for="filter">Lọc theo danh mục</label>
+              <select id="filter" class="form-control">
+                <option value="all" selected>Tất cả</option>
+                <option value="phone">Điện thoại</option>
+                <option value="laptop">Máy tính</option>
+                <option value="camera">Máy ảnh</option>
+                <option value="accessory">Phụ kiện</option>
+              </select>
             </div>
           </div>
+          <div class="col-6">
+            <form action="./product-search.html" class="form-group">
+              <label for="search">Tìm kiếm</label>
+              <div class="input-group">
+                <input
+                  id="search"
+                  class="form-control"
+                  type="text"
+                  placeholder="Nhập tên sản phẩm muốn tìm kiếm"
+                />
+                <div class="input-group-append">
+                  <button class="btn btn-primary" type="submit">
+                    <i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
 
+      <h4 class="mb-3">Danh sách sản phẩm</h4>
+
+      <a href="./product-add.html" class="btn btn-outline-success mb-3">
+        <i class="fa-solid fa-plus"></i>
+        Thêm sản phẩm
+      </a>
+      <table class="table table-hover table-bordered text-center">
+        <thead class="bg-success">
+          <th>STT</th>
+          <th>Tên sản phẩm</th>
+          <th>Hình ảnh</th>
+          <th>Giá</th>
+          <th>Số lượng</th>
+          <th>Hành động</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Iphone 16 Pro Max 512GB</td>
+            <td class="table_inner-img">
+              <img src="../img/sp1_giohang.png" alt="" srcset="" />
+            </td>
+            <td>43.250.000 VND</td>
+            <td>78</td>
+            <td class="table_inner-btn">
+              <button class="btn btn-sm btn-warning">
+                <a href="./product-edit.html">Sửa</a>
+              </button>
+              <button
+                class="btn btn-sm btn-danger"
+                data-toggle="modal"
+                data-target="#exampleModal"
+              >
+                Xóa
+              </button>
+              <button class="btn btn-sm btn-primary">
+                <a href="./product-detail.html">Chi tiết</a>
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Samsung Galaxy Z Flip5 512GB</td>
+            <td class="table_inner-img">
+              <img src="../img/sp1_sanpham.png" alt="" srcset="" />
+            </td>
+            <td>4.990.000 VND</td>
+            <td>32</td>
+            <td class="table_inner-btn">
+              <button class="btn btn-sm btn-warning">
+                <a href="./product-edit.html">Sửa</a>
+              </button>
+              <button
+                class="btn btn-sm btn-danger"
+                data-toggle="modal"
+                data-target="#exampleModal"
+              >
+                Xóa
+              </button>
+              <button class="btn btn-sm btn-primary">
+                <a href="./product-detail.html">Chi tiết</a>
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Laptop ASUS Expertbook</td>
+            <td class="table_inner-img">
+              <img src="../img/sp5_sanpham.png" alt="" srcset="" />
+            </td>
+            <td>19.990.000 VND</td>
+            <td>52</td>
+            <td class="table_inner-btn">
+              <button class="btn btn-sm btn-warning">
+                <a href="./product-edit.html">Sửa</a>
+              </button>
+              <button
+                class="btn btn-sm btn-danger"
+                data-toggle="modal"
+                data-target="#exampleModal"
+              >
+                Xóa
+              </button>
+              <button class="btn btn-sm btn-primary">
+                <a href="./product-detail.html">Chi tiết</a>
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Máy ảnh Canon EOS R50</td>
+            <td class="table_inner-img">
+              <img src="../img/sp8_sanpham.png" alt="" srcset="" />
+            </td>
+            <td>22.900.000 VND</td>
+            <td>12</td>
+            <td class="table_inner-btn">
+              <button class="btn btn-sm btn-warning">
+                <a href="./product-edit.html">Sửa</a>
+              </button>
+              <button
+                class="btn btn-sm btn-danger"
+                data-toggle="modal"
+                data-target="#exampleModal"
+              >
+                Xóa
+              </button>
+              <button class="btn btn-sm btn-primary">
+                <a href="./product-detail.html">Chi tiết</a>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="inner-pagination">
+        <ul class="pagination">
+          <li class="page-item">
+            <a href="./manage-product.html" class="page-link"><<</a>
+          </li>
+          <li class="page-item active">
+            <a href="./manage-product.html" class="page-link">1</a>
+          </li>
+          <li class="page-item">
+            <a href="./manage-product.html" class="page-link">2</a>
+          </li>
+          <li class="page-item">
+            <a href="./manage-product.html" class="page-link">3</a>
+          </li>
+          <li class="page-item">
+            <a href="./manage-product.html" class="page-link">>></a>
+          </li>
+        </ul>
+      </div>
+
+      <div
+        class="modal fade"
+        id="exampleModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">
+                Xác nhận xóa sản phẩm
+              </h5>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              Bạn có chắc chắn muốn xóa sản phẩm này ?
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Hủy
+              </button>
+              <button type="button" class="btn btn-primary">
+                <a href="./manage-product.html">Xác nhận xóa</a>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</body>
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+  </body>
+  <script
+    src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+    crossorigin="anonymous"
+  ></script>
 </html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trang Admin</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+      integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <header >
+      <div class="inner-logo">
+        <a href="./login.html">
+          <img src="../img/logo.png" alt="Logo" srcset="" />
+        </a>
+      </div>
+    </header>
+    <div class="body">
+      <div class="login-container">
+        <h2 class="login-title">Đăng nhập</h2>
+        <form class="login-form" action="./index.html">
+          <div>
+            <label for="username">Tài khoản</label>
+            <div class="input-wrapper">
+              <i class="fas fa-user"></i>
+              <input type="text" id="username" placeholder="Nhập tài khoản" />
+            </div>
+          </div>
+          <div>
+            <label for="password">Mật khẩu</label>
+            <div class="input-wrapper">
+              <i class="fas fa-lock"></i>
+              <input
+                type="password"
+                id="password"
+                placeholder="Nhập mật khẩu"
+              />
+            </div>
+          </div>
+          <button type="submit" class="login-button">Xác nhận</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
