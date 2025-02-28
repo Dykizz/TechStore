@@ -4,13 +4,16 @@ use techstore
 
 CREATE TABLE User (
     userId INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100),
-    email VARCHAR(100),
-    password VARCHAR(255),
-    phoneNumber VARCHAR(20),
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE, -- Đảm bảo email là duy nhất
+    password VARCHAR(255) NOT NULL,
+    phoneNumber VARCHAR(20) UNIQUE CHECK (phoneNumber REGEXP '^[0-9]{10,15}$'), -- Chỉ chứa số, dài từ 10-15 ký tự
     gender ENUM('MALE', 'FEMALE') DEFAULT 'MALE',
     avatar VARCHAR(255),
-    isAdmin BOOLEAN DEFAULT FALSE
+    isAdmin BOOLEAN DEFAULT FALSE,
+    status ENUM('ACTIVE', 'INACTIVE') DEFAULT 'ACTIVE',
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP, -- Ngày tạo tài khoản
+    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP -- Cập nhật tự động khi có thay đổi
 );
 
 
@@ -39,8 +42,8 @@ CREATE TABLE OrderDetail (
     orderId INT, 
     productId INT,
     quantity INT NOT NULL CHECK (quantity > 0), -- Đảm bảo số lượng hợp lệ
-    price DECIMAL(10,2) NOT NULL CHECK (price >= 0), -- Đảm bảo giá không âm
-    subtotal DECIMAL(10,2) GENERATED ALWAYS AS (quantity * price) STORED, -- Tổng tiền
+    price INT NOT NULL CHECK (price >= 0), -- Đảm bảo giá không âm
+    subtotal INT GENERATED ALWAYS AS (quantity * price) STORED, -- Tổng tiền
     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP, -- Thời gian tạo
     FOREIGN KEY (orderId) REFERENCES Orders(orderId), 
     FOREIGN KEY (productId) REFERENCES Product(productId) 
@@ -96,6 +99,7 @@ CREATE TABLE Review (
     rating INT CHECK (rating BETWEEN 1 AND 5),
     comment TEXT,
     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (userId, productId)
     FOREIGN KEY (userId) REFERENCES User(userId),
     FOREIGN KEY (productId) REFERENCES Product(productId)
 );
