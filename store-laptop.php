@@ -1,6 +1,6 @@
 <?php
 include 'connect.php';
-
+include 'information.php';
 $category_id = isset($_GET['category']) ? (int)$_GET['category'] : 1;
 $keyword = isset($_GET['keyword']) ? $conn->real_escape_string($_GET['keyword']) : '';
 $min_price = isset($_GET['min_price']) && $_GET['min_price'] !== '' ? (int)$_GET['min_price'] : 0;
@@ -43,7 +43,7 @@ $result = $conn->query($sql);
         <div id="top-header">
             <div class="container">
                 <ul class="header-links pull-left">
-                    <li><a href="#"><i class="fa fa-phone"></i> 0975419019 </a></li>
+                    <li><a href="#"><i class="fa fa-phone"></i> Hotline: <strong>+84 975 419 019</strong> </a></li>
                     <li><a href="#"><i class="fa fa-envelope-o"></i> nhom6@email.com </a></li>
                     <li><a href="#"><i class="fa fa-map-marker"></i> 273 An Dương Vương, Phường 3, Quận 5 </a></li>
                 </ul>
@@ -75,7 +75,7 @@ $result = $conn->query($sql);
                             <div class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                                     <i class="fa fa-user-o"></i>
-                                    <span>Nguyễn Thế Anh</span>
+                                    <span><?php echo htmlspecialchars($fullname); ?></span>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a href="./account-information.php">Thông tin cá nhân</a></li>
@@ -308,7 +308,7 @@ $result = $conn->query($sql);
                             <h3 class="footer-title">Về chúng tôi</h3>
                             <p>Chất lượng làm nên thương hiệu.</p>
                             <ul class="footer-links">
-                                <li><a href="#"><i class="fa fa-phone"></i>0975419019 </a></li>
+                                <li><a href="#"><i class="fa fa-phone"></i><strong>+84 975 419 019</strong></a></li>
                                 <li><a href="#"><i class="fa fa-envelope-o"></i>nhom6@email.com </a></li>
                                 <li><a href="#"><i class="fa fa-map-marker"></i>273 An Dương Vương, Phường 3, Quận 5 </a></li>
                             </ul>

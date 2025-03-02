@@ -1,5 +1,5 @@
 <?php
-include 'connect.php';
+include 'information.php';
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -36,7 +36,7 @@ include 'connect.php';
         <div class="container">
           <ul class="header-links pull-left">
             <li>
-              <a href="#"><i class="fa fa-phone"></i> 0975419019 </a>
+              <a href="#"><i class="fa fa-phone"></i> Hotline: <strong>+84 975 419 019</strong>
             </li>
             <li>
               <a href="#"><i class="fa fa-envelope-o"></i> nhom6@email.com </a>
@@ -60,7 +60,7 @@ include 'connect.php';
             <!-- LOGO -->
             <div class="col-md-3">
               <div class="header-logo">
-                <a href="./index.html" class="logo">
+                <a href="./index.php" class="logo">
                   <img src="./img/logo.png" alt="" />
                 </a>
               </div>
@@ -91,18 +91,17 @@ include 'connect.php';
                     aria-expanded="true"
                   >
                     <i class="fa fa-user-o"></i>
-
-                    <span>Nguyễn Thế Anh</span>
+                    <span><?php echo htmlspecialchars($fullname); ?></span>
                   </a>
                   <ul class="dropdown-menu">
                     <li>
-                      <a href="./account-information.html">Thông tin cá nhân</a>
+                      <a href="./account-information.php">Thông tin cá nhân</a>
                     </li>
                     <li>
-                      <a href="./purchasing-history.html">Lịch sử mua hàng</a>
+                      <a href="./purchasing-history.php">Lịch sử mua hàng</a>
                     </li>
-                    <li><a href="./change-password.html">Đổi mật khẩu</a></li>
-                    <li><a href="./index-notlogin.html">Đăng xuất</a></li>
+                    <li><a href="./change-password.php">Đổi mật khẩu</a></li>
+                    <li><a href="./index-notlogin.php">Đăng xuất</a></li>
                   </ul>
                 </div>
                 <!-- /Tài khoản -->
@@ -126,7 +125,7 @@ include 'connect.php';
                         </div>
                         <div class="product-body">
                           <h3 class="product-name">
-                            <a href="./detail-product-smartphone.html"
+                            <a href="./detail-product-smartphone.php"
                               >Iphone 16 Pro Max 512GB | Chính hãng VN/A</a
                             >
                           </h3>
@@ -144,7 +143,7 @@ include 'connect.php';
                         </div>
                         <div class="product-body">
                           <h3 class="product-name">
-                            <a href="./detail-product-accessories.html"
+                            <a href="./detail-product-accessories.php"
                               >Tai nghe Bluetooth Apple AirPods 3 MagSafe</a
                             >
                           </h3>
@@ -162,7 +161,7 @@ include 'connect.php';
                       <h5>TỔNG: 52.960.000 VND</h5>
                     </div>
                     <div class="cart-btns">
-                      <a href="./shopping-cart.html">Xem giỏ hàng</a>
+                      <a href="./shopping-cart.php">Xem giỏ hàng</a>
                       <a href="./checkout.html">
                         Thanh toán <i class="fa fa-arrow-circle-right"></i>
                       </a>
@@ -198,11 +197,11 @@ include 'connect.php';
         <div id="responsive-nav">
           <!-- NAV -->
           <ul class="main-nav nav navbar-nav">
-            <li class="active"><a href="./index.html">Trang chủ</a></li>
-            <li><a href="./store-latop.html">Máy tính</a></li>
-            <li><a href="./store-smartphone.html">Điện thoại</a></li>
-            <li><a href="./store-camera.html">Máy ảnh</a></li>
-            <li><a href="./store-accessories.html">Phụ kiện</a></li>
+            <li class="active"><a href="./index.php">Trang chủ</a></li>
+            <li><a href="./store-laptop.php">Máy tính</a></li>
+            <li><a href="./store-smartphone.php">Điện thoại</a></li>
+            <li><a href="./store-camera.php">Máy ảnh</a></li>
+            <li><a href="./store-accessories.php">Phụ kiện</a></li>
           </ul>
           <!-- /NAV -->
         </div>
@@ -225,7 +224,7 @@ include 'connect.php';
               </div>
               <div class="shop-body">
                 <h3>Máy tính</h3>
-                <a href="./store-latop.html" class="cta-btn">
+                <a href="./store-laptop.php" class="cta-btn">
                   Mua ngay <i class="fa fa-arrow-circle-right"></i>
                 </a>
               </div>
@@ -240,7 +239,7 @@ include 'connect.php';
               </div>
               <div class="shop-body">
                 <h3>Điện thoại</h3>
-                <a href="./store-smartphone.html" class="cta-btn">
+                <a href="./store-smartphone.php" class="cta-btn">
                   Mua ngay <i class="fa fa-arrow-circle-right"></i>
                 </a>
               </div>
@@ -255,7 +254,7 @@ include 'connect.php';
               </div>
               <div class="shop-body">
                 <h3>Máy ảnh</h3>
-                <a href="./store-camera.html" class="cta-btn">
+                <a href="./store-camera.php" class="cta-btn">
                   Mua ngay <i class="fa fa-arrow-circle-right"></i>
                 </a>
               </div>
@@ -270,7 +269,7 @@ include 'connect.php';
               </div>
               <div class="shop-body">
                 <h3>Phụ kiện</h3>
-                <a href="./store-accessories.html" class="cta-btn">
+                <a href="./store-accessories.php" class="cta-btn">
                   Mua ngay <i class="fa fa-arrow-circle-right"></i>
                 </a>
               </div>
@@ -314,7 +313,7 @@ include 'connect.php';
                       </div>
                       <div class="product-body">
                         <h3 class="product-name">
-                          <a href="./detail-product-smartphone.html"
+                          <a href="./detail-product-smartphone.php"
                             >Samsung Galaxy Z Flip5 512GB</a
                           >
                         </h3>
@@ -354,7 +353,7 @@ include 'connect.php';
                       </div>
                       <div class="product-body">
                         <h3 class="product-name">
-                          <a href="./detail-product-laptop.html"
+                          <a href="./detail-product-laptop.php"
                             >Laptop ASUS Gaming VivoBook K3605ZC-RP564W</a
                           >
                         </h3>
@@ -394,7 +393,7 @@ include 'connect.php';
                       </div>
                       <div class="product-body">
                         <h3 class="product-name">
-                          <a href="./detail-product-accessories.html"
+                          <a href="./detail-product-accessories.php"
                             >Bàn phím cơ E-DRA EK375 Alpha Đen Đỏ</a
                           >
                         </h3>
@@ -432,7 +431,7 @@ include 'connect.php';
                       </div>
                       <div class="product-body">
                         <h3 class="product-name">
-                          <a href="./detail-product-camera.html"
+                          <a href="./detail-product-camera.php"
                             >Canon EOS R8, Mới 100% (Chính hãng Canon)</a
                           >
                         </h3>
@@ -550,7 +549,7 @@ include 'connect.php';
                       </div>
                       <div class="product-body">
                         <h3 class="product-name">
-                          <a href="./detail-product-smartphone.html"
+                          <a href="./detail-product-smartphone.php"
                             >iPhone 15 Pro Max 256GB | Chính hãng VN/A</a
                           >
                         </h3>
@@ -589,7 +588,7 @@ include 'connect.php';
                       </div>
                       <div class="product-body">
                         <h3 class="product-name">
-                          <a href="./detail-product-laptop.html"
+                          <a href="./detail-product-laptop.php"
                             >Laptop ASUS TUF Gaming A14 FA401WV-RG061WS</a
                           >
                         </h3>
@@ -631,7 +630,7 @@ include 'connect.php';
                       </div>
                       <div class="product-body">
                         <h3 class="product-name">
-                          <a href="./detail-product-accessories.html"
+                          <a href="./detail-product-accessories.php"
                             >Tai nghe Bluetooth Apple AirPods Pro 2 2023 USB-C
                           </a>
                         </h3>
@@ -673,7 +672,7 @@ include 'connect.php';
                       </div>
                       <div class="product-body">
                         <h3 class="product-name">
-                          <a href="./detail-product-camera.html"
+                          <a href="./detail-product-camera.php"
                             >Máy ảnh Canon EOS R10 kit RF-S18-45mm F4.5-6.3 IS
                             STM</a
                           >
@@ -724,11 +723,11 @@ include 'connect.php';
     <div class="store-filter clearfix">
       <ul class="store-pagination">
         <li class="active">1</li>
-        <li><a href="./index.html">2</a></li>
-        <li><a href="./index.html">3</a></li>
-        <li><a href="./index.html">4</a></li>
+        <li><a href="./index.php">2</a></li>
+        <li><a href="./index.php">3</a></li>
+        <li><a href="./index.php">4</a></li>
         <li>
-          <a href="./index.html"><i class="fa fa-angle-right"></i></a>
+          <a href="./index.php"><i class="fa fa-angle-right"></i></a>
         </li>
       </ul>
     </div>
@@ -784,7 +783,7 @@ include 'connect.php';
                 <p>Chất lượng làm nên thương hiệu.</p>
                 <ul class="footer-links">
                   <li>
-                    <a href="#"> <i class="fa fa-phone"></i>0975419019 </a>
+                    <a href="#"> <i class="fa fa-phone"></i><strong>+84 975 419 019</strong>
                   </li>
                   <li>
                     <a href="#">
@@ -804,10 +803,10 @@ include 'connect.php';
               <div class="footer">
                 <h3 class="footer-title">Sản phẩm</h3>
                 <ul class="footer-links">
-                  <li><a href="./store-latop.html">Máy tính</a></li>
-                  <li><a href="./store-smartphone.html">Điện thoại</a></li>
-                  <li><a href="./store-camera.html">Máy ảnh</a></li>
-                  <li><a href="./store-accessories.html">Phụ kiện</a></li>
+                  <li><a href="./store-laptop.php">Máy tính</a></li>
+                  <li><a href="./store-smartphone.php">Điện thoại</a></li>
+                  <li><a href="./store-camera.php">Máy ảnh</a></li>
+                  <li><a href="./store-accessories.php">Phụ kiện</a></li>
                 </ul>
               </div>
             </div>
@@ -828,8 +827,8 @@ include 'connect.php';
               <div class="footer">
                 <h3 class="footer-title">Dịch vụ</h3>
                 <ul class="footer-links">
-                  <li><a href="./account-information.html">Tài khoản</a></li>
-                  <li><a href="./shopping-cart.html">Giỏ hàng</a></li>
+                  <li><a href="./account-information.php">Tài khoản</a></li>
+                  <li><a href="./shopping-cart.php">Giỏ hàng</a></li>
                   <li><a href="#">Trợ giúp</a></li>
                 </ul>
               </div>
