@@ -1,6 +1,8 @@
 <?php
 include 'connect.php';
 include 'information.php';
+
+
 $category_id = isset($_GET['category']) ? (int)$_GET['category'] : 2;
 $keyword = isset($_GET['keyword']) ? $conn->real_escape_string($_GET['keyword']) : '';
 $min_price = isset($_GET['min_price']) && $_GET['min_price'] !== '' ? (int)$_GET['min_price'] : 0;
@@ -26,7 +28,7 @@ $result = $conn->query($sql);
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Electro - <?php echo $category_name; ?></title>
+    <title>Electro - <?php echo $category_name ?? 'Phụ kiện'; ?></title>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css"/>
     <link type="text/css" rel="stylesheet" href="css/slick.css"/>
@@ -34,16 +36,17 @@ $result = $conn->query($sql);
     <link type="text/css" rel="stylesheet" href="css/nouislider.min.css"/>
     <link rel="stylesheet" href="css/font-awesome.min.css">
     <link type="text/css" rel="stylesheet" href="css/style.css"/>
+
 </head>
 <body>
-    <div class="alert alert-success alert-show announce" role="alert"></div>
+    <div class="alert alert-show announce" role="alert"></div>
     
     <!-- HEADER -->
     <header>
         <div id="top-header">
             <div class="container">
                 <ul class="header-links pull-left">
-                    <li><a href="#"><i class="fa fa-phone"></i> Hotline: <strong>+84 975 419 019</strong></a></li>
+                    <li><a href="#"><i class="fa fa-phone"></i> Hotline: <strong>+84 975 419 019</strong> </a></li>
                     <li><a href="#"><i class="fa fa-envelope-o"></i> nhom6@email.com </a></li>
                     <li><a href="#"><i class="fa fa-map-marker"></i> 273 An Dương Vương, Phường 3, Quận 5 </a></li>
                 </ul>
@@ -61,13 +64,13 @@ $result = $conn->query($sql);
                     </div>
                     <div class="col-md-6">
                         <div class="header-search">
-                        <form action="./store-accessories.php" method="GET">
-                            <input name="keyword" class="input" placeholder="Nhập sản phẩm muốn tìm kiếm ..." value="<?php echo htmlspecialchars($keyword); ?>"/>
-                            <input type="hidden" name="category" value="<?php echo $category_id; ?>"/>
-                            <input type="hidden" name="min_price" value="<?php echo $min_price > 0 ? $min_price : ''; ?>"/>
-                            <input type="hidden" name="max_price" value="<?php echo $max_price < PHP_INT_MAX ? $max_price : ''; ?>"/>
-                            <button class="search-btn">Tìm kiếm</button>
-                        </form>
+                            <form action="./store-accessories.php" method="GET">
+                                <input name="keyword" class="input" placeholder="Nhập sản phẩm muốn tìm kiếm ..." value="<?php echo htmlspecialchars($keyword); ?>"/>
+                                <input type="hidden" name="category" value="<?php echo $category_id; ?>"/>
+                                <input type="hidden" name="min_price" value="<?php echo $min_price > 0 ? $min_price : ''; ?>"/>
+                                <input type="hidden" name="max_price" value="<?php echo $max_price < PHP_INT_MAX ? $max_price : ''; ?>"/>
+                                <button class="search-btn">Tìm kiếm</button>
+                            </form>
                         </div>
                     </div>
                     <div class="col-md-3 clearfix">
@@ -88,42 +91,41 @@ $result = $conn->query($sql);
                                 <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                                     <i class="fa fa-shopping-cart"></i>
                                     <span>Giỏ hàng</span>
-                                    <div class="qty">4</div>
+                                    <div class="qty"><?php echo array_sum(array_column($_SESSION['cart'] ?? [], 'quantity')); ?></div>
                                 </a>
                                 <div class="cart-dropdown">
                                     <div class="cart-list">
-                                        <div class="product-widget">
-                                            <div class="product-img">
-                                                <img src="./img/sp1_giohang.png" alt="">
-                                            </div>
-                                            <div class="product-body">
-                                                <h3 class="product-name">
-                                                    <a href="./detail-product-smartphone.php">Iphone 16 Pro Max 512GB | Chính hãng VN/A</a>
-                                                </h3>
-                                                <h4 class="product-price"><span class="qty">1x</span>40.990.000 VND</h4>
-                                            </div>
-                                            <button class="delete"><i class="fa fa-close"></i></button>
-                                        </div>
-                                        <div class="product-widget">
-                                            <div class="product-img">
-                                                <img src="./img/sp2_giohang.png" alt="">
-                                            </div>
-                                            <div class="product-body">
-                                                <h3 class="product-name">
-                                                    <a href="./detail-product-accessories.php">Tai nghe Bluetooth Apple AirPods 3 MagSafe</a>
-                                                </h3>
-                                                <h4 class="product-price"><span class="qty">3x</span>3.990.000 VND</h4>
-                                            </div>
-                                            <button class="delete"><i class="fa fa-close"></i></button>
-                                        </div>
+                                        <?php
+                                        if (!empty($_SESSION['cart'])) {
+                                            foreach ($_SESSION['cart'] as $id => $item) {
+                                                echo "
+                                                <div class='product-widget'>
+                                                    <div class='product-img'>
+                                                        <img src='{$item['image']}' alt='' />
+                                                    </div>
+                                                    <div class='product-body'>
+                                                        <h3 class='product-name'>
+                                                            <a href='detail-product.php?id={$id}'>{$item['name']}</a>
+                                                        </h3>
+                                                        <h4 class='product-price'>
+                                                            <span class='qty'>{$item['quantity']}x</span>" . number_format($item['price'], 0, ',', '.') . " VND
+                                                        </h4>
+                                                    </div>
+                                                    <button class='delete'><i class='fa fa-close'></i></button>
+                                                </div>";
+                                            }
+                                        } else {
+                                            echo "<p>Giỏ hàng trống!</p>";
+                                        }
+                                        ?>
                                     </div>
                                     <div class="cart-summary">
-                                        <small>4 sản phẩm được chọn</small>
-                                        <h5>TỔNG: 52.960.000 VND</h5>
+                                        <small><?php echo array_sum(array_column($_SESSION['cart'] ?? [], 'quantity')); ?> sản phẩm được chọn</small>
+                                        <h5>TỔNG: <?php echo number_format(array_sum(array_map(function($item) { return $item['price'] * $item['quantity']; }, $_SESSION['cart'] ?? [])), 0, ',', '.'); ?> VND</h5>
                                     </div>
                                     <div class="cart-btns">
                                         <a href="./shopping-cart.php">Xem giỏ hàng</a>
-                                        <a href="./checkout.php"> Thanh toán <i class="fa fa-arrow-circle-right"></i></a>
+                                        <a href="./checkout.php">Thanh toán <i class="fa fa-arrow-circle-right"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -183,7 +185,6 @@ $result = $conn->query($sql);
                     </div>
                     <div class="aside">
                         <h3 class="aside-title">Sản phẩm bán chạy</h3>
-                        <!-- Giữ nguyên tĩnh tạm thời -->
                         <div class="product-widget">
                             <div class="product-img"><img src="./img/iphone-15-pro-max_3.png" alt=""></div>
                             <div class="product-body">
@@ -223,8 +224,7 @@ $result = $conn->query($sql);
                         if ($result && $result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
                                 $discount = $row['discountPercent'] ? "-{$row['discountPercent']}%" : "";
-                                // Dùng cột "rating" từ bảng Review nếu có, hiện tại giả định rating là 5
-                                $stars = str_repeat('<i class="fa fa-star"></i>', 5); // Thay bằng logic từ Review nếu cần
+                                $stars = str_repeat('<i class="fa fa-star"></i>', 5);
                                 echo "
                                 <div class='col-md-4 col-xs-6' style='margin-bottom: 50px;'>
                                     <div class='product'>
@@ -239,16 +239,19 @@ $result = $conn->query($sql);
                                                 <a href='detail-product.php?id={$row['productId']}'>{$row['name']}</a>
                                             </h3>
                                             <h4 class='product-price-index'>
-                                                <del class='product-old-price-index'>" . number_format($row['price'] * (1 + $row['discountPercent'] / 100)) . " VND</del>
-                                                <span class='new-price-index'>" . number_format($row['price']) . " VND</span>
+                                                <del class='product-old-price-index'>" . number_format($row['price'] * (1 + $row['discountPercent'] / 100), 0, ',', '.') . " VND</del>
+                                                <span class='new-price-index'>" . number_format($row['price'], 0, ',', '.') . " VND</span>
                                             </h4>
                                             <div class='product-rating'>
                                                 {$stars}
                                             </div>
                                         </div>
                                         <div class='add-to-cart'>
-                                            <button class='add-to-cart-btn btn-announce' type-announce='success' 
-                                            message='Thêm sản phẩm vào giỏ hàng thành công!'>
+                                            <button class='add-to-cart-btn btn-announce' 
+                                                    data-product-id='{$row['productId']}' 
+                                                    data-name='{$row['name']}' 
+                                                    data-price='{$row['price']}' 
+                                                    data-image='{$row['image']}'>
                                                 <i class='fa fa-shopping-cart'></i> Thêm vào giỏ hàng
                                             </button>
                                         </div>
@@ -308,7 +311,7 @@ $result = $conn->query($sql);
                             <h3 class="footer-title">Về chúng tôi</h3>
                             <p>Chất lượng làm nên thương hiệu.</p>
                             <ul class="footer-links">
-                                <li><a href="#"><i class="fa fa-phone"></i><strong>+84 975 419 019</strong></a></li>
+                                <li><a href="#"><i class="fa fa-phone"></i><strong>+84 975 419 019</strong> </a></li>
                                 <li><a href="#"><i class="fa fa-envelope-o"></i>nhom6@email.com </a></li>
                                 <li><a href="#"><i class="fa fa-map-marker"></i>273 An Dương Vương, Phường 3, Quận 5 </a></li>
                             </ul>
@@ -373,30 +376,57 @@ $result = $conn->query($sql);
     </footer>
 
     <!-- jQuery Plugins -->
-    <script src="js/helper.js"></script>
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/slick.min.js"></script>
     <script src="js/nouislider.min.js"></script>
     <script src="js/jquery.zoom.min.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/announcement.js"></script>
     <script>
         document.querySelectorAll('.btn-announce').forEach(button => {
-            button.addEventListener('click', function() {
-                const message = this.getAttribute('message');
-                const type = this.getAttribute('type-announce');
-                const alert = document.createElement('div');
-                alert.className = `alert alert-${type} alert-show announce`;
-                alert.setAttribute('role', 'alert');
-                alert.textContent = message;
-                document.body.insertBefore(alert, document.body.firstChild);
-                setTimeout(() => alert.remove(), 3000);
+            button.addEventListener('click', async function (event) {
+                event.preventDefault();
+
+                const formData = new FormData();
+                formData.append('productId', this.getAttribute('data-product-id'));
+                formData.append('name', this.getAttribute('data-name'));
+                formData.append('price', this.getAttribute('data-price'));
+                formData.append('image', this.getAttribute('data-image'));
+
+                try {
+                    let response = await fetch("add-to-cart.php", {
+                        method: "POST",
+                        body: formData
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+
+                    let contentType = response.headers.get("content-type");
+                    if (!contentType || !contentType.includes("application/json")) {
+                        throw new Error("Response is not JSON");
+                    }
+
+                    let data = await response.json();
+
+                    // Hiển thị thông báo sử dụng hàm showAnnouncement từ announcement.js
+                    showAnnouncement(data.status === "success" ? "success" : "danger", data.message);
+
+                    // Cập nhật số lượng giỏ hàng
+                    const cartQty = document.querySelector('.header-ctn .qty');
+                    cartQty.textContent = data.cartQuantity || parseInt(cartQty.textContent) + 1;
+
+                } catch (error) {
+                    console.log("Fetch Error:", error);
+                    showAnnouncement("danger", "Lỗi khi thêm sản phẩm vào giỏ hàng!");
+                }
             });
         });
     </script>
 </body>
 </html>
-
 <?php
 $conn->close();
 ?>

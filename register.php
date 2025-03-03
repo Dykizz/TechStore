@@ -1,7 +1,10 @@
 <?php
 include 'connect.php';
 
-session_start(); // Bắt đầu session
+// Bật báo lỗi MySQL chi tiết
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
+session_start();
 
 $error_message = $success_message = $error_email = $error_name = '';
 $error_password1 = $error_password2 = '';
@@ -12,6 +15,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password1 = trim($_POST['password1']);
     $password2 = trim($_POST['password2']);
 
+    if (empty($name)) {
+        $error_name = 'Họ tên không được để trống!';
+    }
     if (empty($email)) {
         $error_email = 'Email không được để trống!';
     } else {
@@ -19,48 +25,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $error_email = 'Email không hợp lệ!';
         }
     }
-
     if (empty($password1)) {
         $error_password1 = 'Mật khẩu không được để trống!';
     }
-
-    if (empty($name)) {
-        $error_name = 'Họ tên không được để trống!';
+    if (empty($password2)) {
+        $error_password2 = 'Vui lòng nhập lại mật khẩu!';
     }
 
-    if (empty($error_email) && empty($error_password1) && empty($error_name)) {
+    if (empty($error_name) && empty($error_email) && empty($error_password1) && empty($error_password2)) {
         if ($password1 !== $password2) {
             $error_message = "Mật khẩu không khớp!";
         } else {
-            $escaped_email = mysqli_real_escape_string($conn, $email);
-            $sql = "SELECT * FROM user WHERE email = '$escaped_email'";
-            $result = mysqli_query($conn, $sql);
+            $sql = "SELECT userId FROM user WHERE email = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("s", $email);
+            $stmt->execute();
+            $result = $stmt->get_result();
 
-            if (mysqli_num_rows($result) > 0) {
+            if ($result->num_rows > 0) {
                 $error_message = "Email đã tồn tại!";
             } else {
-                $escaped_name = mysqli_real_escape_string($conn, $name);
-                $escaped_password1 = mysqli_real_escape_string($conn, $password1);
-                $sql = "INSERT INTO user (name, email, password) VALUES ('$escaped_name', '$escaped_email', '$escaped_password1')";
-                if (mysqli_query($conn, $sql)) {
-                    // Làm mới session
-                    session_unset();
-                    session_destroy();
-                    session_start();
+                $sql = "INSERT INTO user (name, email, password) VALUES (?, ?, ?)";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("sss", $name, $email, $password1);
 
-                    $_SESSION['name'] = $name;
+                if ($stmt->execute()) {
+                    $userId = $stmt->insert_id;
+                    $_SESSION['userId'] = $userId;
                     $_SESSION['email'] = $email;
-                    $_SESSION['fullname'] = $name; // Lưu fullname từ đăng ký
+                    $_SESSION['fullname'] = $name;
                     $success_message = "Đăng ký thành công! Bạn sẽ được chuyển đến trang đăng nhập sau 3 giây.";
                     header("refresh:3;url=login.php");
                     exit();
                 } else {
-                    $error_message = "Lỗi: " . mysqli_error($conn);
+                    $error_message = "Lỗi khi đăng ký: " . $conn->error;
                 }
             }
+            $stmt->close();
         }
     }
 }
+
+mysqli_close($conn);
 ?>
 
 <!DOCTYPE html>
@@ -80,7 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link type="text/css" rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-    <div class="alert alert-show announce" role="alert"></div>
+    <div class="alert alert-show announce" role="alert"><?php echo $success_message ?: $error_message; ?></div>
     <header>
         <div id="top-header">
             <div class="container">
@@ -125,7 +131,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <?php if (!empty($error_name)): ?>
                             <p class="error-name" style="color: red; font-style: italic;"><?php echo $error_name; ?></p>
                         <?php endif; ?>
-                    </div>  
+                    </div>
                     <div>
                         <label for="email">Email</label>
                         <div class="input-wrapper">
@@ -161,9 +167,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <?php elseif (!empty($success_message)): ?>
                         <div class="success-message" style="color: green; font-style: italic;"><?php echo $success_message; ?></div>
                     <?php endif; ?>
-                    <button style="margin-bottom: 10px" type="submit" class="login-button btn-announce" type-announce="success" message="Bạn đã đăng kí tài khoản thành công! <br> Vui lòng sang trang đăng nhập. </br>">
-                        Xác nhận
-                    </button>
+                    <button style="margin-bottom: 10px" type="submit" class="login-button btn-announce">Xác nhận</button>
                 </form>
                 <p class="text-center">
                     Bạn đã có tài khoản?
@@ -172,9 +176,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </div>
     </div>
+    <script src="js/helper.js"></script>
 </body>
-<script src="js/helper.js"></script>
 </html>
-<?php
-mysqli_close($conn);
-?>

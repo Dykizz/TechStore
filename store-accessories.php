@@ -1,6 +1,8 @@
 <?php
 include 'connect.php';
 include 'information.php';
+
+
 $category_id = isset($_GET['category']) ? (int)$_GET['category'] : 4;
 $keyword = isset($_GET['keyword']) ? $conn->real_escape_string($_GET['keyword']) : '';
 $min_price = isset($_GET['min_price']) && $_GET['min_price'] !== '' ? (int)$_GET['min_price'] : 0;
@@ -34,9 +36,10 @@ $result = $conn->query($sql);
     <link type="text/css" rel="stylesheet" href="css/nouislider.min.css"/>
     <link rel="stylesheet" href="css/font-awesome.min.css">
     <link type="text/css" rel="stylesheet" href="css/style.css"/>
+
 </head>
 <body>
-    <div class="alert alert-success alert-show announce" role="alert"></div>
+    <div class="alert alert-show announce" role="alert"></div>
     
     <!-- HEADER -->
     <header>
@@ -182,7 +185,34 @@ $result = $conn->query($sql);
                     </div>
                     <div class="aside">
                         <h3 class="aside-title">Sản phẩm bán chạy</h3>
-                        <!-- Giữ nguyên tĩnh tạm thời -->
+                        <div class="product-widget">
+                            <div class="product-img"><img src="./img/iphone-15-pro-max_3.png" alt=""></div>
+                            <div class="product-body">
+                                <h3 class="product-name"><a href="./detail-product-smartphone.php">iPhone 15 Pro Max 256GB | Chính hãng VN/A</a></h3>
+                                <h4 class="product-price">29.490.000₫ <del class="product-old-price">34.990.000₫</del></h4>
+                            </div>
+                        </div>
+                        <div class="product-widget">
+                            <div class="product-img"><img src="./img/sanphambanchay_asus.png" alt=""></div>
+                            <div class="product-body">
+                                <h3 class="product-name"><a href="./detail-product-laptop.php">Laptop ASUS TUF Gaming A14 FA401WV-RG061WS</a></h3>
+                                <h4 class="product-price">44.990.000₫ <del class="product-old-price">46.990.000₫</del></h4>
+                            </div>
+                        </div>
+                        <div class="product-widget">
+                            <div class="product-img"><img src="./img/apple-airpods-pro-2-usb-c_1_.png" alt=""></div>
+                            <div class="product-body">
+                                <h3 class="product-name"><a href="./detail-product-accessories.php">Tai nghe Bluetooth Apple AirPods Pro 2 2023 USB-C</a></h3>
+                                <h4 class="product-price">5.790.000₫ <del class="product-old-price">6.190.000₫</del></h4>
+                            </div>
+                        </div>
+                        <div class="product-widget">
+                            <div class="product-img"><img src="./img/canon.png" alt=""></div>
+                            <div class="product-body">
+                                <h3 class="product-name"><a href="./detail-product-camera.php">Máy ảnh Canon EOS R10 kit RF-S18-45mm F4.5-6.3 IS STM</a></h3>
+                                <h4 class="product-price">21.900.000₫ <del class="product-old-price">28.330.000₫</del></h4>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <!-- /ASIDE -->
@@ -217,16 +247,13 @@ $result = $conn->query($sql);
                                             </div>
                                         </div>
                                         <div class='add-to-cart'>
-                                            <form action='add-to-cart.php' method='POST'>
-                                                <input type='hidden' name='productId' value='{$row['productId']}'>
-                                                <input type='hidden' name='name' value='{$row['name']}'>
-                                                <input type='hidden' name='price' value='{$row['price']}'>
-                                                <input type='hidden' name='image' value='{$row['image']}'>
-                                                <button type='submit' class='add-to-cart-btn btn-announce' type-announce='success' 
-                                                message='Thêm sản phẩm vào giỏ hàng thành công!'>
-                                                    <i class='fa fa-shopping-cart'></i> Thêm vào giỏ hàng
-                                                </button>
-                                            </form>
+                                            <button class='add-to-cart-btn btn-announce' 
+                                                    data-product-id='{$row['productId']}' 
+                                                    data-name='{$row['name']}' 
+                                                    data-price='{$row['price']}' 
+                                                    data-image='{$row['image']}'>
+                                                <i class='fa fa-shopping-cart'></i> Thêm vào giỏ hàng
+                                            </button>
                                         </div>
                                     </div>
                                 </div>";
@@ -349,30 +376,57 @@ $result = $conn->query($sql);
     </footer>
 
     <!-- jQuery Plugins -->
-    <script src="js/helper.js"></script>
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/slick.min.js"></script>
     <script src="js/nouislider.min.js"></script>
     <script src="js/jquery.zoom.min.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/announcement.js"></script>
     <script>
         document.querySelectorAll('.btn-announce').forEach(button => {
-            button.addEventListener('click', function() {
-                const message = this.getAttribute('message');
-                const type = this.getAttribute('type-announce');
-                const alert = document.createElement('div');
-                alert.className = `alert alert-${type} alert-show announce`;
-                alert.setAttribute('role', 'alert');
-                alert.textContent = message;
-                document.body.insertBefore(alert, document.body.firstChild);
-                setTimeout(() => alert.remove(), 3000);
+            button.addEventListener('click', async function (event) {
+                event.preventDefault();
+
+                const formData = new FormData();
+                formData.append('productId', this.getAttribute('data-product-id'));
+                formData.append('name', this.getAttribute('data-name'));
+                formData.append('price', this.getAttribute('data-price'));
+                formData.append('image', this.getAttribute('data-image'));
+
+                try {
+                    let response = await fetch("add-to-cart.php", {
+                        method: "POST",
+                        body: formData
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+
+                    let contentType = response.headers.get("content-type");
+                    if (!contentType || !contentType.includes("application/json")) {
+                        throw new Error("Response is not JSON");
+                    }
+
+                    let data = await response.json();
+
+                    // Hiển thị thông báo sử dụng hàm showAnnouncement từ announcement.js
+                    showAnnouncement(data.status === "success" ? "success" : "danger", data.message);
+
+                    // Cập nhật số lượng giỏ hàng
+                    const cartQty = document.querySelector('.header-ctn .qty');
+                    cartQty.textContent = data.cartQuantity || parseInt(cartQty.textContent) + 1;
+
+                } catch (error) {
+                    console.log("Fetch Error:", error);
+                    showAnnouncement("danger", "Lỗi khi thêm sản phẩm vào giỏ hàng!");
+                }
             });
         });
     </script>
 </body>
 </html>
-
 <?php
 $conn->close();
 ?>
