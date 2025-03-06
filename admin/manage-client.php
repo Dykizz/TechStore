@@ -212,7 +212,6 @@ $total_pages = ceil($totalUsers / $limit);
       </div>
     </div>
   </body>
-  <script src="../js/helper.js"></script>
   <script
     src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
     integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
@@ -230,14 +229,15 @@ $total_pages = ceil($totalUsers / $limit);
           button.addEventListener("click", async function () {
               let userId = this.getAttribute("userId");
               let newStatus = this.getAttribute("value");
-
+              console.log(JSON.stringify({ userId, status: newStatus }))
               try {
                   let response = await fetch("change-status.php", {
                       method: "POST",
                       headers: {
                           "Content-Type": "application/x-www-form-urlencoded",
                       },
-                      body: `userId=${userId}&status=${newStatus}`
+                      body: `userId=${encodeURIComponent(userId)}&status=${encodeURIComponent(newStatus)}`
+
                   });
 
                   let data = await response.json();

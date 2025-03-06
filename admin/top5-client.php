@@ -149,7 +149,7 @@ $conn->close();
                   <td><?= $customer['orderCount'] ?></td>
                   <td><?= number_format($customer['totalRevenue'], 0, ',', '.') ?> VND</td>
                   <td>
-                      <a href="customer-orders.php?userId=<?= $customer['userId'] ?>" class="btn btn-primary">Xem</a>
+                      <a href="orderClient-relate.php?userId=<?= $customer['userId'] ?>" class="btn btn-primary">Xem</a>
                   </td>
               </tr>
           <?php endforeach; ?>
