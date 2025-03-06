@@ -18,7 +18,7 @@ $productId = isset($_GET['productId']) ? (int)$_GET['productId'] : 0;
 
 if ($productId > 0) {
   $sql = "SELECT 
-              p.productId, p.name AS productName, p.image, p.description, 
+              p.productId, p.name AS productName, p.image, p.description, p.isActive,
               p.stock, p.price, p.discountPercent, c.categoryId, c.name AS categoryName,
               a.attributeId, a.name AS attributeName, av.value AS attributeValue
           FROM Product p
@@ -37,6 +37,7 @@ if ($productId > 0) {
       if (empty($product)) {
           $product = [
               "productId" => $row["productId"],
+              "isActive" => $row["isActive"],
               "productName" => $row["productName"],
               "image" => $row["image"],
               "description" => $row["description"],
@@ -152,7 +153,9 @@ $conn->close();
         <div class="card">
           <div class="card-header bg-info text-white">
             <h4 class="d-inline-block"><?= $product["productName"] ?></h4>
-            <span class="badge badge-success ml-2">Hoạt động</span>
+            <span class="badge <?= $product['isActive'] == 1 ? 'badge-success' : 'badge-danger' ?> ml-2">
+              <?= $product['isActive'] == 1 ? 'Hoạt động' : 'Dừng hoạt động' ?>
+          </span>
           </div>
           <div class="card-body">
             <div class="row">

@@ -22,6 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $discount = isset($_POST["discountPercent"]) ? (float)$_POST["discountPercent"] : 0;
   $description = $_POST["description"] ?? "";
   $categoryId = isset($_POST["category"]) ? (int)$_POST["category"] : 0;
+  $isActive = isset($_POST["isActive"]) ? (int)$_POST["isActive"] : 0;
 
   // Kiểm tra hình ảnh mới
   $imagePath = ""; // Giữ ảnh cũ mặc định
@@ -37,18 +38,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Cập nhật cả ảnh
     $sqlUpdate = "UPDATE Product 
                   SET name = ?, price = ?, stock = ?, discountPercent = ?, 
-                      description = ?, categoryId = ?, image = ?
+                      description = ?, categoryId = ?, image = ? , isActive = ?
                   WHERE productId = ?";
     $stmt = $conn->prepare($sqlUpdate);
-    $stmt->bind_param("siidsisi", $name, $price, $stock, $discount, $description, $categoryId, $imagePath, $productId);
+    $stmt->bind_param("siidsisii", $name, $price, $stock, $discount, $description, $categoryId, $imagePath,$isActive, $productId);
   } else {
       // Không cập nhật ảnh
     $sqlUpdate = "UPDATE Product 
                   SET name = ?, price = ?, stock = ?, discountPercent = ?, 
-                      description = ?, categoryId = ?
+                      description = ?, categoryId = ?, isActive = ?
                   WHERE productId = ?";
     $stmt = $conn->prepare($sqlUpdate);
-    $stmt->bind_param("siidsii", $name, $price, $stock, $discount, $description, $categoryId, $productId);
+    $stmt->bind_param("siidsiii", $name, $price, $stock, $discount, $description, $categoryId,$isActive, $productId);
   }
   
     $stmt->execute();
@@ -97,7 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
   if ($productId > 0) {
     $sql = "SELECT 
                 p.productId, p.name AS productName, p.image, p.description, 
-                p.stock, p.price, p.discountPercent, c.categoryId, 
+                p.stock, p.price, p.discountPercent, c.categoryId, p.isActive,
                 a.attributeId, a.name AS attributeName, av.value AS attributeValue , av.attributeValueId 
             FROM Product p
             LEFT JOIN Category c ON p.categoryId = c.categoryId
@@ -115,6 +116,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
         if (empty($product)) {
             $product = [
                 "productId" => $row["productId"],
+                "isActive" => $row["isActive"],
                 "productName" => $row["productName"],
                 "image" => $row["image"],
                 "description" => $row["description"],
@@ -265,6 +267,21 @@ $conn->close();
               ?>
             </select>
           </div>
+          <div class="col-6">
+            <label class="d-block">Trạng thái:</label>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="isActive" id="active" value="1"
+                    <?= isset($product['isActive']) && $product['isActive'] == 1 ? 'checked' : '' ?>>
+                <label class="form-check-label" for="active">Hoạt động</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="isActive" id="inactive" value="0"
+                    <?= isset($product['isActive']) && $product['isActive'] == 0 ? 'checked' : '' ?>>
+                <label class="form-check-label" for="inactive">Dừng hoạt động</label>
+            </div>
+        </div>
+
+
         </div>
 
         <div class="row">

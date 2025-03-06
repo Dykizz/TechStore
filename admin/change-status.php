@@ -2,10 +2,10 @@
 require "db_connect.php";
 header('Content-Type: application/json');
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $userId = isset($_POST['userId']) ? intval($_POST['userId']) : 0;
-    $status = isset($_POST['status']) ?? 'ACTIVE';
+    $userId = isset($_POST['userId']) ? (int)$_POST['userId'] : -1;
+    $status = isset($_POST['status']) ? $_POST['status'] : 'ACTIVE';
     // Validate input data
-    if ($userId <= 0 ) {
+    if ($userId < 0 ) {
         echo json_encode(["status" => "danger", "message" => "Dữ liệu không hợp lệ!"]);
         exit();
     }

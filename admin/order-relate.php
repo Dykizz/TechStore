@@ -1,5 +1,5 @@
 <?php
-require "auth.php";  // Nếu có xác thực người dùng
+require "auth.php";      // Nếu có xác thực người dùng
 require "db_connect.php"; // Kết nối database
 
 // Kiểm tra nếu có productId được truyền vào từ URL
@@ -12,7 +12,7 @@ $limit = 3;
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? intval($_GET['page']) : 1;
 $offset = ($page - 1) * $limit;
 
-// Lấy tên sản phẩm
+// Lấy tên sản phẩm từ bảng Product
 $sqlProduct = "SELECT name FROM Product WHERE productId = ?";
 $stmtProduct = $conn->prepare($sqlProduct);
 $stmtProduct->bind_param("i", $productId);
@@ -24,7 +24,7 @@ if ($rowProduct = $resultProduct->fetch_assoc()) {
 }
 $stmtProduct->close();
 
-// Đếm tổng số đơn hàng liên quan
+// Đếm tổng số đơn hàng liên quan đến sản phẩm có productId được truyền vào
 $sqlCount = "SELECT COUNT(DISTINCT o.orderId) AS totalOrders
              FROM Orders o
              JOIN OrderDetail od ON o.orderId = od.orderId
@@ -42,7 +42,7 @@ $stmtCount->close();
 // Tính tổng số trang
 $totalPages = ceil($totalOrders / $limit);
 
-// Truy vấn lấy đơn hàng theo phân trang
+// Truy vấn lấy danh sách đơn hàng theo phân trang (chỉ lấy các dòng có sản phẩm có productId đó)
 $sql = "SELECT 
             o.orderCode, 
             o.orderId,
@@ -65,27 +65,28 @@ $result = $stmt->get_result();
 
 $orders = [];
 while ($row = $result->fetch_assoc()) {
+    // Sử dụng orderCode làm key (giả sử mỗi orderCode là duy nhất)
     $orderCode = $row['orderCode'];
     
     if (!isset($orders[$orderCode])) {
         $orders[$orderCode] = [
-            'orderCode' => $row['orderCode'],
-            'userName' => $row['userName'],
-            'products' => [],
+            'orderCode'   => $row['orderCode'],
+            'userName'    => $row['userName'],
+            'products'    => [],
             'totalAmount' => $row['totalAmount'],
-            'orderId' => $row['orderId']
+            'orderId'     => $row['orderId']
         ];
     }
 
+    // Lưu thông tin sản phẩm có liên quan (lưu ý: chỉ lấy sản phẩm khớp productId)
     $orders[$orderCode]['products'][] = [
-        'name' => $row['productName'],
+        'name'     => $row['productName'],
         'quantity' => $row['quantity']
     ];
 }
 
 $stmt->close();
 $conn->close();
-
 ?>
 
 <!DOCTYPE html>
@@ -100,10 +101,7 @@ $conn->close();
       integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
       crossorigin="anonymous"
     />
-    <link
-      href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
@@ -117,7 +115,7 @@ $conn->close();
     <header>
       <div class="inner-logo">
         <a href="./index.php">
-          <img src="../img/logo.png" alt="Logo" srcset="" />
+          <img src="../img/logo.png" alt="Logo" />
         </a>
       </div>
       <div class="inner-user">
@@ -129,7 +127,7 @@ $conn->close();
           <div class="avatar">
             <i class="fa-solid fa-user"></i>
           </div>
-          <span><?= $_SESSION["admin"] ?></span>
+          <span><?= htmlspecialchars($_SESSION["admin"]) ?></span>
         </div>
         <div class="btn-logout">
           <a href="logout.php">
@@ -178,6 +176,7 @@ $conn->close();
         <a href="./top5-client.php">Top 5 khách hàng</a>
       </li>
     </ul>
+
     <div class="content">
       <?php if ($productName) : ?>
           <h2>Các đơn hàng liên quan</h2>
@@ -193,6 +192,7 @@ $conn->close();
               </i>
           </p>
       <?php endif; ?>
+
       <h4>Danh sách đơn hàng</h4>
       <div>
         <?php if (!empty($orders)) : ?>
@@ -212,7 +212,7 @@ $conn->close();
                           <?php foreach ($order['products'] as $product) : ?>
                               <li>
                                   <?= htmlspecialchars($product['name']) ?>
-                                  <b>x<?= $product['quantity'] ?></b>
+                                  <b>x<?= htmlspecialchars($product['quantity']) ?></b>
                               </li>
                           <?php endforeach; ?>
                           <span>Các sản phẩm khác ....</span>
@@ -221,7 +221,7 @@ $conn->close();
                           Tổng tiền :
                           <strong><?= number_format($order['totalAmount'], 0, ',', '.') ?> VND</strong>
                       </p>
-                      <a class="text-primary" href="./order-detail.php?orderId=<?= $order['orderId'] ?>">Xem chi tiết</a>
+                      <a class="text-primary" href="./order-detail.php?orderId=<?= htmlspecialchars($order['orderId']) ?>">Xem chi tiết</a>
                   </div>
               </div>
           <?php endforeach; ?>
@@ -229,7 +229,9 @@ $conn->close();
             <p>Không tìm thấy đơn hàng nào chứa sản phẩm này.</p>
         <?php endif; ?>
       </div>
-      <div class="inner-pagination ">
+
+      <!-- Phân trang -->
+      <div class="inner-pagination">
         <ul class="pagination">
             <!-- Nút trang đầu -->
             <li class="page-item <?= ($page == 1) ? 'disabled' : '' ?>">
