@@ -1,3 +1,73 @@
+<?php
+require "auth.php";
+require "db_connect.php";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  // Lấy dữ liệu từ form
+  $name = $_POST["name"];
+  $categoryId = $_POST["category"];
+  $price = $_POST["price"];
+  $stock = $_POST["stock"];
+  $discount = $_POST["discount"];
+  $description = $_POST["description"];
+
+  // Xử lý upload ảnh
+  $imagePath = "";
+  if (!empty($_FILES["img-product"]["name"])) {
+      $targetDir = "../img/"; // Truy cập thư mục img từ admin
+      $imageLocation = $targetDir . basename($_FILES["img-product"]["name"]);
+      $imagePath = "img/" . basename($_FILES["img-product"]["name"]);
+
+      if (!move_uploaded_file($_FILES["img-product"]["tmp_name"], $imageLocation)) {
+          die("Lỗi khi upload ảnh.");
+      }
+  }
+
+  // **Bắt đầu transaction**
+  $conn->begin_transaction();
+
+  try {
+      // Thêm sản phẩm
+      $sql = "INSERT INTO Product (name, categoryId, image, price, stock, discountPercent, description)
+              VALUES (?, ?, ?, ?, ?, ?, ?)";
+      $stmt = $conn->prepare($sql);
+      $stmt->bind_param("sisdids", $name, $categoryId, $imagePath, $price, $stock, $discount, $description);
+      $stmt->execute();
+      $productId = $stmt->insert_id;
+      $stmt->close();
+
+      // Lưu thuộc tính sản phẩm (nếu có)
+      if (!empty($_POST["attributeId"]) && !empty($_POST["values"])) {
+          $sql_attr = "INSERT INTO AttributeValue (productId, attributeId, value) VALUES (?, ?, ?)";
+          $stmt_attr = $conn->prepare($sql_attr);
+
+          foreach ($_POST["attributeId"] as $key => $attributeId) {
+              $value = $_POST["values"][$key];
+              $stmt_attr->bind_param("iis", $productId, $attributeId, $value);
+              $stmt_attr->execute();
+          }
+
+          $stmt_attr->close();
+      }
+
+      // **Commit nếu không có lỗi**
+      $conn->commit();
+      echo "Thêm sản phẩm thành công!";
+  } catch (Exception $e) {
+      // **Rollback nếu có lỗi**
+      $conn->rollback();
+      echo "Lỗi: " . $e->getMessage();
+  }
+  header("Location: product-detail.php?productId=" . $productId);
+  // echo "<script>alert('Thêm sản phẩm thành công!');</script>";
+}
+
+
+// Lấy danh mục sản phẩm
+$sql_categories = "SELECT categoryId, name FROM Category";
+$result_categories = $conn->query($sql_categories);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -27,7 +97,7 @@
   <body>
     <header>
       <div class="inner-logo">
-        <a href="./index.html">
+        <a href="./index.php">
           <img src="../img/logo.png" alt="Logo" srcset="" />
         </a>
       </div>
@@ -40,14 +110,14 @@
           <div class="avatar">
             <i class="fa-solid fa-user"></i>
           </div>
-          <span>Admin</span>
+          <span><?= $_SESSION["admin"] ?></span>
         </div>
-        <div href="./login.html" class="btn-logout">
-          <a href="./login.html">
-            <i class="fa-solid fa-right-from-bracket"></i>
-            <span>Đăng xuất</span>
-          </a>
-        </div>
+        <div class="btn-logout">
+    <a href="logout.php">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span>Đăng xuất</span>
+    </a>
+</div>
       </div>
     </header>
 
@@ -56,87 +126,88 @@
         <div class="inner-icon">
           <i class="fa-solid fa-gauge-high"></i>
         </div>
-        <a href="./index.html">Tổng quan</a>
+        <a href="./index.php">Tổng quan</a>
       </li>
       <li>
         <div class="inner-icon">
           <i class="fa-solid fa-people-group"></i>
         </div>
-        <a href="./manage-client.html">Quản lý người dùng</a>
+        <a href="./manage-client.php">Quản lý người dùng</a>
       </li>
       <li class="active">
         <div class="inner-icon">
           <i class="fa-brands fa-product-hunt"></i>
         </div>
-        <a href="./manage-product.html">Quản lý sản phẩm</a>
+        <a href="./manage-product.php">Quản lý sản phẩm</a>
       </li>
       <li>
         <div class="inner-icon">
           <i class="fa-solid fa-clipboard-list"></i>
         </div>
-        <a href="./manage-order.html">Quản lý đơn hàng</a>
+        <a href="./manage-order.php">Quản lý đơn hàng</a>
       </li>
       <li>
         <div class="inner-icon">
           <i class="fa-solid fa-chart-line"></i>
         </div>
-        <a href="./statistic.html">Thống kê kinh doanh</a>
+        <a href="./statistic.php">Thống kê kinh doanh</a>
       </li>
       <li>
         <div class="inner-icon">
           <i class="fa-solid fa-medal"></i>
         </div>
-        <a href="./top5-client.html">Top 5 khách hàng</a>
+        <a href="./top5-client.php">Top 5 khách hàng</a>
       </li>
     </ul>
     <div class="content">
       <h2 class="mb-3">Thêm sản phẩm mới</h2>
 
-      <form action="./product-add-success.html" id="form-add" method="get">
+      <form action="./product-add.php" id="form-add" method="post" enctype="multipart/form-data">
         <div class="form-group">
           <label for="name">Tên sản phẩm</label>
-          <input class="form-control" type="text" name="name" id="name" />
+          <input
+            class="form-control"
+            type="text"
+            name="name"
+            id="name"
+            required
+          />
         </div>
 
         <div class="row">
           <div class="col-6">
-            <div>Trạng thái sản phẩm</div>
-            <label>
-              <input type="radio" name="status" value="active" checked />
-              Hoạt động
-            </label>
-            <label class="ml-3">
-              <input type="radio" name="status" value="inactive" />
-              Dừng hoạt động
-            </label>
-          </div>
-
-          <div class="col-6">
             <label for="category">Danh mục sản phẩm </label>
             <select class="custom-select" name="category" id="category">
               <option selected disabled>--- Chọn danh mục ---</option>
-              <option value="laptop">Máy tính</option>
-              <option value="phone">Điện thoại</option>
-              <option value="camera">Máy ảnh</option>
-              <option value="accessory">Phụ kiện</option>
+              <?php 
+                if ($result_categories->num_rows > 0) {
+                    while ($row = $result_categories->fetch_assoc()) {
+                      echo "<option value='{$row['categoryId']}'>{$row['name']}</option>";
+                    }
+                }
+              ?>
             </select>
           </div>
         </div>
 
         <div class="row">
           <div class="col-6">
-            <label for="img-product">Hình ảnh sản phẩm</label>
+          <label for="img-input">Hình ảnh sản phẩm</label>
             <div class="custom-file">
               <input
                 type="file"
                 name="img-product"
                 class="custom-file-input"
-                id="img-product"
+                id="img-input"
                 aria-describedby="inputGroupFileAddon01"
               />
-              <label class="custom-file-label" for="img-product"
-                >Chọn hình ảnh từ máy</label
-              >
+              <label class="custom-file-label" for="img-product">
+                Chọn hình ảnh từ máy
+              </label>
+            </div>
+            <div class="inner-img">
+              <img src="../<?= $product["image"] ?>" alt="sản phẩm" srcset="" />
+              <span class="cancel">x</span>
             </div>
           </div>
         </div>
@@ -166,6 +237,7 @@
                 name="stock"
                 id="stock"
                 min="0"
+                require
               />
             </div>
           </div>
@@ -180,6 +252,7 @@
                   step="0.01"
                   id="discount"
                   min="0"
+                  require
                 />
                 <div class="input-group-append">
                   <span class="input-group-text">%</span>
@@ -208,5 +281,7 @@
       </form>
     </div>
   </body>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="../js/handleFileImage.js"></script>
   <script src="../js/handleCategories.js"></script>
 </html>

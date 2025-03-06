@@ -1,3 +1,35 @@
+<?php
+require "auth.php";
+require "db_connect.php";
+
+$sql = "SELECT 
+    u.gender,
+    u.userId,
+    u.name AS customerName,
+    u.avatar,
+    COUNT(o.orderId) AS orderCount,
+    SUM(o.totalAmount) AS totalRevenue
+FROM User u
+JOIN Orders o ON u.userId = o.userId
+GROUP BY u.userId, u.name, u.avatar
+ORDER BY totalRevenue DESC
+LIMIT 5;";
+
+$stmt = $conn->prepare($sql);
+$stmt->execute();
+$result = $stmt->get_result();
+
+$topCustomers = []; // Mảng chứa danh sách khách hàng
+
+while ($row = $result->fetch_assoc()) {
+    $topCustomers[] = $row;
+}
+
+// Giải phóng bộ nhớ
+$stmt->close();
+$conn->close();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -26,7 +58,7 @@
   <body>
     <header>
       <div class="inner-logo">
-        <a href="./index.html">
+        <a href="./index.php">
           <img src="../img/logo.png" alt="Logo" srcset="" />
         </a>
       </div>
@@ -39,10 +71,10 @@
           <div class="avatar">
             <i class="fa-solid fa-user"></i>
           </div>
-          <span>Admin</span>
+          <span><?= $_SESSION["admin"] ?></span>
         </div>
-        <div href="./login.html" class="btn-logout">
-          <a href="./login.html">
+        <div class="btn-logout">
+          <a href="logout.php">
             <i class="fa-solid fa-right-from-bracket"></i>
             <span>Đăng xuất</span>
           </a>
@@ -55,37 +87,37 @@
         <div class="inner-icon">
           <i class="fa-solid fa-gauge-high"></i>
         </div>
-        <a href="./index.html">Tổng quan</a>
+        <a href="./index.php">Tổng quan</a>
       </li>
       <li>
         <div class="inner-icon">
           <i class="fa-solid fa-people-group"></i>
         </div>
-        <a href="./manage-client.html">Quản lý người dùng</a>
+        <a href="./manage-client.php">Quản lý người dùng</a>
       </li>
       <li>
         <div class="inner-icon">
           <i class="fa-brands fa-product-hunt"></i>
         </div>
-        <a href="./manage-product.html">Quản lý sản phẩm</a>
+        <a href="./manage-product.php">Quản lý sản phẩm</a>
       </li>
       <li>
         <div class="inner-icon">
           <i class="fa-solid fa-clipboard-list"></i>
         </div>
-        <a href="./manage-order.html">Quản lý đơn hàng</a>
+        <a href="./manage-order.php">Quản lý đơn hàng</a>
       </li>
       <li>
         <div class="inner-icon">
           <i class="fa-solid fa-chart-line"></i>
         </div>
-        <a href="./statistic.html">Thống kê kinh doanh</a>
+        <a href="./statistic.php">Thống kê kinh doanh</a>
       </li>
       <li class="active">
         <div class="inner-icon">
           <i class="fa-solid fa-medal"></i>
         </div>
-        <a href="./top5-client.html">Top 5 khách hàng</a>
+        <a href="./top5-client.php">Top 5 khách hàng</a>
       </li>
     </ul>
     <div class="content">
@@ -101,77 +133,26 @@
           <th>Các đơn đã mua</th>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>Nguyễn Thế Anh</td>
-            <td class="table_inner-img">
-              <img src="../img/avarta-man.png" alt="" srcset="" />
-            </td>
-            <td>12</td>
-            <td>293.500.000 VND</td>
-            <td>
-              <a class="btn btn-primary btn-sm" href="./orderClient-relate.html"
-                >Xem</a
-              >
-            </td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Nguyễn Đức Thuận</td>
-            <td class="table_inner-img">
-              <img src="../img/avarta-man.png" alt="" srcset="" />
-            </td>
-            <td>15</td>
-            <td>101.500.000 VND</td>
-            <td>
-              <a class="btn btn-primary btn-sm" href="./orderClient-relate.html"
-                >Xem</a
-              >
-            </td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>Đoàn Thế Hải</td>
-            <td class="table_inner-img">
-              <img src="../img/avarta-man.png" alt="" srcset="" />
-            </td>
-            <td>7</td>
-            <td>90.450.000 VND</td>
-            <td>
-              <a class="btn btn-primary btn-sm" href="./orderClient-relate.html"
-                >Xem</a
-              >
-            </td>
-          </tr>
-          <tr>
-            <td>4</td>
-            <td>Nguyễn Ngọc Trân</td>
-            <td class="table_inner-img">
-              <img src="../img/avarta-woman.svg" alt="" srcset="" />
-            </td>
-            <td>5</td>
-            <td>45.580.000 VND</td>
-            <td>
-              <a class="btn btn-primary btn-sm" href="./orderClient-relate.html"
-                >Xem</a
-              >
-            </td>
-          </tr>
-
-          <tr>
-            <td>5</td>
-            <td>Trần Thảo Uyên</td>
-            <td class="table_inner-img">
-              <img src="../img/avarta-woman.svg" alt="" srcset="" />
-            </td>
-            <td>3</td>
-            <td>20.450.000 VND</td>
-            <td>
-              <a class="btn btn-primary btn-sm" href="./orderClient-relate.html"
-                >Xem</a
-              >
-            </td>
-          </tr>
+          <?php $stt = 1; ?>
+          <?php foreach ($topCustomers as $customer) : ?>
+              <tr>
+                  <td><?= $stt++ ?></td>
+                  <td><?= htmlspecialchars($customer['customerName']) ?></td>
+                  <td class="table_inner-img">
+                    <img src="<?= !empty($customer['avatar']) 
+                      ? "../" . htmlspecialchars($customer['avatar']) 
+                      : ($customer['gender'] === 'MALE' 
+                          ? '../img/avarta-man.png' 
+                          : '../img/avarta-woman.svg') ?>" 
+                      alt="Avatar" />
+                  </td>
+                  <td><?= $customer['orderCount'] ?></td>
+                  <td><?= number_format($customer['totalRevenue'], 0, ',', '.') ?> VND</td>
+                  <td>
+                      <a href="customer-orders.php?userId=<?= $customer['userId'] ?>" class="btn btn-primary">Xem</a>
+                  </td>
+              </tr>
+          <?php endforeach; ?>
         </tbody>
       </table>
     </div>

@@ -27,7 +27,7 @@
   <body>
     <header>
       <div class="inner-logo">
-        <a href="./index.html">
+        <a href="./index.php">
           <img src="../img/logo.png" alt="Logo" srcset="" />
         </a>
       </div>
@@ -40,14 +40,14 @@
           <div class="avatar">
             <i class="fa-solid fa-user"></i>
           </div>
-          <span>Admin</span>
+          <span><?= $_SESSION["admin"] ?></span>
         </div>
-        <div href="./login.html" class="btn-logout">
-          <a href="./login.html">
-            <i class="fa-solid fa-right-from-bracket"></i>
-            <span>Đăng xuất</span>
-          </a>
-        </div>
+        <div class="btn-logout">
+    <a href="logout.php">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span>Đăng xuất</span>
+    </a>
+</div>
       </div>
     </header>
 
@@ -56,42 +56,42 @@
         <div class="inner-icon">
           <i class="fa-solid fa-gauge-high"></i>
         </div>
-        <a href="./index.html">Tổng quan</a>
+        <a href="./index.php">Tổng quan</a>
       </li>
       <li>
         <div class="inner-icon">
           <i class="fa-solid fa-people-group"></i>
         </div>
-        <a href="./manage-client.html">Quản lý người dùng</a>
+        <a href="./manage-client.php">Quản lý người dùng</a>
       </li>
       <li class="active">
         <div class="inner-icon">
           <i class="fa-brands fa-product-hunt"></i>
         </div>
-        <a href="./manage-product.html">Quản lý sản phẩm</a>
+        <a href="./manage-product.php">Quản lý sản phẩm</a>
       </li>
       <li>
         <div class="inner-icon">
           <i class="fa-solid fa-clipboard-list"></i>
         </div>
-        <a href="./manage-order.html">Quản lý đơn hàng</a>
+        <a href="./manage-order.php">Quản lý đơn hàng</a>
       </li>
       <li>
         <div class="inner-icon">
           <i class="fa-solid fa-chart-line"></i>
         </div>
-        <a href="./statistic.html">Thống kê kinh doanh</a>
+        <a href="./statistic.php">Thống kê kinh doanh</a>
       </li>
       <li>
         <div class="inner-icon">
           <i class="fa-solid fa-medal"></i>
         </div>
-        <a href="./top5-client.html">Top 5 khách hàng</a>
+        <a href="./top5-client.php">Top 5 khách hàng</a>
       </li>
     </ul>
     <div class="content">
       <h2 class="mb-3">Kết quả sau khi thêm sản phẩm</h2>
-      <a class="btn btn-primary mb-3" href="./manage-product.html"
+      <a class="btn btn-primary mb-3" href="./manage-product.php"
         >Quay về trang quản lý sản phẩm</a
       >
 
