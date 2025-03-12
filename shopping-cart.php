@@ -1,7 +1,7 @@
 <?php
-session_start();
 include 'connect.php';
 include 'information.php';
+
 // Khởi tạo giỏ hàng nếu chưa có
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
@@ -32,9 +32,9 @@ if (isset($_GET['action']) && $_GET['action'] === 'remove' && isset($_GET['produ
 $cart_count = array_sum(array_column($_SESSION['cart'], 'quantity'));
 $total_price = array_sum(array_map(function($item) { return $item['price'] * $item['quantity']; }, $_SESSION['cart']));
 
-if (isset($_GET['message'])) {
-    echo "<script>alert('" . htmlspecialchars($_GET['message']) . "');</script>";
-}
+// Hiển thị thông báo nếu có
+$message = isset($_SESSION['message']) ? $_SESSION['message'] : '';
+unset($_SESSION['message']); // Xóa thông báo sau khi hiển thị
 ?>
 
 <!DOCTYPE html>
@@ -55,18 +55,19 @@ if (isset($_GET['message'])) {
         .table-giohang td { vertical-align: middle; text-align: center; }
         .table-giohang .product-img img { width: 50px; height: 50px; object-fit: cover; }
         .btn { padding: 5px 10px; }
+        .alert-show { display: none; position: fixed; top: 20px; right: 20px; z-index: 1000; }
     </style>
 </head>
 <body>
-    <div class="alert alert-show announce" role="alert"></div>
+    <div class="alert alert-success alert-show announce" role="alert"><?php echo $message; ?></div>
     <!-- HEADER -->
     <header>
         <div id="top-header">
             <div class="container">
                 <ul class="header-links pull-left">
-                    <li><a href="#"><i class="fa fa-phone"></i> 0975419019 </a></li>
-                    <li><a href="#"><i class="fa fa-envelope-o"></i> nhom6@email.com </a></li>
-                    <li><a href="#"><i class="fa fa-map-marker"></i> 273 An Dương Vương, Phường 3, Quận 5 </a></li>
+                    <li><a href="#"><i class="fa fa-phone"></i> Hotline: <strong>+84 975 419 019</strong></a></li>
+                    <li><a href="#"><i class="fa fa-envelope-o"></i> nhom6@email.com</a></li>
+                    <li><a href="#"><i class="fa fa-map-marker"></i> 273 An Dương Vương, Phường 3, Quận 5</a></li>
                 </ul>
             </div>
         </div>
@@ -83,7 +84,7 @@ if (isset($_GET['message'])) {
                     <div class="col-md-6">
                         <div class="header-search">
                             <form action="./store-search.php">
-                                <input name="keyword" class="input" placeholder="Nhập sản phẩm muốn tìm kiếm ..." />
+                                <input name="keyword" class="input" placeholder="Nhập sản phẩm muốn tìm kiếm..." />
                                 <button class="search-btn">Tìm kiếm</button>
                             </form>
                         </div>
@@ -106,7 +107,7 @@ if (isset($_GET['message'])) {
                                 <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                                     <i class="fa fa-shopping-cart"></i>
                                     <span>Giỏ hàng</span>
-                                    <div class="qty"><?php echo $cart_count; ?></div>
+                                    <div class="qty" id="cart-qty"><?php echo $cart_count; ?></div>
                                 </a>
                                 <div class="cart-dropdown">
                                     <div class="cart-list">
@@ -220,7 +221,8 @@ if (isset($_GET['message'])) {
                 <tfoot class="total-row">
                     <tr>
                         <td colspan="4">Tổng tiền:</td>
-                        <td colspan="3"><?php echo number_format($total_price, 0, ',', '.'); ?> VND</td>
+                        <td colspan="3"><strong><?php echo number_format($total_price, 0, ',', '.'); ?> VND</strong></td>
+
                     </tr>
                 </tfoot>
             </table>
@@ -263,9 +265,9 @@ if (isset($_GET['message'])) {
                             <h3 class="footer-title">Về chúng tôi</h3>
                             <p>Chất lượng làm nên thương hiệu.</p>
                             <ul class="footer-links">
-                                <li><a href="#"> <i class="fa fa-phone"></i>0975419019 </a></li>
-                                <li><a href="#"> <i class="fa fa-envelope-o"></i>nhom6@email.com </a></li>
-                                <li><a href="#"> <i class="fa fa-map-marker"></i>273 An Dương Vương, Phường 3, Quận 5 </a></li>
+                                <li><a href="#"> <i class="fa fa-phone"></i><strong>+84 975 419 019</strong></a></li>
+                                <li><a href="#"> <i class="fa fa-envelope-o"></i>nhom6@email.com</a></li>
+                                <li><a href="#"> <i class="fa fa-map-marker"></i>273 An Dương Vương, Phường 3, Quận 5</a></li>
                             </ul>
                         </div>
                     </div>
@@ -343,6 +345,47 @@ if (isset($_GET['message'])) {
                 else if (this.value === 'increase') quantity++;
                 quantityInput.value = quantity;
                 form.submit();
+            });
+        });
+
+        // Xử lý thêm vào giỏ hàng bằng AJAX
+        document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault(); // Ngăn chặn submit form mặc định
+
+                const form = this.closest('form');
+                const formData = new FormData(form);
+
+                fetch('add-to-cart.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Hiển thị thông báo
+                        const alert = document.createElement('div');
+                        alert.className = 'alert alert-success alert-show announce';
+                        alert.setAttribute('role', 'alert');
+                        alert.textContent = data.message;
+                        document.body.insertBefore(alert, document.body.firstChild);
+                        setTimeout(() => alert.remove(), 3000);
+
+                        // Cập nhật số lượng giỏ hàng ở header
+                        document.getElementById('cart-qty').textContent = data.cart_count;
+
+                        // Cập nhật giỏ hàng dropdown (tuỳ chọn)
+                        const cartDropdown = document.querySelector('.cart-dropdown .cart-list');
+                        if (cartDropdown) {
+                            // Lấy dữ liệu mới từ session (có thể cần API riêng)
+                            // Ở đây chỉ làm mới toàn bộ dropdown thủ công (tuỳ chọn tối ưu hơn)
+                            location.reload(); // Tạm thời reload để cập nhật dropdown
+                        }
+                    } else {
+                        alert('Lỗi khi thêm vào giỏ hàng!');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
             });
         });
     </script>
