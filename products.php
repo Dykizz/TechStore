@@ -2,13 +2,20 @@
 include 'connect.php';
 include 'information.php';
 
-
-$category_id = isset($_GET['category']) ? (int)$_GET['category'] : 3;
+$category_id = isset($_GET['category']) ? (int)$_GET['category'] : null;
 $keyword = isset($_GET['keyword']) ? $conn->real_escape_string($_GET['keyword']) : '';
 $min_price = isset($_GET['min_price']) && $_GET['min_price'] !== '' ? (int)$_GET['min_price'] : 0;
 $max_price = isset($_GET['max_price']) && $_GET['max_price'] !== '' ? (int)$_GET['max_price'] : PHP_INT_MAX;
 
-$sql = "SELECT * FROM Product WHERE categoryId = $category_id";
+// Pagination parameters
+$limit = 9; // Number of products per page
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset = ($page - 1) * $limit;
+
+$sql = "SELECT * FROM Product WHERE 1=1";
+if ($category_id !== null && $category_id !== 0) {
+    $sql .= " AND categoryId = $category_id";
+}
 if (!empty($keyword)) {
     $sql .= " AND name LIKE '%$keyword%'";
 }
@@ -18,7 +25,14 @@ if ($min_price > 0) {
 if ($max_price < PHP_INT_MAX) {
     $sql .= " AND price <= $max_price";
 }
-$sql .= " GROUP BY name, categoryId"; 
+
+// Get total number of products
+$total_result = $conn->query($sql);
+$total_products = $total_result->num_rows;
+$total_pages = ceil($total_products / $limit);
+
+// Add limit and offset to the query
+$sql .= " LIMIT $limit OFFSET $offset";
 $result = $conn->query($sql);
 ?>
 
@@ -64,17 +78,15 @@ $result = $conn->query($sql);
                     </div>
                     <div class="col-md-6">
                         <div class="header-search">
-                            <form action="./store-accessories.php" method="GET">
+                            <form action="./products.php" method="GET">
                                 <input name="keyword" class="input" placeholder="Nhập sản phẩm muốn tìm kiếm ..." value="<?php echo htmlspecialchars($keyword); ?>"/>
-                                <input type="hidden" name="category" value="<?php echo $category_id; ?>"/>
-                                <input type="hidden" name="min_price" value="<?php echo $min_price > 0 ? $min_price : ''; ?>"/>
-                                <input type="hidden" name="max_price" value="<?php echo $max_price < PHP_INT_MAX ? $max_price : ''; ?>"/>
                                 <button class="search-btn">Tìm kiếm</button>
                             </form>
                         </div>
                     </div>
-                    <div class="col-md-3 clearfix">
+                    <div class="col-md-3 clearfix"> <?php if ($fullname) : ?>
                         <div class="header-ctn">
+                               
                             <div class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                                     <i class="fa fa-user-o"></i>
@@ -133,6 +145,23 @@ $result = $conn->query($sql);
                                 <a href="#"><i class="fa fa-bars"></i><span>Danh mục</span></a>
                             </div>
                         </div>
+                        <?php else : ?>
+                            <div class="header-ctn">
+                                <div>
+                                    <a href="./login.php" class="btn btn-primary" aria-expanded="true">
+                                        <span>Đăng nhập</span>
+                                    </a>
+                                </div>
+                                <div>
+                                    <a href="./register.php" class="btn btn-primary" aria-expanded="true">
+                                        <span>Đăng kí</span>
+                                    </a>
+                                </div>
+                                <div class="menu-toggle">
+                                    <a href="#"><i class="fa fa-bars"></i><span>Danh mục</span></a>
+                                </div>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -145,24 +174,28 @@ $result = $conn->query($sql);
             <div id="responsive-nav">
                 <ul class="main-nav nav navbar-nav">
                     <li><a href="./index.php">Trang chủ</a></li>
-                    <li class="<?php echo $category_id == 1 ? 'active' : ''; ?>"><a href="./store-laptop.php?category=1">Máy tính</a></li>
-                    <li class="<?php echo $category_id == 2 ? 'active' : ''; ?>"><a href="./store-smartphone.php?category=2">Điện thoại</a></li>
-                    <li class="<?php echo $category_id == 3 ? 'active' : ''; ?>"><a href="./store-camera.php?category=3">Máy ảnh</a></li>
-                    <li class="<?php echo $category_id == 4 ? 'active' : ''; ?>"><a href="./store-accessories.php?category=4">Phụ kiện</a></li>
+                    <li class="<?php echo $category_id == 1 ? 'active' : ''; ?>"><a href="./products.php?category=1">Máy tính</a></li>
+                    <li class="<?php echo $category_id == 2 ? 'active' : ''; ?>"><a href="./products.php?category=2">Điện thoại</a></li>
+                    <li class="<?php echo $category_id == 3 ? 'active' : ''; ?>"><a href="./products.php?category=3">Máy ảnh</a></li>
+                    <li class="<?php echo $category_id == 4 ? 'active' : ''; ?>"><a href="./products.php?category=4">Phụ kiện</a></li>
                 </ul>
             </div>
         </div>
     </nav>
-
     <!-- SECTION -->
     <div class="section">
         <div class="container">
+        <div class="alert alert-info d-flex align-items-center">
+            <i class="fa-solid fa-circle-info mr-2"></i>
+            Tìm thấy &nbsp;<span class="badge badge-primary p-2"><?= $total_products ?></span>&nbsp; sản phẩm phù hợp với điều kiện tìm kiếm
+        </div>
             <div class="row">
                 <!-- ASIDE -->
+
                 <div id="aside" class="col-md-3">
                     <div class="aside border-red">
                         <h3 class="aside-title text-center">Tìm kiếm nâng cao</h3>
-                        <form method="GET" action="./store-accessories.php">
+                        <form method="GET" action="./products.php">
                             <label for="product-name">Tên sản phẩm</label>
                             <input class="form-control" style="margin-bottom: 10px;" name="keyword" id="product-name" type="text" placeholder="Nhập tên sản phẩm muốn tìm" value="<?php echo htmlspecialchars($keyword); ?>">
                             <label>Loại sản phẩm</label>
@@ -265,38 +298,19 @@ $result = $conn->query($sql);
                     </div>
                     <div class="store-filter clearfix">
                         <ul class="store-pagination">
-                            <li class="active">1</li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#"><i class="fa fa-angle-right"></i></a></li>
+                            <?php if ($page > 1): ?>
+                                <li><a href="?page=<?php echo $page - 1; ?>&category=<?php echo $category_id; ?>&keyword=<?php echo $keyword; ?>&min_price=<?php echo $min_price; ?>&max_price=<?php echo $max_price; ?>"><i class="fa fa-angle-left"></i></a></li>
+                            <?php endif; ?>
+                            <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                                <li class="<?php echo $i == $page ? 'active' : ''; ?>"><a href="?page=<?php echo $i; ?>&category=<?php echo $category_id; ?>&keyword=<?php echo $keyword; ?>&min_price=<?php echo $min_price; ?>&max_price=<?php echo $max_price; ?>"><?php echo $i; ?></a></li>
+                            <?php endfor; ?>
+                            <?php if ($page < $total_pages): ?>
+                                <li><a href="?page=<?php echo $page + 1; ?>&category=<?php echo $category_id; ?>&keyword=<?php echo $keyword; ?>&min_price=<?php echo $min_price; ?>&max_price=<?php echo $max_price; ?>"><i class="fa fa-angle-right"></i></a></li>
+                            <?php endif; ?>
                         </ul>
                     </div>
                 </div>
                 <!-- /STORE -->
-            </div>
-        </div>
-    </div>
-
-    <!-- NEWSLETTER -->
-    <div id="newsletter" class="section">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="newsletter">
-                        <p>Đăng ký để nhận <strong>THÔNG BÁO MỚI NHẤT</strong></p>
-                        <form>
-                            <input class="input" type="email" placeholder="Nhập email">
-                            <button class="newsletter-btn"><i class="fa fa-envelope"></i> Đăng ký</button>
-                        </form>
-                        <ul class="newsletter-follow">
-                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                            <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                            <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
