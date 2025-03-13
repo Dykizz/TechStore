@@ -12,7 +12,7 @@ $limit = 9; // Number of products per page
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $offset = ($page - 1) * $limit;
 
-$sql = "SELECT * FROM Product WHERE 1=1";
+$sql = "SELECT * FROM Product WHERE isActive = 1";
 if ($category_id !== null && $category_id !== 0) {
     $sql .= " AND categoryId = $category_id";
 }
@@ -56,35 +56,36 @@ $result = $conn->query($sql);
     <div class="alert alert-show announce" role="alert"></div>
     
     <!-- HEADER -->
-    <header>
-        <div id="top-header">
-            <div class="container">
-                <ul class="header-links pull-left">
-                    <li><a href="#"><i class="fa fa-phone"></i> Hotline: <strong>+84 975 419 019</strong> </a></li>
-                    <li><a href="#"><i class="fa fa-envelope-o"></i> nhom6@email.com </a></li>
-                    <li><a href="#"><i class="fa fa-map-marker"></i> 273 An Dương Vương, Phường 3, Quận 5 </a></li>
-                </ul>
+    <div id="header">
+        <!-- container -->
+        <div class="container">
+          <!-- row -->
+          <div class="row">
+            <!-- LOGO -->
+            <div class="col-md-3">
+              <div class="header-logo">
+                <a href="./index.php" class="logo">
+                  <img src="./img/logo.png" alt="" />
+                </a>
+              </div>
             </div>
-        </div>
-        <div id="header">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="header-logo">
-                            <a href="./index.php" class="logo">
-                                <img src="./img/logo.png" alt="">
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="header-search">
-                            <form action="./products.php" method="GET">
-                                <input name="keyword" class="input" placeholder="Nhập sản phẩm muốn tìm kiếm ..." value="<?php echo htmlspecialchars($keyword); ?>"/>
-                                <button class="search-btn">Tìm kiếm</button>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="col-md-3 clearfix"> <?php if ($fullname) : ?>
+            <!-- /LOGO -->
+            <!-- SEARCH BAR -->
+            <div class="col-md-6">
+              <div class="header-search">
+                <form action="./store-search.html">
+                  <input
+                    name="keyword"
+                    class="input"
+                    placeholder="Nhập sản phẩm muốn tìm kiếm ..."
+                  />
+                  <button class="search-btn">Tìm kiếm</button>
+                </form>
+              </div>
+            </div>
+            <!-- /SEARCH BAR -->
+            <!-- ACCOUNT -->
+            <div class="col-md-3 clearfix"> <?php if ($fullname) : ?>
                         <div class="header-ctn">
                                
                             <div class="dropdown">
@@ -96,7 +97,7 @@ $result = $conn->query($sql);
                                     <li><a href="./account-information.php">Thông tin cá nhân</a></li>
                                     <li><a href="./purchasing-history.php">Lịch sử mua hàng</a></li>
                                     <li><a href="./change-password.php">Đổi mật khẩu</a></li>
-                                    <li><a href="./index-notlogin.php">Đăng xuất</a></li>
+                                    <li><a href="./logout.php">Đăng xuất</a></li>
                                 </ul>
                             </div>
                             <div class="dropdown">
@@ -163,10 +164,12 @@ $result = $conn->query($sql);
                             </div>
                         <?php endif; ?>
                     </div>
-                </div>
-            </div>
+            <!-- /ACCOUNT -->
+          </div>
+          <!-- row -->
         </div>
-    </header>
+        <!-- container -->
+      </div>
 
     <!-- NAVIGATION -->
     <nav id="navigation">
@@ -335,10 +338,10 @@ $result = $conn->query($sql);
                         <div class="footer">
                             <h3 class="footer-title">Sản phẩm</h3>
                             <ul class="footer-links">
-                                <li><a href="./store.php?category=1">Máy tính</a></li>
-                                <li><a href="./store.php?category=2">Điện thoại</a></li>
-                                <li><a href="./store.php?category=3">Máy ảnh</a></li>
-                                <li><a href="./store.php?category=4">Phụ kiện</a></li>
+                                <li><a href="./products.php?category=1">Máy tính</a></li>
+                                <li><a href="./products.php?category=2">Điện thoại</a></li>
+                                <li><a href="./products.php?category=3">Máy ảnh</a></li>
+                                <li><a href="./products.php?category=4">Phụ kiện</a></li>
                             </ul>
                         </div>
                     </div>
