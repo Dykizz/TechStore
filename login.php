@@ -1,17 +1,19 @@
 <?php
 include 'connect.php';
 
-session_start(); // Bắt đầu session
+// Bật báo lỗi MySQL chi tiết
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
-$error_message = ''; // Thông báo lỗi chung
-$email_error = ''; // Lỗi cho email
-$password_error = ''; // Lỗi cho password
+session_start();
+
+$error_message = '';
+$email_error = '';
+$password_error = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = trim($_POST['email']);
     $password = trim($_POST['password']);
 
-    // Kiểm tra các trường có rỗng không
     if (empty($email)) {
         $email_error = "Mời nhập email!";
     } else {
@@ -23,36 +25,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $password_error = "Mời nhập mật khẩu!";
     }
 
-    // Chỉ tiếp tục nếu không có lỗi rỗng
     if (empty($email_error) && empty($password_error)) {
-        $escaped_email = mysqli_real_escape_string($conn, $email);
-        $sql = "SELECT * FROM users WHERE email = '$escaped_email'";
-        $result = mysqli_query($conn, $sql);
+        $sql = "SELECT userId, email, password, name FROM user WHERE email = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-        if (mysqli_num_rows($result) == 0) {
+        if ($result->num_rows == 0) {
             $error_message = "Tài khoản không tồn tại!";
         } else {
-            $user = mysqli_fetch_assoc($result);
-
-            // Kiểm tra mật khẩu
+            $user = $result->fetch_assoc();
             if ($password !== $user['password']) {
                 $error_message = "Mật khẩu không chính xác!";
             } else {
-                // Làm mới session
-                session_unset();
-                session_destroy();
-                session_start();
-
-                // Lưu thông tin đăng nhập
-                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['userId'] = $user['userId'];
                 $_SESSION['email'] = $user['email'];
-                $_SESSION['fullname'] = $user['name']; // Lưu fullname từ database
-
-                // Chuyển hướng đến trang chủ
+                $_SESSION['fullname'] = $user['name'];
                 header("Location: index.php");
                 exit();
             }
         }
+        $stmt->close();
     }
 }
 
@@ -76,13 +70,13 @@ mysqli_close($conn);
     <link type="text/css" rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-    <div class="alert alert-show announce" role="alert"></div>
+    <div class="alert alert-show announce" role="alert"><?php echo $error_message; ?></div>
     <header>
         <div id="top-header">
             <div class="container">
                 <ul class="header-links pull-left">
-                    <li><a href="#"><i class="fa fa-phone"></i> Hotline: <strong>+84 975 419 019</strong> </a></li>
-                    <li><a href="#"><i class="fa fa-envelope-o"></i> nhom6@email.com </a></li>
+                    <li><a href="#"><i class="fa fa-phone"></i> Hotline: <strong>+84 975 419 019</strong></a></li>
+                    <li><a href="#"><i class="fa fa-envelope-o"></i> nhom6@email.com</a></li>
                     <li><a href="#"><i class="fa fa-map-marker"></i> 273 An Dương Vương, Phường 3, Quận 5</a></li>
                 </ul>
             </div>
@@ -132,13 +126,10 @@ mysqli_close($conn);
                     <?php endif; ?>
                 </div>
                 <a class="text-right" style="font-weight: bold; color: blue" href="./forgot-account.php">Quên mật khẩu?</a>
-                <!-- Hiển thị thông báo lỗi chung -->
                 <?php if (!empty($error_message)): ?>
                     <div class="error-message"><?php echo $error_message; ?></div>
                 <?php endif; ?>
-                <button style="margin-bottom: 10px" type="submit" class="login-button">
-                    Xác nhận
-                </button>
+                <button style="margin-bottom: 10px" type="submit" class="login-button">Xác nhận</button>
             </form>
             <p class="text-center">
                 Bạn chưa có tài khoản?
@@ -150,6 +141,3 @@ mysqli_close($conn);
     <script src="js/bootstrap.min.js"></script>
 </body>
 </html>
-<?php
-mysqli_close($conn);
-?>

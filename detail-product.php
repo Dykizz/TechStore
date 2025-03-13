@@ -1,69 +1,80 @@
+<?php
+include 'connect.php';
+include 'information.php';
+
+// Lấy productId từ query string
+$productId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+
+if ($productId > 0) {
+  $sql = "SELECT 
+              p.productId, p.name AS productName, p.image, p.description, p.isActive,
+              p.stock, p.price, p.discountPercent, c.categoryId, c.name AS categoryName,
+              a.attributeId, a.name AS attributeName, av.value AS attributeValue
+          FROM Product p
+          LEFT JOIN Category c ON p.categoryId = c.categoryId
+          LEFT JOIN AttributeValue av ON p.productId = av.productId
+          LEFT JOIN Attribute a ON av.attributeId = a.attributeId
+          WHERE p.productId = ?";
+
+  $stmt = $conn->prepare($sql);
+  $stmt->bind_param("i", $productId);
+  $stmt->execute();
+  $result = $stmt->get_result();
+
+  $product = [];
+  while ($row = $result->fetch_assoc()) {
+      if (empty($product)) {
+          $product = [
+              "categoryId" => $row["categoryId"],
+              "productId" => $row["productId"],
+              "isActive" => $row["isActive"],
+              "productName" => $row["productName"],
+              "image" => $row["image"],
+              "description" => $row["description"],
+              "stock" => $row["stock"],
+              "price" => $row["price"],
+              "discountPercent" => $row["discountPercent"],
+              "attributes" => [],
+              "categoryName" => $row["categoryName"]
+          ];
+      }
+      if ($row["attributeId"]) {
+          $product["attributes"][] = [
+              "attributeId" => $row["attributeId"],  // Lấy thêm ID
+              "name" => $row["attributeName"],
+              "value" => $row["attributeValue"]
+          ];
+      }
+  }
+  $stmt->close();
+}
+
+$conn->close();
+?>
+
 <!DOCTYPE html>
 <html lang="vi">
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-
     <title>Electro - HTML Ecommerce Template</title>
-
-    <!-- Google font -->
     <link
       href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700"
       rel="stylesheet"
     />
-
-    <!-- Bootstrap -->
     <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" />
-
-    <!-- Slick -->
     <link type="text/css" rel="stylesheet" href="css/slick.css" />
     <link type="text/css" rel="stylesheet" href="css/slick-theme.css" />
-
-    <!-- nouislider -->
     <link type="text/css" rel="stylesheet" href="css/nouislider.min.css" />
-
-    <!-- Font Awesome Icon -->
     <link rel="stylesheet" href="css/font-awesome.min.css" />
-
-    <!-- Custom stlylesheet -->
     <link type="text/css" rel="stylesheet" href="css/style.css" />
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
   </head>
 
   <body>
     <div class="alert alert-show announce" role="alert"></div>
     <!-- HEADER -->
-    <header>
-      <!-- TOP HEADER -->
-      <div id="top-header">
-        <div class="container">
-          <ul class="header-links pull-left">
-            <li>
-              <a href="#"><i class="fa fa-phone"></i> 0975419019 </a>
-            </li>
-            <li>
-              <a href="#"><i class="fa fa-envelope-o"></i> nhom6@email.com </a>
-            </li>
-            <li>
-              <a href="#"
-                ><i class="fa fa-map-marker"></i> 273 An Dương Vương, Phường 3,
-                Quận 5
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <!-- /TOP HEADER -->
-      <!-- MAIN HEADER -->
-      <div id="header">
+    <div id="header">
         <!-- container -->
         <div class="container">
           <!-- row -->
@@ -71,7 +82,7 @@
             <!-- LOGO -->
             <div class="col-md-3">
               <div class="header-logo">
-                <a href="./index-notlogin.html" class="logo">
+                <a href="./index.php" class="logo">
                   <img src="./img/logo.png" alt="" />
                 </a>
               </div>
@@ -80,7 +91,7 @@
             <!-- SEARCH BAR -->
             <div class="col-md-6">
               <div class="header-search">
-                <form action="./store-search.html">
+                <form action="./products.php">
                   <input
                     name="keyword"
                     class="input"
@@ -92,67 +103,105 @@
             </div>
             <!-- /SEARCH BAR -->
             <!-- ACCOUNT -->
-            <div class="col-md-3 clearfix">
-              <div class="header-ctn">
-                <!-- Tài khoản -->
-                <div>
-                    <a
-                      href="./login.html"
-                      class="btn btn-primary"
-                      aria-expanded="true"
-                    >
-                      <span>Đăng nhập</span>
-                    </a>
-                  </div>
-                  <div>
-                    <a
-                      href="./register.html"
-                      class="btn btn-primary"
-                      aria-expanded="true"
-                    >
-                      <span>Đăng kí</span>
-                    </a>
-                  </div>
-                <!-- /Tài khoản -->
-
-                <!-- Menu Toogle -->
-                <div class="menu-toggle">
-                  <a href="#">
-                    <i class="fa fa-bars"></i>
-                    <span>Danh mục</span>
-                  </a>
-                </div>
-                <!-- /Menu Toogle -->
-              </div>
-            </div>
+            <div class="col-md-3 clearfix"> <?php if ($fullname) : ?>
+                        <div class="header-ctn">
+                               
+                            <div class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                                    <i class="fa fa-user-o"></i>
+                                    <span><?php echo htmlspecialchars($fullname); ?></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="./account-information.php">Thông tin cá nhân</a></li>
+                                    <li><a href="./purchasing-history.php">Lịch sử mua hàng</a></li>
+                                    <li><a href="./change-password.php">Đổi mật khẩu</a></li>
+                                    <li><a href="./logout.php">Đăng xuất</a></li>
+                                </ul>
+                            </div>
+                            <div class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                                    <i class="fa fa-shopping-cart"></i>
+                                    <span>Giỏ hàng</span>
+                                    <div class="qty"><?php echo array_sum(array_column($_SESSION['cart'] ?? [], 'quantity')); ?></div>
+                                </a>
+                                <div class="cart-dropdown">
+                                    <div class="cart-list">
+                                        <?php
+                                        if (!empty($_SESSION['cart'])) {
+                                            foreach ($_SESSION['cart'] as $id => $item) {
+                                                echo "
+                                                <div class='product-widget'>
+                                                    <div class='product-img'>
+                                                        <img src='{$item['image']}' alt='' />
+                                                    </div>
+                                                    <div class='product-body'>
+                                                        <h3 class='product-name'>
+                                                            <a href='detail-product.php?id={$id}'>{$item['name']}</a>
+                                                        </h3>
+                                                        <h4 class='product-price'>
+                                                            <span class='qty'>{$item['quantity']}x</span>" . number_format($item['price'], 0, ',', '.') . " VND
+                                                        </h4>
+                                                    </div>
+                                                    <button class='delete'><i class='fa fa-close'></i></button>
+                                                </div>";
+                                            }
+                                        } else {
+                                            echo "<p>Giỏ hàng trống!</p>";
+                                        }
+                                        ?>
+                                    </div>
+                                    <div class="cart-summary">
+                                        <small><?php echo array_sum(array_column($_SESSION['cart'] ?? [], 'quantity')); ?> sản phẩm được chọn</small>
+                                        <h5>TỔNG: <?php echo number_format(array_sum(array_map(function($item) { return $item['price'] * $item['quantity']; }, $_SESSION['cart'] ?? [])), 0, ',', '.'); ?> VND</h5>
+                                    </div>
+                                    <div class="cart-btns">
+                                        <a href="./shopping-cart.php">Xem giỏ hàng</a>
+                                        <a href="./checkout.php">Thanh toán <i class="fa fa-arrow-circle-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="menu-toggle">
+                                <a href="#"><i class="fa fa-bars"></i><span>Danh mục</span></a>
+                            </div>
+                        </div>
+                        <?php else : ?>
+                            <div class="header-ctn">
+                                <div>
+                                    <a href="./login.php" class="btn btn-primary" aria-expanded="true">
+                                        <span>Đăng nhập</span>
+                                    </a>
+                                </div>
+                                <div>
+                                    <a href="./register.php" class="btn btn-primary" aria-expanded="true">
+                                        <span>Đăng kí</span>
+                                    </a>
+                                </div>
+                                <div class="menu-toggle">
+                                    <a href="#"><i class="fa fa-bars"></i><span>Danh mục</span></a>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                    </div>
             <!-- /ACCOUNT -->
           </div>
           <!-- row -->
         </div>
         <!-- container -->
       </div>
-      <!-- /MAIN HEADER -->
-    </header>
     <!-- /HEADER -->
     <!-- NAVIGATION -->
     <nav id="navigation">
-      <!-- container -->
-      <div class="container">
-        <!-- responsive-nav -->
-        <div id="responsive-nav">
-          <!-- NAV -->
-          <ul class="main-nav nav navbar-nav">
-            <li><a href="./index-notlogin.html">Trang chủ</a></li>
-            <li class="active"><a href="./store-laptop-notlogin.html">Máy tính</a></li>
-            <li><a href="./store-smartphone-notlogin.html">Điện thoại</a></li>
-            <li><a href="./store-camera-notlogin.html">Máy ảnh</a></li>
-            <li><a href="./store-accessories-notlogin.html">Phụ kiện</a></li>
-          </ul>
-          <!-- /NAV -->
+        <div class="container">
+            <div id="responsive-nav">
+                <ul class="main-nav nav navbar-nav">
+                    <li><a href="./index.php">Trang chủ</a></li>
+                    <li class="<?php echo $product["categoryId"] == 1 ? 'active' : ''; ?>"><a href="./products.php?category=1">Máy tính</a></li>
+                    <li class="<?php echo $product["categoryId"] == 2 ? 'active' : ''; ?>"><a href="./products.php?category=2">Điện thoại</a></li>
+                    <li class="<?php echo $product["categoryId"] == 3 ? 'active' : ''; ?>"><a href="./products.php?category=3">Máy ảnh</a></li>
+                    <li class="<?php echo $product["categoryId"] == 4 ? 'active' : ''; ?>"><a href="./products.php?category=4">Phụ kiện</a></li>
+                </ul>
+            </div>
         </div>
-        <!-- /responsive-nav -->
-      </div>
-      <!-- /container -->
     </nav>
     <!-- /NAVIGATION -->
     <!-- SECTION -->
@@ -164,7 +213,7 @@
           <!-- Product main img -->
           <div class="col-md-6">
             <div id="product-main-img">
-              <img src="./img/product_maytinh.png" alt="product" />
+              <img src="./<?= $product['image']?>" alt="product" />
             </div>
           </div>
           <!-- /Product main img -->
@@ -173,7 +222,7 @@
           <div class="col-md-6">
             <div class="product-details">
               <h2 class="product-name">
-                Laptop ASUS Expertbook B1402CBA-NK2669W
+                <?= $product["productName"] ?>
               </h2>
               <div>
                 <div class="product-rating">
@@ -183,31 +232,19 @@
                   <i class="fa fa-star"></i>
                   <i class="fa fa-star-o"></i>
                 </div>
-                <a class="review-link">121 đánh giá </a>
+                <a class="review-link">200 đánh giá </a>
               </div>
 
               <div>
                 <h3 class="product-price">
-                  <del class="product-old-price">19.990.000 VND</del>
+                  <del class="product-old-price"><?=number_format($product['price'],0,',','.') ?> VND</del>
                 </h3>
                 <br />
-                <h3 class="product-price">12.990.000 VND</h3>
-                <span class="product-available">Còn hàng</span>
+                <h3 class="product-price"><?=number_format($product['price']*((100 - $product['discountPercent'])/ 100),0,',','.') ?> VND</h3>
+                <span class="product-available">Còn <?= $product['stock'] ?> sản phẩm</span>
               </div>
               <div class="justified-text">
-                Laptop Asus ExpertBook B1402CBA-NK2669W là một chiếc laptop văn
-                phòng mỏng nhẹ, thanh lịch với hiệu năng mạnh mẽ. Máy phù hợp
-                với những người thường xuyên di chuyển và cần một chiếc laptop
-                Asus ExpertBook để làm việc hiệu quả. Chắc chắn khi sở hữu bạn
-                sẽ có được trải nghiệm hoàn hảo và trọn vẹn nhất. Laptop ASUS
-                ExpertBook B1402CBA-NK2669W ấn tượng với thiết kế mỏng nhẹ và
-                thanh lịch. Với trọng lượng chỉ nặng 1.49kg, tạo điều kiện thuận
-                lợi cho việc di chuyển và mang theo bất cứ nơi nào. Bên cạnh đó
-                chất liệu vỏ nhôm cao cấp, máy tính không chỉ đẹp mắt mà còn đảm
-                bảo độ bền và cứng cáp. Màu sắc chủ đạo của laptop là màu đen,
-                tạo nên một vẻ ngoài sang trọng và hiện đại. Đặc biệt, màu sắc
-                này cũng tạo điểm nhấn cho thiết kế tối giản và đẳng cấp của
-                laptop.
+                <?php echo nl2br(htmlspecialchars($product['description'])); ?>
               </div>
               <br />
               <div class="add-to-cart">
@@ -223,7 +260,7 @@
                   <button
                     class="add-to-cart-btn btn-announce"
                     type-announce="success"
-                    message="Vui lòng đăng nhập/đăng kí tài khoản để mua hàng!"
+                    message="Thêm sản phẩm vào giỏ hàng thành công!"
                   >
                     <i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng
                   </button>
@@ -231,7 +268,7 @@
               </div>
               <ul class="product-links">
                 <li>Danh mục:</li>
-                <li><a href="./store-laptop-notlogin.html">Máy tính</a></li>
+                <li><a href='./products.php?category=<?= $product["categoryId"]?>'><?= $product["categoryName"] ?></a></li>
               </ul>
               <ul class="product-links">
                 <li>Share:</li>
@@ -271,30 +308,18 @@
                   <div class="row">
                     <div class="col-md-12">
                       <table class="table">
-                        <tr>
-                          <td>Chip xử lí (CPU):</td>
-                          <td>Intel Core i5-1235U</td>
-                        </tr>
-                        <tr>
-                          <td>Chip đồ họa (GPU):</td>
-                          <td>Intel UHD Graphics</td>
-                        </tr>
-                        <tr>
-                          <td>RAM:</td>
-                          <td>16GB</td>
-                        </tr>
-                        <tr>
-                          <td>Ô cứng (Bộ nhớ lưu trữ):</td>
-                          <td>512GB M.2 2280 NVMe PCIe 4.0 SSD</td>
-                        </tr>
-                        <tr>
-                          <td>Kích thước màn hình:</td>
-                          <td>14 inches</td>
-                        </tr>
-                        <tr>
-                          <td>Hệ điều hành:</td>
-                          <td>Windows 11 Home</td>
-                        </tr>
+                        <tbody>
+                          <?php if (!empty($product["attributes"])): ?>
+                            <?php foreach ($product['attributes'] as $attribute): ?>
+                              <tr>
+                                <td><?= htmlspecialchars($attribute['name']) ?></td>
+                                <td><?= htmlspecialchars($attribute['value']) ?></td>
+                              </tr>
+                            <?php endforeach; ?>
+                          <?php else: ?>
+                            <span>Không rõ thông tin</span>
+                          <?php endif; ?>
+                        </tbody>
                       </table>
                     </div>
                   </div>
@@ -559,7 +584,7 @@
                 <div id="tab1" class="tab-pane active">
                   <div class="products-slick" data-nav="#slick-nav-1">
                     <!-- product -->
-                    <div class="product">
+                    <div class="product" style="margin-bottom: 50px">
                       <div class="product-img">
                         <img src="./img/sanphammoi_samsung-z-lip5.png" alt="" />
                         <div class="product-label">
@@ -569,7 +594,7 @@
                       </div>
                       <div class="product-body">
                         <h3 class="product-name">
-                          <a href="./detail-product-smartphone-notlogin.html"
+                          <a href="./detail-product-smartphone.html"
                             >Samsung Galaxy Z Flip5 512GB</a
                           >
                         </h3>
@@ -591,7 +616,7 @@
                         <button
                           class="add-to-cart-btn btn-announce"
                           type-announce="success"
-                          message="Vui lòng đăng nhập/đăng kí tài khoản để mua hàng!"
+                          message="Thêm sản phẩm vào giỏ hàng thành công!"
                         >
                           <i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng
                         </button>
@@ -609,7 +634,7 @@
                       </div>
                       <div class="product-body">
                         <h3 class="product-name">
-                          <a href="./detail-product-laptop-notlogin.html"
+                          <a href="./detail-product-laptop.html"
                             >Laptop ASUS Gaming VivoBook K3605ZC-RP564W</a
                           >
                         </h3>
@@ -631,7 +656,7 @@
                         <button
                           class="add-to-cart-btn btn-announce"
                           type-announce="success"
-                          message="Vui lòng đăng nhập/đăng kí tài khoản để mua hàng!"
+                          message="Thêm sản phẩm vào giỏ hàng thành công!"
                         >
                           <i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng
                         </button>
@@ -639,7 +664,7 @@
                     </div>
                     <!-- /product -->
                     <!-- product -->
-                    <div class="product" style="margin-bottom: 50px">
+                    <div class="product">
                       <div class="product-img">
                         <img src="./img/sanphammoi_banphim.png" alt="" />
                         <div class="product-label">
@@ -649,7 +674,7 @@
                       </div>
                       <div class="product-body">
                         <h3 class="product-name">
-                          <a href="./detail-product-accessories-notlogin.html"
+                          <a href="./detail-product-accessories.html"
                             >Bàn phím cơ E-DRA EK375 Alpha Đen Đỏ</a
                           >
                         </h3>
@@ -669,7 +694,7 @@
                         <button
                           class="add-to-cart-btn btn-announce"
                           type-announce="success"
-                          message="Vui lòng đăng nhập/đăng kí tài khoản để mua hàng!"
+                          message="Thêm sản phẩm vào giỏ hàng thành công!"
                         >
                           <i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng
                         </button>
@@ -687,7 +712,7 @@
                       </div>
                       <div class="product-body">
                         <h3 class="product-name">
-                          <a href="./detail-product-camera-notlogin.html"
+                          <a href="./detail-product-camera.html"
                             >Canon EOS R8, Mới 100% (Chính hãng Canon)</a
                           >
                         </h3>
@@ -709,7 +734,7 @@
                         <button
                           class="add-to-cart-btn btn-announce"
                           type-announce="success"
-                          message="Vui lòng đăng nhập/đăng kí tài khoản để mua hàng!"
+                          message="Thêm sản phẩm vào giỏ hàng thành công!"
                         >
                           <i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng
                         </button>
@@ -802,10 +827,10 @@
               <div class="footer">
                 <h3 class="footer-title">Sản phẩm</h3>
                 <ul class="footer-links">
-                  <li><a href="./store-laptop-notlogin.html">Máy tính</a></li>
-                  <li><a href="./store-smartphone-notlogin.html">Điện thoại</a></li>
-                  <li><a href="./store-camera-notlogin.html">Máy ảnh</a></li>
-                  <li><a href="./store-accessories-notlogin.html">Phụ kiện</a></li>
+                  <li><a href="./products.php?category=1">Máy tính</a></li>
+                  <li><a href="./products.php?category=2">Điện thoại</a></li>
+                  <li><a href="./products.php?category=3">Máy ảnh</a></li>
+                  <li><a href="./products.php?category=4">Phụ kiện</a></li>
                 </ul>
               </div>
             </div>
@@ -825,7 +850,8 @@
             <div class="col-md-3 col-xs-6">
               <div class="footer">
                 <h3 class="footer-title">Dịch vụ</h3>
-                <u<li><a href="./account-information.html">Tài khoản</a></li>
+                <ul class="footer-links">
+                  <li><a href="./account-information.html">Tài khoản</a></li>
                   <li><a href="./shopping-cart.html">Giỏ hàng</a></li>
                   <li><a href="#">Trợ giúp</a></li>
                 </ul>

@@ -74,7 +74,7 @@ $userName = isset($_SESSION['name']) ? $_SESSION['name'] : "Khách";
             <!-- SEARCH BAR -->
             <div class="col-md-6">
               <div class="header-search">
-                <form action="./store-search.html">
+                <form action="./products.php">
                   <input
                     name="keyword"
                     class="input"
@@ -86,105 +86,85 @@ $userName = isset($_SESSION['name']) ? $_SESSION['name'] : "Khách";
             </div>
             <!-- /SEARCH BAR -->
             <!-- ACCOUNT -->
-            <div class="col-md-3 clearfix">
-              <div class="header-ctn">
-                <!-- Tài khoản -->
-                <div class="dropdown">
-                  <a
-                    class="dropdown-toggle"
-                    data-toggle="dropdown"
-                    aria-expanded="true"
-                  >
-                    <i class="fa fa-user-o"></i>
-                    <span><?php echo htmlspecialchars($fullname); ?></span>
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li>
-                      <a href="./account-information.php">Thông tin cá nhân</a>
-                    </li>
-                    <li>
-                      <a href="./lichsu_muahang.php">Lịch sử mua hàng</a>
-                    </li>
-                    <li><a href="./change-password.php">Đổi mật khẩu</a></li>
-                    <li><a href="./index-notlogin.php">Đăng xuất</a></li>
-                  </ul>
-                </div>
-                <!-- /Tài khoản -->
-
-                <!-- Giỏ hàng -->
-                <div class="dropdown">
-                  <a
-                    class="dropdown-toggle"
-                    data-toggle="dropdown"
-                    aria-expanded="true"
-                  >
-                    <i class="fa fa-shopping-cart"></i>
-                    <span>Giỏ hàng</span>
-                    <div class="qty">4</div>
-                  </a>
-                  <div class="cart-dropdown">
-                    <div class="cart-list">
-                      <div class="product-widget">
-                        <div class="product-img">
-                          <img src="./img/sp1_giohang.png" alt="" />
+            <div class="col-md-3 clearfix"> <?php if ($fullname) : ?>
+                        <div class="header-ctn">
+                               
+                            <div class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                                    <i class="fa fa-user-o"></i>
+                                    <span><?php echo htmlspecialchars($fullname); ?></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="./account-information.php">Thông tin cá nhân</a></li>
+                                    <li><a href="./purchasing-history.php">Lịch sử mua hàng</a></li>
+                                    <li><a href="./change-password.php">Đổi mật khẩu</a></li>
+                                    <li><a href="./logout.php">Đăng xuất</a></li>
+                                </ul>
+                            </div>
+                            <div class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                                    <i class="fa fa-shopping-cart"></i>
+                                    <span>Giỏ hàng</span>
+                                    <div class="qty"><?php echo array_sum(array_column($_SESSION['cart'] ?? [], 'quantity')); ?></div>
+                                </a>
+                                <div class="cart-dropdown">
+                                    <div class="cart-list">
+                                        <?php
+                                        if (!empty($_SESSION['cart'])) {
+                                            foreach ($_SESSION['cart'] as $id => $item) {
+                                                echo "
+                                                <div class='product-widget'>
+                                                    <div class='product-img'>
+                                                        <img src='{$item['image']}' alt='' />
+                                                    </div>
+                                                    <div class='product-body'>
+                                                        <h3 class='product-name'>
+                                                            <a href='detail-product.php?id={$id}'>{$item['name']}</a>
+                                                        </h3>
+                                                        <h4 class='product-price'>
+                                                            <span class='qty'>{$item['quantity']}x</span>" . number_format($item['price'], 0, ',', '.') . " VND
+                                                        </h4>
+                                                    </div>
+                                                    <button class='delete'><i class='fa fa-close'></i></button>
+                                                </div>";
+                                            }
+                                        } else {
+                                            echo "<p>Giỏ hàng trống!</p>";
+                                        }
+                                        ?>
+                                    </div>
+                                    <div class="cart-summary">
+                                        <small><?php echo array_sum(array_column($_SESSION['cart'] ?? [], 'quantity')); ?> sản phẩm được chọn</small>
+                                        <h5>TỔNG: <?php echo number_format(array_sum(array_map(function($item) { return $item['price'] * $item['quantity']; }, $_SESSION['cart'] ?? [])), 0, ',', '.'); ?> VND</h5>
+                                    </div>
+                                    <div class="cart-btns">
+                                        <a href="./shopping-cart.php">Xem giỏ hàng</a>
+                                        <a href="./checkout.php">Thanh toán <i class="fa fa-arrow-circle-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="menu-toggle">
+                                <a href="#"><i class="fa fa-bars"></i><span>Danh mục</span></a>
+                            </div>
                         </div>
-                        <div class="product-body">
-                          <h3 class="product-name">
-                            <a href="./detail-product-smartphone.php"
-                              >Iphone 16 Pro Max 512GB | Chính hãng VN/A</a
-                            >
-                          </h3>
-                          <h4 class="product-price">
-                            <span class="qty">1x</span>40.990.000 VND
-                          </h4>
-                        </div>
-                        <button class="delete">
-                          <i class="fa fa-close"></i>
-                        </button>
-                      </div>
-                      <div class="product-widget">
-                        <div class="product-img">
-                          <img src="./img/sp2_giohang.png" alt="" />
-                        </div>
-                        <div class="product-body">
-                          <h3 class="product-name">
-                            <a href="./detail-product-accessories.php"
-                              >Tai nghe Bluetooth Apple AirPods 3 MagSafe</a
-                            >
-                          </h3>
-                          <h4 class="product-price">
-                            <span class="qty">3x</span>3.990.000 VND
-                          </h4>
-                        </div>
-                        <button class="delete">
-                          <i class="fa fa-close"></i>
-                        </button>
-                      </div>
+                        <?php else : ?>
+                            <div class="header-ctn">
+                                <div>
+                                    <a href="./login.php" class="btn btn-primary" aria-expanded="true">
+                                        <span>Đăng nhập</span>
+                                    </a>
+                                </div>
+                                <div>
+                                    <a href="./register.php" class="btn btn-primary" aria-expanded="true">
+                                        <span>Đăng kí</span>
+                                    </a>
+                                </div>
+                                <div class="menu-toggle">
+                                    <a href="#"><i class="fa fa-bars"></i><span>Danh mục</span></a>
+                                </div>
+                            </div>
+                        <?php endif; ?>
                     </div>
-                    <div class="cart-summary">
-                      <small>4 sản phẩm được chọn</small>
-                      <h5>TỔNG: 52.960.000 VND</h5>
-                    </div>
-                    <div class="cart-btns">
-                      <a href="./shopping-cart.php">Xem giỏ hàng</a>
-                      <a href="./checkout.php">
-                        Thanh toán <i class="fa fa-arrow-circle-right"></i>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <!-- /Giỏ hàng -->
-
-                <!-- Menu Toogle -->
-                <div class="menu-toggle">
-                  <a href="#">
-                    <i class="fa fa-bars"></i>
-                    <span>Danh mục</span>
-                  </a>
-                </div>
-                <!-- /Menu Toogle -->
-              </div>
-            </div>
             <!-- /ACCOUNT -->
           </div>
           <!-- row -->
@@ -203,10 +183,10 @@ $userName = isset($_SESSION['name']) ? $_SESSION['name'] : "Khách";
           <!-- NAV -->
           <ul class="main-nav nav navbar-nav">
             <li class="active"><a href="./index.php">Trang chủ</a></li>
-            <li><a href="./store-laptop.php">Máy tính</a></li>
-            <li><a href="./store-smartphone.php">Điện thoại</a></li>
-            <li><a href="./store-camera.php">Máy ảnh</a></li>
-            <li><a href="./store-accessories.php">Phụ kiện</a></li>
+            <li><a href="./products.php?category=1">Máy tính</a></li>
+            <li><a href="./products.php?category=2">Điện thoại</a></li>
+            <li><a href="./products.php?category=3">Máy ảnh</a></li>
+            <li><a href="./products.php?category=4">Phụ kiện</a></li>
           </ul>
           <!-- /NAV -->
         </div>
@@ -229,7 +209,7 @@ $userName = isset($_SESSION['name']) ? $_SESSION['name'] : "Khách";
               </div>
               <div class="shop-body">
                 <h3>Máy tính</h3>
-                <a href="./store-laptop.php" class="cta-btn">
+                <a href="./products.php?category=1" class="cta-btn">
                   Mua ngay <i class="fa fa-arrow-circle-right"></i>
                 </a>
               </div>
@@ -244,7 +224,7 @@ $userName = isset($_SESSION['name']) ? $_SESSION['name'] : "Khách";
               </div>
               <div class="shop-body">
                 <h3>Điện thoại</h3>
-                <a href="./store-smartphone.php" class="cta-btn">
+                <a href="./products.php?category=2" class="cta-btn">
                   Mua ngay <i class="fa fa-arrow-circle-right"></i>
                 </a>
               </div>
@@ -259,7 +239,7 @@ $userName = isset($_SESSION['name']) ? $_SESSION['name'] : "Khách";
               </div>
               <div class="shop-body">
                 <h3>Máy ảnh</h3>
-                <a href="./store-camera.php" class="cta-btn">
+                <a href="./products.php?category=3" class="cta-btn">
                   Mua ngay <i class="fa fa-arrow-circle-right"></i>
                 </a>
               </div>
@@ -274,7 +254,7 @@ $userName = isset($_SESSION['name']) ? $_SESSION['name'] : "Khách";
               </div>
               <div class="shop-body">
                 <h3>Phụ kiện</h3>
-                <a href="./store-accessories.php" class="cta-btn">
+                <a href="./products.php?category=4" class="cta-btn">
                   Mua ngay <i class="fa fa-arrow-circle-right"></i>
                 </a>
               </div>
@@ -808,10 +788,10 @@ $userName = isset($_SESSION['name']) ? $_SESSION['name'] : "Khách";
               <div class="footer">
                 <h3 class="footer-title">Sản phẩm</h3>
                 <ul class="footer-links">
-                  <li><a href="./store-laptop.php">Máy tính</a></li>
-                  <li><a href="./store-smartphone.php">Điện thoại</a></li>
-                  <li><a href="./store-camera.php">Máy ảnh</a></li>
-                  <li><a href="./store-accessories.php">Phụ kiện</a></li>
+                  <li><a href="./products.php?category=1">Máy tính</a></li>
+                  <li><a href="./products.php?category=2">Điện thoại</a></li>
+                  <li><a href="./products.php?category=3">Máy ảnh</a></li>
+                  <li><a href="./products.php?category=4">Phụ kiện</a></li>
                 </ul>
               </div>
             </div>

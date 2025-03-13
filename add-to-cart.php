@@ -1,21 +1,19 @@
 <?php
 session_start();
-include 'connect.php';
+header('Content-Type: application/json');
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['productId'])) {
-    $productId = $_POST['productId'];
-    $name = $_POST['name'];
-    $price = (int)$_POST['price'];
-    $image = $_POST['image'];
+$productId = isset($_POST['productId']) ? (int)$_POST['productId'] : 0;
+$name = isset($_POST['name']) ? $_POST['name'] : '';
+$price = isset($_POST['price']) ? (float)$_POST['price'] : 0;
+$image = isset($_POST['image']) ? $_POST['image'] : '';
 
-    // Khởi tạo giỏ hàng nếu chưa có
+if ($productId > 0 && $name && $price > 0) {
     if (!isset($_SESSION['cart'])) {
         $_SESSION['cart'] = [];
     }
 
-    // Kiểm tra nếu sản phẩm đã tồn tại, tăng số lượng; nếu không, thêm mới
     if (isset($_SESSION['cart'][$productId])) {
-        $_SESSION['cart'][$productId]['quantity']++;
+        $_SESSION['cart'][$productId]['quantity'] += 1;
     } else {
         $_SESSION['cart'][$productId] = [
             'name' => $name,
@@ -25,10 +23,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['productId'])) {
         ];
     }
 
-    // Chuyển hướng về trang trước với thông báo
-    header("Location: store-accessories.php?category=" . $_GET['category'] . "&message=Thêm vào giỏ hàng thành công!");
-    exit();
-}
+    $cartQuantity = array_sum(array_column($_SESSION['cart'], 'quantity'));
 
-$conn->close();
+    echo json_encode([
+        'status' => 'success',
+        'message' => 'Thêm sản phẩm vào giỏ hàng thành công!',
+        'cartQuantity' => $cartQuantity
+    ]);
+} else {
+    echo json_encode([
+        'status' => 'danger',
+        'message' => 'Dữ liệu không hợp lệ!'
+    ]);
+}
+exit;
 ?>
