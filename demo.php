@@ -332,7 +332,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                             <div><span id="payment-method-summary"></span></div>
                         </div>
                     </div>
-                    <!-- Di chuyển phần đồng ý điều khoản và nút đặt hàng vào đây -->
+                    
                     <div class="input-checkbox">
                         <input type="checkbox" id="terms" name="terms" required />
                         <label for="terms"><span></span> Tôi đã đọc và chấp nhận điều khoản và điều kiện</label>

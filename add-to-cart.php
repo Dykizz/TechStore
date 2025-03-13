@@ -1,4 +1,5 @@
 <?php
+session_start();
 include 'connect.php';
 include 'information.php';
 
@@ -16,6 +17,7 @@ $productId = isset($_POST['productId']) ? intval($_POST['productId']) : 0;
 $name = isset($_POST['name']) ? $_POST['name'] : '';
 $price = isset($_POST['price']) ? intval($_POST['price']) : 0;
 $image = isset($_POST['image']) ? $_POST['image'] : '';
+$quantity = 1; // Default quantity
 
 // Validate input
 if (empty($productId) || empty($name) || empty($price) || empty($image)) {
@@ -27,7 +29,7 @@ if (empty($productId) || empty($name) || empty($price) || empty($image)) {
 }
 
 // Check if product exists in cart already
-$checkSql = "SELECT * FROM CartItem WHERE userId = ? AND productId = ?";
+$checkSql = "SELECT * FROM Cart WHERE user_id = ? AND product_id = ?";
 $checkStmt = $conn->prepare($checkSql);
 $checkStmt->bind_param("ii", $userId, $productId);
 $checkStmt->execute();
@@ -35,16 +37,13 @@ $result = $checkStmt->get_result();
 
 if ($result->num_rows > 0) {
     // Product already in cart, update quantity
-    $cartItem = $result->fetch_assoc();
-    $newQuantity = $cartItem['quantity'] + 1;
-    
-    $updateSql = "UPDATE CartItem SET quantity = ? WHERE userId = ? AND productId = ?";
+    $updateSql = "UPDATE Cart SET quantity = quantity + ? WHERE user_id = ? AND product_id = ?";
     $updateStmt = $conn->prepare($updateSql);
-    $updateStmt->bind_param("iii", $newQuantity, $userId, $productId);
+    $updateStmt->bind_param("iii", $quantity, $userId, $productId);
     
     if ($updateStmt->execute()) {
         // Success
-        $countSql = "SELECT SUM(quantity) as total FROM CartItem WHERE userId = ?";
+        $countSql = "SELECT SUM(quantity) as total FROM Cart WHERE user_id = ?";
         $countStmt = $conn->prepare($countSql);
         $countStmt->bind_param("i", $userId);
         $countStmt->execute();
@@ -64,13 +63,13 @@ if ($result->num_rows > 0) {
     }
 } else {
     // Product not in cart, insert new item
-    $insertSql = "INSERT INTO CartItem (userId, productId, quantity) VALUES (?, ?, 1)";
+    $insertSql = "INSERT INTO Cart (user_id, product_id, quantity) VALUES (?, ?, ?)";
     $insertStmt = $conn->prepare($insertSql);
-    $insertStmt->bind_param("ii", $userId, $productId);
+    $insertStmt->bind_param("iii", $userId, $productId, $quantity);
     
     if ($insertStmt->execute()) {
         // Success
-        $countSql = "SELECT SUM(quantity) as total FROM CartItem WHERE userId = ?";
+        $countSql = "SELECT SUM(quantity) as total FROM Cart WHERE user_id = ?";
         $countStmt = $conn->prepare($countSql);
         $countStmt->bind_param("i", $userId);
         $countStmt->execute();

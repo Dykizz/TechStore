@@ -72,19 +72,80 @@ $conn->close();
                 </ul>
             </div>
         </div>
-        <!-- /TOP HEADER -->
-        <!-- MAIN HEADER -->
-        <div id="header">
-            <!-- container -->
-            <div class="container">
-                <!-- row -->
-                <div class="row">
-                    <!-- LOGO -->
-                    <div class="col-md-3">
-                        <div class="header-logo">
-                            <a href="./index.php" class="logo">
-                                <img src="./img/logo.png" alt="" />
-                            </a>
+      </div>
+      <!-- /TOP HEADER -->
+      <!-- MAIN HEADER -->
+      <div id="header">
+        <!-- container -->
+        <div class="container">
+          <!-- row -->
+          <div class="row">
+            <!-- LOGO -->
+            <div class="col-md-3">
+              <div class="header-logo">
+                <a href="index.html" class="logo">
+                  <img src="./img/logo.png" alt="" />
+                </a>
+              </div>
+            </div>
+            <!-- /LOGO -->
+            <!-- SEARCH BAR -->
+            <div class="col-md-6">
+              <div class="header-search">
+                <form action="./products.php">
+                  <input
+                    name="keyword"
+                    class="input"
+                    placeholder="Nhập sản phẩm muốn tìm kiếm ..."
+                  />
+                  <button class="search-btn">Tìm kiếm</button>
+                </form>
+              </div>
+            </div>
+            <!-- /SEARCH BAR -->
+            <!-- ACCOUNT -->
+            <div class="col-md-3 clearfix">
+              <div class="header-ctn">
+                <!-- Tài khoản -->
+                <div class="dropdown">
+                  <a
+                    class="dropdown-toggle"
+                    data-toggle="dropdown"
+                    aria-expanded="true"
+                  >
+                    <i class="fa fa-user-o"></i>
+
+                    <span>Nguyễn Thế Anh</span>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a href="./account-information.html">Thông tin cá nhân</a>
+                    </li>
+                    <li>
+                      <a href="./purchasing-history.html">Lịch sử mua hàng</a>
+                    </li>
+                    <li><a href="./change-password.html">Đổi mật khẩu</a></li>
+                    <li><a href="./index-notlogin.html">Đăng xuất</a></li>
+                  </ul>
+                </div>
+                <!-- /Tài khoản -->
+
+                <!-- Giỏ hàng -->
+                <div class="dropdown">
+                  <a
+                    class="dropdown-toggle"
+                    data-toggle="dropdown"
+                    aria-expanded="true"
+                  >
+                    <i class="fa fa-shopping-cart"></i>
+                    <span>Giỏ hàng</span>
+                    <div class="qty">4</div>
+                  </a>
+                  <div class="cart-dropdown">
+                    <div class="cart-list">
+                      <div class="product-widget">
+                        <div class="product-img">
+                          <img src="./img/sp1_giohang.png" alt="" />
                         </div>
                     </div>
                     <!-- /LOGO -->
@@ -308,10 +369,10 @@ $conn->close();
               <div class="footer">
                 <h3 class="footer-title">Sản phẩm</h3>
                 <ul class="footer-links">
-                  <li><a href="./store-laptop.php?category=1">Máy tính</a></li>
-                  <li><a href="./store-smartphone.php?category=2">Điện thoại</a></li>
-                  <li><a href="./store-camera.php?category=3">Máy ảnh</a></li>
-                  <li><a href="./store-accessories.php?category=4">Phụ kiện</a></li>
+                  <li><a href="./products.php?category=1">Máy tính</a></li>
+                  <li><a href="./products.php?category=2">Điện thoại</a></li>
+                  <li><a href="./products.php?category=3">Máy ảnh</a></li>
+                  <li><a href="./products.php?category=4">Phụ kiện</a></li>
                 </ul>
               </div>
             </div>

@@ -56,36 +56,38 @@ unset($_SESSION['message']);
 <body>
     <div class="alert alert-success alert-show announce" role="alert"><?php echo $message; ?></div>
     <!-- HEADER -->
-    <header>
-        <div id="top-header">
-            <div class="container">
-                <ul class="header-links pull-left">
-                    <li><a href="#"><i class="fa fa-phone"></i> Hotline: <strong>+84 975 419 019</strong></a></li>
-                    <li><a href="#"><i class="fa fa-envelope-o"></i> nhom6@email.com</a></li>
-                    <li><a href="#"><i class="fa fa-map-marker"></i> 273 An Dương Vương, Phường 3, Quận 5</a></li>
-                </ul>
+    <div id="header">
+        <!-- container -->
+        <div class="container">
+          <!-- row -->
+          <div class="row">
+            <!-- LOGO -->
+            <div class="col-md-3">
+              <div class="header-logo">
+                <a href="./index.php" class="logo">
+                  <img src="./img/logo.png" alt="" />
+                </a>
+              </div>
             </div>
-        </div>
-        <div id="header">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="header-logo">
-                            <a href="./index.php" class="logo">
-                                <img src="./img/logo.png" alt="" />
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="header-search">
-                            <form action="./store-search.php">
-                                <input name="keyword" class="input" placeholder="Nhập sản phẩm muốn tìm kiếm..." />
-                                <button class="search-btn">Tìm kiếm</button>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="col-md-3 clearfix">
+            <!-- /LOGO -->
+            <!-- SEARCH BAR -->
+            <div class="col-md-6">
+              <div class="header-search">
+                <form action="./products.php">
+                  <input
+                    name="keyword"
+                    class="input"
+                    placeholder="Nhập sản phẩm muốn tìm kiếm ..."
+                  />
+                  <button class="search-btn">Tìm kiếm</button>
+                </form>
+              </div>
+            </div>
+            <!-- /SEARCH BAR -->
+            <!-- ACCOUNT -->
+            <div class="col-md-3 clearfix"> <?php if ($fullname) : ?>
                         <div class="header-ctn">
+                               
                             <div class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                                     <i class="fa fa-user-o"></i>
@@ -95,42 +97,61 @@ unset($_SESSION['message']);
                                     <li><a href="./account-information.php">Thông tin cá nhân</a></li>
                                     <li><a href="./purchasing-history.php">Lịch sử mua hàng</a></li>
                                     <li><a href="./change-password.php">Đổi mật khẩu</a></li>
-                                    <li><a href="./index-notlogin.php">Đăng xuất</a></li>
+                                    <li><a href="./logout.php">Đăng xuất</a></li>
                                 </ul>
                             </div>
                             <div class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                                     <i class="fa fa-shopping-cart"></i>
                                     <span>Giỏ hàng</span>
-                                    <div class="qty" id="cart-qty"><?php echo $cart_count; ?></div>
+                                    <div class="qty"><?php echo array_sum(array_column($_SESSION['cart'] ?? [], 'quantity')); ?></div>
                                 </a>
                                 <div class="cart-dropdown">
                                     <div class="cart-list">
+<<<<<<< HEAD
                                         <?php if (!empty($cartItems)): ?>
                                             <?php foreach ($cartItems as $id => $item): ?>
                                                 <div class="product-widget">
                                                     <div class="product-img">
                                                         <img src="<?php echo $item['image']; ?>" alt="" />
+=======
+                                        <?php
+                                        if (!empty($_SESSION['cart'])) {
+                                            foreach ($_SESSION['cart'] as $id => $item) {
+                                                echo "
+                                                <div class='product-widget'>
+                                                    <div class='product-img'>
+                                                        <img src='{$item['image']}' alt='' />
+>>>>>>> ac6f9838be76c01e2ed2c614772287ed047b8156
                                                     </div>
-                                                    <div class="product-body">
-                                                        <h3 class="product-name">
-                                                            <a href="detail-product.php?id=<?php echo $id; ?>"><?php echo $item['name']; ?></a>
+                                                    <div class='product-body'>
+                                                        <h3 class='product-name'>
+                                                            <a href='detail-product.php?id={$id}'>{$item['name']}</a>
                                                         </h3>
-                                                        <h4 class="product-price">
-                                                            <span class="qty"><?php echo $item['quantity']; ?>x</span>
-                                                            <?php echo number_format($item['price'], 0, ',', '.'); ?> VND
+                                                        <h4 class='product-price'>
+                                                            <span class='qty'>{$item['quantity']}x</span>" . number_format($item['price'], 0, ',', '.') . " VND
                                                         </h4>
                                                     </div>
+<<<<<<< HEAD
                                                     <a href="cart-actions.php?action=remove&product_id=<?php echo $id; ?>" class="delete"><i class="fa fa-close"></i></a>
                                                 </div>
                                             <?php endforeach; ?>
                                         <?php else: ?>
                                             <p>Giỏ hàng trống!</p>
                                         <?php endif; ?>
+=======
+                                                    <button class='delete'><i class='fa fa-close'></i></button>
+                                                </div>";
+                                            }
+                                        } else {
+                                            echo "<p>Giỏ hàng trống!</p>";
+                                        }
+                                        ?>
+>>>>>>> ac6f9838be76c01e2ed2c614772287ed047b8156
                                     </div>
                                     <div class="cart-summary">
-                                        <small><?php echo $cart_count; ?> sản phẩm được chọn</small>
-                                        <h5>TỔNG: <?php echo number_format($total_price, 0, ',', '.'); ?> VND</h5>
+                                        <small><?php echo array_sum(array_column($_SESSION['cart'] ?? [], 'quantity')); ?> sản phẩm được chọn</small>
+                                        <h5>TỔNG: <?php echo number_format(array_sum(array_map(function($item) { return $item['price'] * $item['quantity']; }, $_SESSION['cart'] ?? [])), 0, ',', '.'); ?> VND</h5>
                                     </div>
                                     <div class="cart-btns">
                                         <a href="./shopping-cart.php">Xem giỏ hàng</a>
@@ -142,11 +163,30 @@ unset($_SESSION['message']);
                                 <a href="#"><i class="fa fa-bars"></i><span>Danh mục</span></a>
                             </div>
                         </div>
+                        <?php else : ?>
+                            <div class="header-ctn">
+                                <div>
+                                    <a href="./login.php" class="btn btn-primary" aria-expanded="true">
+                                        <span>Đăng nhập</span>
+                                    </a>
+                                </div>
+                                <div>
+                                    <a href="./register.php" class="btn btn-primary" aria-expanded="true">
+                                        <span>Đăng kí</span>
+                                    </a>
+                                </div>
+                                <div class="menu-toggle">
+                                    <a href="#"><i class="fa fa-bars"></i><span>Danh mục</span></a>
+                                </div>
+                            </div>
+                        <?php endif; ?>
                     </div>
-                </div>
-            </div>
+            <!-- /ACCOUNT -->
+          </div>
+          <!-- row -->
         </div>
-    </header>
+        <!-- container -->
+      </div>
     <!-- /HEADER -->
     <!-- CART -->
     <div class="container mt-5">
