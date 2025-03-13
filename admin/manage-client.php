@@ -7,7 +7,7 @@ $limit = 5; // Số lượng user mỗi trang
 $offset = ($page - 1) * $limit; // Tính OFFSET
 
 // Truy vấn lấy user không phải admin
-$sql = "SELECT userId, name, status, avatar, status, gender FROM User WHERE isAdmin = FALSE ORDER BY createdAt DESC LIMIT ? OFFSET ?";
+$sql = "SELECT userId, name, status, avatar, gender FROM User WHERE isAdmin = FALSE ORDER BY createdAt DESC LIMIT ? OFFSET ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("ii", $limit, $offset);
 $stmt->execute();
@@ -29,7 +29,7 @@ $total_pages = ceil($totalUsers / $limit);
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Trang Admin</title>
@@ -51,9 +51,9 @@ $total_pages = ceil($totalUsers / $limit);
       referrerpolicy="no-referrer"
     />
     <link rel="stylesheet" href="style.css" />
-  </head>
+</head>
 
-  <body>
+<body>
     <div class="alert alert-show announce" role="alert"></div>
     <header>
       <div class="inner-logo">
@@ -108,12 +108,6 @@ $total_pages = ceil($totalUsers / $limit);
       </li>
       <li>
         <div class="inner-icon">
-          <i class="fa-solid fa-chart-line"></i>
-        </div>
-        <a href="./statistic.php">Thống kê kinh doanh</a>
-      </li>
-      <li>
-        <div class="inner-icon">
           <i class="fa-solid fa-medal"></i>
         </div>
         <a href="./top5-client.php">Top 5 khách hàng</a>
@@ -124,7 +118,7 @@ $total_pages = ceil($totalUsers / $limit);
       <h2 class="mb-4">Quản lý người dùng</h2>
       <div class="alert alert-info d-flex align-items-center">
         <i class="fa-solid fa-circle-info mr-2"></i>
-        Có &nbsp;<strong > <?= $totalUsers ?> </strong>&nbsp; người dùng trên hệ thống
+        Có &nbsp; <strong><?= $totalUsers ?></strong> &nbsp; người dùng trên hệ thống
       </div>
       <h4 class="mb-3">Danh sách người dùng</h4>
       <table class="table table-hover table-bordered text-center">
@@ -139,7 +133,7 @@ $total_pages = ceil($totalUsers / $limit);
           <?php foreach ($users as $index => $user): ?>
             <tr>
               <td><?= $index + 1 ?></td>
-              <td><?= $user['name'] ?></td>
+              <td><?= htmlspecialchars($user['name']) ?></td>
               <td class="table_inner-img">
                 <img src="<?= !empty($user['avatar']) 
                     ? "../" . htmlspecialchars($user['avatar']) 
@@ -148,110 +142,132 @@ $total_pages = ceil($totalUsers / $limit);
                         : '../img/avarta-woman.svg') ?>" 
                     alt="Avatar" />
               </td>
-
               <td>
-                <span class="badge <?= $user['status'] == 'ACTIVE' ? 'badge-success' : 'badge-danger' ?> "><?= $user['status'] == 'ACTIVE' ? 'Hoạt động' : 'Dừng hoạt động' ?></span>
+                <span class="badge <?= $user['status'] == 'ACTIVE' ? 'badge-success' : 'badge-danger' ?>"><?= $user['status'] == 'ACTIVE' ? 'Hoạt động' : 'Dừng hoạt động' ?></span>
               </td>
               <td class="table_inner-btn">
                 <button class="btn btn-sm btn-warning">
-                  <a href="client-edit.php?userId=<?=$user['userId'] ?>">Sửa</a>
+                  <a href="client-edit.php?userId=<?= $user['userId'] ?>" style="text-decoration: none;">Sửa</a>
                 </button>
-                <button change-btn userId = "<?=$user['userId'] ?>" 
-                        value= "<?= $user['status'] === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE'  ?>" 
-                        class="btn btn-sm btn-<?= $user['status'] === 'ACTIVE' ? 'danger' : 'success' ?> "
-                        type="button">
+                <button class="btn btn-sm btn-<?= $user['status'] === 'ACTIVE' ? 'danger' : 'success' ?> change-status-btn"
+                        data-user-id="<?= $user['userId'] ?>"
+                        data-new-status="<?= $user['status'] === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE' ?>"
+                        data-toggle="modal"
+                        data-target="#confirmModal">
                   <?= $user['status'] === 'ACTIVE' ? 'Khóa' : 'Mở khóa' ?>
                 </button>
-
                 <button class="btn btn-sm btn-primary">
-                  <a href="client-detail.php?userId=<?=$user['userId'] ?>">Chi tiết</a>
+                  <a href="client-detail.php?userId=<?= $user['userId'] ?>" style="color: white; text-decoration: none;">Chi tiết</a>
                 </button>
               </td>
-          </tr>
-        <?php endforeach; ?>
+            </tr>
+          <?php endforeach; ?>
         </tbody>
       </table>
 
       <div class="inner-pagination">
         <ul class="pagination">
-            <!-- Nút "Trang đầu" -->
             <?php if ($page > 1) { ?>
                 <li class="page-item">
-                    <a href="?page=1" class="page-link">&laquo;&laquo;</a>
+                    <a href="?page=1" class="page-link">««</a>
                 </li>
             <?php } ?>
-
-            <!-- Nút "Trang trước" -->
             <?php if ($page > 1) { ?>
                 <li class="page-item">
-                    <a href="?page=<?= $page - 1 ?>" class="page-link">&laquo;</a>
+                    <a href="?page=<?= $page - 1 ?>" class="page-link">«</a>
                 </li>
             <?php } ?>
-
-            <!-- Hiển thị các số trang -->
             <?php for ($i = 1; $i <= $total_pages; $i++) { ?>
                 <li class="page-item <?= ($i == $page) ? 'active' : ''; ?>">
                     <a href="?page=<?= $i ?>" class="page-link"><?= $i ?></a>
                 </li>
             <?php } ?>
-
-            <!-- Nút "Trang sau" -->
             <?php if ($page < $total_pages) { ?>
                 <li class="page-item">
-                    <a href="?page=<?= $page + 1 ?>" class="page-link">&raquo;</a>
+                    <a href="?page=<?= $page + 1 ?>" class="page-link">»</a>
                 </li>
             <?php } ?>
-
-            <!-- Nút "Trang cuối" -->
             <?php if ($page < $total_pages) { ?>
                 <li class="page-item">
-                    <a href="?page=<?= $total_pages ?>" class="page-link">&raquo;&raquo;</a>
+                    <a href="?page=<?= $total_pages ?>" class="page-link">»»</a>
                 </li>
             <?php } ?>
         </ul>
       </div>
+
+      <!-- Modal xác nhận -->
+      <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="confirmModalLabel">Xác nhận thay đổi trạng thái</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              Bạn có chắc chắn muốn <span id="actionText"></span> người dùng này không?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+              <button type="button" class="btn btn-primary" id="confirmChange">Xác nhận</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </body>
-  <script
-    src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
-    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-    crossorigin="anonymous"
-  ></script>
-  <script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
-    crossorigin="anonymous"
-  ></script>
-  <script src="../js/announcement.js"></script>
-  <script>
-        document.addEventListener("DOMContentLoaded", function () {
-        document.querySelectorAll("[change-btn]").forEach(button => {
-          button.addEventListener("click", async function () {
-              let userId = this.getAttribute("userId");
-              let newStatus = this.getAttribute("value");
-              console.log(JSON.stringify({ userId, status: newStatus }))
-              try {
-                  let response = await fetch("change-status.php", {
-                      method: "POST",
-                      headers: {
-                          "Content-Type": "application/x-www-form-urlencoded",
-                      },
-                      body: `userId=${encodeURIComponent(userId)}&status=${encodeURIComponent(newStatus)}`
+    
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+    <script src="../js/announcement.js"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let selectedUserId = null;
+        let selectedNewStatus = null;
 
-                  });
+        // Xử lý khi nhấp vào nút "Khóa" hoặc "Mở khóa"
+        document.querySelectorAll(".change-status-btn").forEach(button => {
+            button.addEventListener("click", function () {
+                selectedUserId = this.getAttribute("data-user-id");
+                selectedNewStatus = this.getAttribute("data-new-status");
 
-                  let data = await response.json();
-                  showAnnouncement(data.status === "success" ? "success" : "danger", data.message);
-                  setTimeout(() => {
+                // Cập nhật nội dung modal
+                document.getElementById("actionText").textContent = selectedNewStatus === "INACTIVE" ? "khóa" : "mở khóa";
+            });
+        });
+
+        // Xử lý khi nhấp nút "Xác nhận" trong modal
+        document.getElementById("confirmChange").addEventListener("click", async function () {
+            if (!selectedUserId || !selectedNewStatus) {
+                showAnnouncement("danger", "Không có thông tin người dùng để thay đổi!");
+                return;
+            }
+
+            try {
+                let response = await fetch("change-status.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                    body: `userId=${encodeURIComponent(selectedUserId)}&status=${encodeURIComponent(selectedNewStatus)}`
+                });
+
+                let data = await response.json();
+                showAnnouncement(data.status === "success" ? "success" : "danger", data.message);
+
+                // Đóng modal và reload trang nếu thành công
+                if (data.status === "success") {
+                    $("#confirmModal").modal("hide");
+                    setTimeout(() => {
                         location.reload();
                     }, 1500);
-              } catch (error) {
+                }
+            } catch (error) {
                 console.error(error);
                 showAnnouncement("danger", "Lỗi khi kết nối server hoặc phản hồi không hợp lệ!");
-              }
-          });
+            }
         });
     });
-
-  </script>
+    </script>
+</body>
 </html>

@@ -142,10 +142,11 @@ $conn->close();
       </li>
       <li>
         <div class="inner-icon">
-          <i class="fa-solid fa-chart-line"></i>
+          <i class="fa-solid fa-medal"></i>
         </div>
-        <a href="./statistic.php">Thống kê kinh doanh</a>
+        <a href="./top5-client.php">Top 5 khách hàng</a>
       </li>
+      
     </ul>
     <div class="content">
       <h2 class="mb-3">Chi tiết sản phẩm</h2>

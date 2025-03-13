@@ -1,7 +1,11 @@
-<?php
+<?php 
 require "auth.php";
 require "db_connect.php";
 
+$dateStart = isset($_GET['date-start']) ? $_GET['date-start'] : '';
+$dateEnd = isset($_GET['date-end']) ? $_GET['date-end'] : '';
+
+// Câu lệnh SQL cơ bản với điều kiện status = 'Delivered'
 $sql = "SELECT 
     u.gender,
     u.userId,
@@ -11,11 +15,24 @@ $sql = "SELECT
     SUM(o.totalAmount) AS totalRevenue
 FROM User u
 JOIN Orders o ON u.userId = o.userId
-GROUP BY u.userId, u.name, u.avatar
+WHERE o.status = 'Delivered'"; // Thêm điều kiện lọc Delivered
+
+// Nếu có dateStart và dateEnd thì thêm điều kiện lọc theo orderDate
+if (!empty($dateStart) && !empty($dateEnd)) {
+    $sql .= " AND o.orderDate BETWEEN ? AND ?";
+}
+
+$sql .= " GROUP BY u.userId, u.name, u.avatar
 ORDER BY totalRevenue DESC
 LIMIT 5;";
 
 $stmt = $conn->prepare($sql);
+
+// Nếu có dateStart và dateEnd thì bind tham số
+if (!empty($dateStart) && !empty($dateEnd)) {
+    $stmt->bind_param("ss", $dateStart, $dateEnd);
+}
+
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -32,7 +49,7 @@ $conn->close();
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Trang Admin</title>
@@ -54,8 +71,8 @@ $conn->close();
       referrerpolicy="no-referrer"
     />
     <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
+</head>
+<body>
     <header>
       <div class="inner-logo">
         <a href="./index.php">
@@ -107,12 +124,7 @@ $conn->close();
         </div>
         <a href="./manage-order.php">Quản lý đơn hàng</a>
       </li>
-      <li>
-        <div class="inner-icon">
-          <i class="fa-solid fa-chart-line"></i>
-        </div>
-        <a href="./statistic.php">Thống kê kinh doanh</a>
-      </li>
+      
       <li class="active">
         <div class="inner-icon">
           <i class="fa-solid fa-medal"></i>
@@ -121,8 +133,44 @@ $conn->close();
       </li>
     </ul>
     <div class="content">
-      <h4 class="mb-3">Top 5 khách hàng tạo doanh thu nhiều nhất</h4>
-
+      <h4 class="mb-3">Top 5 khách hàng tạo doanh thu nhiều nhất (Đã giao hàng)</h4>
+      <div class="card mb-3">
+        <div class="card-header bg-success font-weight-bold">Bộ lọc</div>
+        <div class="card-body">
+          <form action="./top5-client.php">
+            <div class="row">
+              <div class="col-4">
+                <div class="form-group">
+                  <label for="date-start">Thời gian bắt đầu</label>
+                  <input
+                    class="form-control"
+                    type="date"
+                    value="<?= isset($_GET['date-start']) ? $_GET['date-start'] : '' ?>"
+                    name="date-start"
+                    id="date-start"
+                  />
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group">
+                  <label for="date-end">Thời gian kết thúc</label>
+                  <input
+                    class="form-control"
+                    type="date"
+                    value="<?= isset($_GET['date-end']) ? $_GET['date-end'] : '' ?>"
+                    name="date-end"
+                    id="date-end"
+                  />
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Áp dụng</button>
+            <a href="./top5-client.php" class="btn btn-secondary">
+              <i class="fa-solid fa-rotate-left"></i> Reset
+            </a>
+          </form>
+        </div>
+      </div>
       <table class="table table-hover table-bordered text-center">
         <thead class="bg-success">
           <th>STT</th>
@@ -149,12 +197,20 @@ $conn->close();
                   <td><?= $customer['orderCount'] ?></td>
                   <td><?= number_format($customer['totalRevenue'], 0, ',', '.') ?> VND</td>
                   <td>
-                      <a href="orderClient-relate.php?userId=<?= $customer['userId'] ?>" class="btn btn-primary">Xem</a>
-                  </td>
+                  <?php
+                  $params = ['userId' => $customer['userId']];
+                  if (!empty($dateStart) && !empty($dateEnd)) {
+                      $params['date-start'] = $dateStart;
+                      $params['date-end'] = $dateEnd;
+                  }
+                  $url = 'orderClient-relate.php?' . http_build_query($params);
+                  ?>
+                  <a href="<?= $url ?>" class="btn btn-primary">Xem</a>
+                </td>
               </tr>
           <?php endforeach; ?>
         </tbody>
       </table>
     </div>
-  </body>
+</body>
 </html>
