@@ -75,7 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $avatarPathNew = null;
     if (!empty($_FILES["avatar-input"]["name"])) {
-        $uploadDir = "../img/";
+        $uploadDir = "./img/";
         if (!is_dir($uploadDir) || !is_writable($uploadDir)) {
             echo json_encode(["status" => "danger", "message" => "Thư mục upload không tồn tại hoặc không ghi được!"]);
             exit();
@@ -150,37 +150,61 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <link type="text/css" rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-    <div class="alert alert-show announce" role="alert" id="message-box"></div>
+    <div class="alert alert-show announce" role="alert" ></div>
     <header>
-        <div id="top-header">
-            <div class="container">
-                <ul class="header-links pull-left">
-                    <li><a href="#"><i class="fa fa-phone"></i> Hotline: <strong>+84 975 419 019</strong></a></li>
-                    <li><a href="#"><i class="fa fa-envelope-o"></i> nhom6@email.com </a></li>
-                    <li><a href="#"><i class="fa fa-map-marker"></i> 273 An Dương Vương, Phường 3, Quận 5</a></li>
-                </ul>
-            </div>
+      <!-- TOP HEADER -->
+      <div id="top-header">
+        <div class="container">
+          <ul class="header-links pull-left">
+            <li>
+              <a href="#"><i class="fa fa-phone"></i> Hotline: <strong>+84 975 419 019</strong>
+            </li>
+            <li>
+              <a href="#"><i class="fa fa-envelope-o"></i> nhom6@email.com </a>
+            </li>
+            <li>
+              <a href="#"
+                ><i class="fa fa-map-marker"></i> 273 An Dương Vương, Phường 3,
+                Quận 5
+              </a>
+            </li>
+          </ul>
         </div>
-        <div id="header">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="header-logo">
-                            <a href="./index.php" class="logo">
-                                <img src="./img/logo.png" alt="" />
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="header-search">
-                            <form action="./products.php">
-                                <input name="keyword" class="input" placeholder="Nhập sản phẩm muốn tìm kiếm ..." />
-                                <button class="search-btn">Tìm kiếm</button>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="col-md-3 clearfix">
+      </div>
+      <!-- /TOP HEADER -->
+      <!-- MAIN HEADER -->
+      <div id="header">
+        <!-- container -->
+        <div class="container">
+          <!-- row -->
+          <div class="row">
+            <!-- LOGO -->
+            <div class="col-md-3">
+              <div class="header-logo">
+                <a href="./index.php" class="logo">
+                  <img src="./img/logo.png" alt="" />
+                </a>
+              </div>
+            </div>
+            <!-- /LOGO -->
+            <!-- SEARCH BAR -->
+            <div class="col-md-6">
+              <div class="header-search">
+                <form action="./products.php">
+                  <input
+                    name="keyword"
+                    class="input"
+                    placeholder="Nhập sản phẩm muốn tìm kiếm ..."
+                  />
+                  <button class="search-btn">Tìm kiếm</button>
+                </form>
+              </div>
+            </div>
+            <!-- /SEARCH BAR -->
+            <!-- ACCOUNT -->
+            <div class="col-md-3 clearfix"> <?php if ($fullname) : ?>
                         <div class="header-ctn">
+                               
                             <div class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                                     <i class="fa fa-user-o"></i>
@@ -190,23 +214,89 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                     <li><a href="./account-information.php">Thông tin cá nhân</a></li>
                                     <li><a href="./purchasing-history.php">Lịch sử mua hàng</a></li>
                                     <li><a href="./change-password.php">Đổi mật khẩu</a></li>
-                                    <li><a href="./index-notlogin.php">Đăng xuất</a></li>
+                                    <li><a href="./logout.php">Đăng xuất</a></li>
                                 </ul>
                             </div>
+                            <div class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                                    <i class="fa fa-shopping-cart"></i>
+                                    <span>Giỏ hàng</span>
+                                    <div class="qty"><?php echo array_sum(array_column($_SESSION['cart'] ?? [], 'quantity')); ?></div>
+                                </a>
+                                <div class="cart-dropdown">
+                                    <div class="cart-list">
+                                        <?php
+                                        if (!empty($_SESSION['cart'])) {
+                                            foreach ($_SESSION['cart'] as $id => $item) {
+                                                echo "
+                                                <div class='product-widget'>
+                                                    <div class='product-img'>
+                                                        <img src='{$item['image']}' alt='' />
+                                                    </div>
+                                                    <div class='product-body'>
+                                                        <h3 class='product-name'>
+                                                            <a href='detail-product.php?id={$id}'>{$item['name']}</a>
+                                                        </h3>
+                                                        <h4 class='product-price'>
+                                                            <span class='qty'>{$item['quantity']}x</span>" . number_format($item['price'], 0, ',', '.') . " VND
+                                                        </h4>
+                                                    </div>
+                                                    <button class='delete'><i class='fa fa-close'></i></button>
+                                                </div>";
+                                            }
+                                        } else {
+                                            echo "<p>Giỏ hàng trống!</p>";
+                                        }
+                                        ?>
+                                    </div>
+                                    <div class="cart-summary">
+                                        <small><?php echo array_sum(array_column($_SESSION['cart'] ?? [], 'quantity')); ?> sản phẩm được chọn</small>
+                                        <h5>TỔNG: <?php echo number_format(array_sum(array_map(function($item) { return $item['price'] * $item['quantity']; }, $_SESSION['cart'] ?? [])), 0, ',', '.'); ?> VND</h5>
+                                    </div>
+                                    <div class="cart-btns">
+                                        <a href="./shopping-cart.php">Xem giỏ hàng</a>
+                                        <a href="./checkout.php">Thanh toán <i class="fa fa-arrow-circle-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="menu-toggle">
+                                <a href="#"><i class="fa fa-bars"></i><span>Danh mục</span></a>
+                            </div>
                         </div>
+                        <?php else : ?>
+                            <div class="header-ctn">
+                                <div>
+                                    <a href="./login.php" class="btn btn-primary" aria-expanded="true">
+                                        <span>Đăng nhập</span>
+                                    </a>
+                                </div>
+                                <div>
+                                    <a href="./register.php" class="btn btn-primary" aria-expanded="true">
+                                        <span>Đăng kí</span>
+                                    </a>
+                                </div>
+                                <div class="menu-toggle">
+                                    <a href="#"><i class="fa fa-bars"></i><span>Danh mục</span></a>
+                                </div>
+                            </div>
+                        <?php endif; ?>
                     </div>
-                </div>
-            </div>
+            <!-- /ACCOUNT -->
+          </div>
+          <!-- row -->
         </div>
+        <!-- container -->
+      </div>
+      <!-- /MAIN HEADER -->
     </header>
     <div class="container">
         <div class="section">
             <h2 class="text-center">Thông tin tài khoản</h2>
             <div class="account-info-form">
-                <form action="account-information.php" method="POST" enctype="multipart/form-data">
+                <form action="account-information.php" id="updateForm" method="POST" enctype="multipart/form-data">
                     <div class="avatar-upload">
                         <div class="avatar-preview">
-                            <img src="<?php echo htmlspecialchars($avatarPath); ?>" alt="Avatar" id="avatar-preview">
+                            <img src="./<?= $avatarPath; ?>" alt="Avatar" id="avatar-preview">
                         </div>
                         <div class="avatar-edit">
                             <label for="avatar-input" class="upload-button">
@@ -260,47 +350,41 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <script src="js/nouislider.min.js"></script>
     <script src="js/jquery.zoom.min.js"></script>
     <script src="js/main.js"></script>
-    <script src="js/helper.js"></script>
+    <script src="js/announcement.js"></script>
     <script>
-    $(document).ready(function() {
-        $('#updateForm').on('submit', function(e) {
-            e.preventDefault();
-            const formData = new FormData(this);
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('updateForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
 
-            $.ajax({
-                url: '',
-                type: 'POST',
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function(response) {
-                    const data = JSON.parse(response);
-                    const messageBox = $('#message-box');
-                    messageBox.text(data.message).removeClass('alert-success alert-danger');
-                    messageBox.addClass(data.status === 'success' ? 'alert-success' : 'alert-danger');
-                    messageBox.show();
-                    if (data.status === 'success') {
+                fetch('', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    showAnnouncement(data.status === "success" ? "success" : "danger", data.message);
+                    if (data.status === "success") {
                         setTimeout(() => location.reload(), 2000);
                     }
-                },
-                error: function(xhr) {
-                    const messageBox = $('#message-box');
-                    messageBox.text('Lỗi khi gửi yêu cầu: ' + xhr.statusText).addClass('alert-danger').show();
+                })
+                .catch(error => {
+                    console.error(error);
+                    showAnnouncement("danger", "Lỗi khi gửi yêu cầu!");
+                });
+            });
+
+            document.getElementById('avatar-input').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        document.getElementById('avatar-preview').src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
                 }
             });
         });
-
-        document.getElementById('avatar-input').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('avatar-preview').src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-    });
     </script>
 </body>
 </html>
