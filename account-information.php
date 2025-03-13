@@ -173,7 +173,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     </div>
                     <div class="col-md-6">
                         <div class="header-search">
-                            <form action="./store-search.html">
+                            <form action="./products.php">
                                 <input name="keyword" class="input" placeholder="Nhập sản phẩm muốn tìm kiếm ..." />
                                 <button class="search-btn">Tìm kiếm</button>
                             </form>
