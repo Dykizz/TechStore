@@ -1,4 +1,3 @@
-//Đã đổi thành database
 <?php
 include 'connect.php';
 include 'information.php';
@@ -9,7 +8,32 @@ if (!$userId) {
     exit();
 }
 
-// Lấy thông tin giỏ hàng
+// Xử lý cập nhật số lượng hoặc xóa sản phẩm
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['update_quantity']) && isset($_POST['product_id']) && isset($_POST['quantity'])) {
+        $productId = (int)$_POST['product_id'];
+        $quantity = (int)$_POST['quantity'];
+        $updateStmt = $conn->prepare("UPDATE CartItem SET quantity = ? WHERE userId = ? AND productId = ?");
+        $updateStmt->bind_param("iii", $quantity, $userId, $productId);
+        $updateStmt->execute();
+        $updateStmt->close();
+        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest') {
+            echo json_encode(['success' => true, 'message' => 'Cập nhật số lượng thành công']);
+            exit();
+        }
+    } elseif (isset($_POST['delete_product']) && isset($_POST['product_id'])) {
+        $productId = (int)$_POST['product_id'];
+        $deleteStmt = $conn->prepare("DELETE FROM CartItem WHERE userId = ? AND productId = ?");
+        $deleteStmt->bind_param("ii", $userId, $productId);
+        $deleteStmt->execute();
+        $deleteStmt->close();
+        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest') {
+            echo json_encode(['success' => true, 'message' => 'Xóa sản phẩm thành công']);
+            exit();
+        }
+    }
+}
+
 $cartStmt = $conn->prepare("
     SELECT ci.productId, ci.quantity, p.name, p.price, p.image
     FROM CartItem ci
@@ -20,18 +44,32 @@ $cartStmt->bind_param("i", $userId);
 $cartStmt->execute();
 $cartResult = $cartStmt->get_result();
 
+$userId = isset($_SESSION['userId']) ? (int)$_SESSION['userId'] : 0;
 $cartItems = [];
-$total_price = 0;
-$cart_count = 0;
-while ($item = $cartResult->fetch_assoc()) {
-    $cartItems[$item['productId']] = [
-        'name' => $item['name'],
-        'price' => $item['price'],
-        'image' => $item['image'],
-        'quantity' => $item['quantity']
-    ];
-    $total_price += $item['price'] * $item['quantity'];
-    $cart_count += $item['quantity'];
+$cartCount = 0;
+$totalPrice = 0;
+
+if ($userId) {
+    $cartStmt = $conn->prepare("
+        SELECT ci.productId, ci.quantity, p.name, p.price, p.image
+        FROM CartItem ci
+        JOIN Product p ON ci.productId = p.productId
+        WHERE ci.userId = ?
+    ");
+    $cartStmt->bind_param("i", $userId);
+    $cartStmt->execute();
+    $cartResult = $cartStmt->get_result();
+
+    while ($item = $cartResult->fetch_assoc()) {
+        $cartItems[$item['productId']] = [
+            'name' => $item['name'],
+            'price' => $item['price'],
+            'image' => $item['image'],
+            'quantity' => $item['quantity']
+        ];
+        $cartCount += $item['quantity'];
+        $totalPrice += $item['price'] * $item['quantity'];
+    }
 }
 
 $message = isset($_SESSION['message']) ? $_SESSION['message'] : '';
@@ -55,144 +93,116 @@ unset($_SESSION['message']);
 </head>
 <body>
     <div class="alert alert-success alert-show announce" role="alert"><?php echo $message; ?></div>
+
     <!-- HEADER -->
-    <div id="header">
-        <!-- container -->
-        <div class="container">
-          <!-- row -->
-          <div class="row">
-            <!-- LOGO -->
-            <div class="col-md-3">
-              <div class="header-logo">
-                <a href="./index.php" class="logo">
-                  <img src="./img/logo.png" alt="" />
-                </a>
-              </div>
+    <header>
+        <div id="top-header">
+            <div class="container">
+                <ul class="header-links pull-left">
+                    <li><a href="#"><i class="fa fa-phone"></i> Hotline: <strong>+84 975 419 019</strong></a></li>
+                    <li><a href="#"><i class="fa fa-envelope-o"></i> nhom6@email.com</a></li>
+                    <li><a href="#"><i class="fa fa-map-marker"></i> 273 An Dương Vương, Phường 3, Quận 5</a></li>
+                </ul>
             </div>
-            <!-- /LOGO -->
-            <!-- SEARCH BAR -->
-            <div class="col-md-6">
-              <div class="header-search">
-                <form action="./products.php">
-                  <input
-                    name="keyword"
-                    class="input"
-                    placeholder="Nhập sản phẩm muốn tìm kiếm ..."
-                  />
-                  <button class="search-btn">Tìm kiếm</button>
-                </form>
-              </div>
-            </div>
-            <!-- /SEARCH BAR -->
-            <!-- ACCOUNT -->
-            <div class="col-md-3 clearfix"> <?php if ($fullname) : ?>
-                        <div class="header-ctn">
-                               
-                            <div class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                                    <i class="fa fa-user-o"></i>
-                                    <span><?php echo htmlspecialchars($fullname); ?></span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="./account-information.php">Thông tin cá nhân</a></li>
-                                    <li><a href="./purchasing-history.php">Lịch sử mua hàng</a></li>
-                                    <li><a href="./change-password.php">Đổi mật khẩu</a></li>
-                                    <li><a href="./logout.php">Đăng xuất</a></li>
-                                </ul>
-                            </div>
-                            <div class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                                    <i class="fa fa-shopping-cart"></i>
-                                    <span>Giỏ hàng</span>
-                                    <div class="qty"><?php echo array_sum(array_column($_SESSION['cart'] ?? [], 'quantity')); ?></div>
-                                </a>
-                                <div class="cart-dropdown">
-                                    <div class="cart-list">
-<<<<<<< HEAD
-                                        <?php if (!empty($cartItems)): ?>
-                                            <?php foreach ($cartItems as $id => $item): ?>
-                                                <div class="product-widget">
-                                                    <div class="product-img">
-                                                        <img src="<?php echo $item['image']; ?>" alt="" />
-=======
-                                        <?php
-                                        if (!empty($_SESSION['cart'])) {
-                                            foreach ($_SESSION['cart'] as $id => $item) {
-                                                echo "
-                                                <div class='product-widget'>
-                                                    <div class='product-img'>
-                                                        <img src='{$item['image']}' alt='' />
->>>>>>> ac6f9838be76c01e2ed2c614772287ed047b8156
-                                                    </div>
-                                                    <div class='product-body'>
-                                                        <h3 class='product-name'>
-                                                            <a href='detail-product.php?id={$id}'>{$item['name']}</a>
-                                                        </h3>
-                                                        <h4 class='product-price'>
-                                                            <span class='qty'>{$item['quantity']}x</span>" . number_format($item['price'], 0, ',', '.') . " VND
-                                                        </h4>
-                                                    </div>
-<<<<<<< HEAD
-                                                    <a href="cart-actions.php?action=remove&product_id=<?php echo $id; ?>" class="delete"><i class="fa fa-close"></i></a>
-                                                </div>
-                                            <?php endforeach; ?>
-                                        <?php else: ?>
-                                            <p>Giỏ hàng trống!</p>
-                                        <?php endif; ?>
-=======
-                                                    <button class='delete'><i class='fa fa-close'></i></button>
-                                                </div>";
-                                            }
-                                        } else {
-                                            echo "<p>Giỏ hàng trống!</p>";
-                                        }
-                                        ?>
->>>>>>> ac6f9838be76c01e2ed2c614772287ed047b8156
-                                    </div>
-                                    <div class="cart-summary">
-                                        <small><?php echo array_sum(array_column($_SESSION['cart'] ?? [], 'quantity')); ?> sản phẩm được chọn</small>
-                                        <h5>TỔNG: <?php echo number_format(array_sum(array_map(function($item) { return $item['price'] * $item['quantity']; }, $_SESSION['cart'] ?? [])), 0, ',', '.'); ?> VND</h5>
-                                    </div>
-                                    <div class="cart-btns">
-                                        <a href="./shopping-cart.php">Xem giỏ hàng</a>
-                                        <a href="./checkout.php">Thanh toán <i class="fa fa-arrow-circle-right"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="menu-toggle">
-                                <a href="#"><i class="fa fa-bars"></i><span>Danh mục</span></a>
-                            </div>
+        </div>
+        <div id="header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="header-logo">
+                            <a href="./index.php" class="logo">
+                                <img src="./img/logo.png" alt="" />
+                            </a>
                         </div>
-                        <?php else : ?>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="header-search">
+                            <form action="./products.php">
+                                <input name="keyword" class="input" placeholder="Nhập sản phẩm muốn tìm kiếm ..." />
+                                <button class="search-btn">Tìm kiếm</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-md-3 clearfix">
+                        <?php if ($fullname): ?>
                             <div class="header-ctn">
-                                <div>
-                                    <a href="./login.php" class="btn btn-primary" aria-expanded="true">
-                                        <span>Đăng nhập</span>
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                                        <i class="fa fa-user-o"></i>
+                                        <span><?php echo htmlspecialchars($fullname); ?></span>
                                     </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="./account-information.php">Thông tin cá nhân</a></li>
+                                        <li><a href="./purchasing-history.php">Lịch sử mua hàng</a></li>
+                                        <li><a href="./change-password.php">Đổi mật khẩu</a></li>
+                                        <li><a href="./logout.php">Đăng xuất</a></li>
+                                    </ul>
                                 </div>
-                                <div>
-                                    <a href="./register.php" class="btn btn-primary" aria-expanded="true">
-                                        <span>Đăng kí</span>
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                                        <i class="fa fa-shopping-cart"></i>
+                                        <span>Giỏ hàng</span>
+                                        <div class="qty"><?php echo $cartCount; ?></div>
                                     </a>
+                                    <div class="cart-dropdown">
+                                        <div class="cart-list">
+                                            <?php if (!empty($cartItems)): ?>
+                                                <?php foreach ($cartItems as $id => $item): ?>
+                                                    <div class="product-widget">
+                                                        <div class="product-img">
+                                                            <img src="<?php echo $item['image']; ?>" alt="" />
+                                                        </div>
+                                                        <div class="product-body">
+                                                            <h3 class="product-name">
+                                                                <a href="detail-product.php?id=<?php echo $id; ?>"><?php echo $item['name']; ?></a>
+                                                            </h3>
+                                                            <h4 class="product-price">
+                                                                <span class="qty"><?php echo $item['quantity']; ?>x</span>
+                                                                <?php echo number_format($item['price'], 0, ',', '.'); ?> VND
+                                                            </h4>
+                                                        </div>
+                                                        <button class="delete" data-product-id="<?php echo $id; ?>"><i class="fa fa-close"></i></button>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            <?php else: ?>
+                                                <p>Giỏ hàng trống!</p>
+                                            <?php endif; ?>
+                                        </div>
+                                        <div class="cart-summary">
+                                            <small><?php echo $cartCount; ?> sản phẩm được chọn</small>
+                                            <h5>TỔNG: <?php echo number_format($totalPrice, 0, ',', '.'); ?> VND</h5>
+                                        </div>
+                                        <div class="cart-btns">
+                                            <a href="./shopping-cart.php">Xem giỏ hàng</a>
+                                            <a href="./checkout.php">Thanh toán <i class="fa fa-arrow-circle-right"></i></a>
+                                        </div>
+                                    </div>
                                 </div>
+                                <div class="menu-toggle">
+                                    <a href="#"><i class="fa fa-bars"></i><span>Danh mục</span></a>
+                                </div>
+                            </div>
+                        <?php else: ?>
+                            <div class="header-ctn">
+                                <div><a href="./login.php" class="btn btn-primary">Đăng nhập</a></div>
+                                <div><a href="./register.php" class="btn btn-primary">Đăng kí</a></div>
                                 <div class="menu-toggle">
                                     <a href="#"><i class="fa fa-bars"></i><span>Danh mục</span></a>
                                 </div>
                             </div>
                         <?php endif; ?>
                     </div>
-            <!-- /ACCOUNT -->
-          </div>
-          <!-- row -->
+                </div>
+            </div>
         </div>
-        <!-- container -->
-      </div>
+    </header>
     <!-- /HEADER -->
+
     <!-- CART -->
     <div class="container mt-5">
         <h2 class="text-center" style="margin: 20px">Giỏ Hàng</h2>
         <div class="table-container">
-            <form method="POST" action="checkout.php">
+            <form method="POST" action="checkout.php" id="checkout-form">
                 <table class="table-giohang">
                     <thead class="thead-light">
                         <tr>
@@ -224,19 +234,27 @@ unset($_SESSION['message']);
                                             </div>
                                         </div>
                                     </td>
-                                    <td><?php echo number_format($item['price'], 0, ',', '.'); ?> VND</td>
+                                    <td>
+                                        <div class="product-price-container">
+                                            <span class="price"><?php echo number_format($item['price'] * $item['quantity'], 0, ',', '.'); ?></span>
+                                            <span class="currency">VND</span>
+                                        </div>
                                     <td>
                                         <div class="quantity-control">
-                                            <button class="btn decrease" data-product-id="<?php echo $id; ?>">-</button>
-                                            <input type="number" class="quantity-input" value="<?php echo $item['quantity']; ?>" min="1" style="width: 50px; text-align: center;" readonly>
-                                            <button class="btn increase" data-product-id="<?php echo $id; ?>">+</button>
+                                            <button class="btn btn-outline-secondary btn-sm decrease" data-product-id="<?php echo $id; ?>">-</button>
+                                            <input type="number" class="quantity-input form-control form-control-sm" value="<?php echo $item['quantity']; ?>" min="1" readonly>
+                                            <button class="btn btn-outline-secondary btn-sm increase" data-product-id="<?php echo $id; ?>">+</button>
                                         </div>
                                     </td>
-                                    <td class="item-total" data-price="<?php echo $item['price']; ?>"><?php echo number_format($item['price'] * $item['quantity'], 0, ',', '.'); ?> VND</td>
+                                    <td class="item-total" data-price="<?php echo $item['price']; ?>">
+                                    <div class="product-price-container">
+                                        <span class="price"><?php echo number_format($item['price'] * $item['quantity'], 0, ',', '.'); ?></span>
+                                        <span class="currency">VND</span>
+                                    </div>
                                     <td>
-                                        <a href="cart-actions.php?action=remove&product_id=<?php echo $id; ?>" class="remove-btn btn">
+                                        <button class="remove-btn btn delete-product" data-product-id="<?php echo $id; ?>">
                                             <i class="fa fa-trash"></i>
-                                        </a>
+                                        </button>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -298,6 +316,7 @@ unset($_SESSION['message']);
             });
         });
 
+        // Xử lý tăng/giảm số lượng bằng AJAX
         document.querySelectorAll('.quantity-control .btn').forEach(button => {
             button.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -317,36 +336,76 @@ unset($_SESSION['message']);
                 itemTotalElement.textContent = newTotal.toLocaleString('vi-VN') + ' VND';
                 checkbox.setAttribute('data-price', newTotal);
 
+                let currentCartCount = parseInt(cartQtyElement.textContent);
+                if (this.classList.contains('increase')) currentCartCount++;
+                if (this.classList.contains('decrease') && quantity >= 1) currentCartCount--;
+                cartQtyElement.textContent = currentCartCount;
+
                 const formData = new FormData();
-                formData.append('update_quantity', 'true');
+                formData.append('update_quantity', true);
                 formData.append('product_id', productId);
                 formData.append('quantity', quantity);
 
-                fetch('cart-actions.php', {
+                fetch('shopping-cart.php', {
                     method: 'POST',
-                    body: formData
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
                 })
                 .then(response => response.json())
                 .then(data => {
-                    if (data.success) {
-                        alertMessage(data.message, 'success');
-                        updateTotal();
-                        cartQtyElement.textContent = data.cart_count;
-                    } else {
-                        alertMessage('Lỗi khi cập nhật số lượng!', 'error');
+                    if (!data.success) {
+                        alert('Lỗi khi cập nhật số lượng!');
                     }
                 })
                 .catch(error => console.error('Error:', error));
             });
         });
 
-        function alertMessage(message, type = 'success') {
-            const alert = document.createElement('div');
-            alert.className = `alert alert-${type} alert-show announce`;
-            alert.setAttribute('role', 'alert');
-            alert.textContent = message;
-            document.body.insertBefore(alert, document.body.firstChild);
-            setTimeout(() => alert.remove(), 3000);
+        // Xử lý xóa sản phẩm bằng AJAX
+        document.querySelectorAll('.delete-product').forEach(button => {
+            button.addEventListener('click', function (e) {
+                e.preventDefault();
+                const productId = this.getAttribute('data-product-id');
+                if (confirm("Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?")) {
+                    const row = this.closest('tr');
+                    const quantity = parseInt(row.querySelector('.quantity-input').value);
+                    let currentCartCount = parseInt(cartQtyElement.textContent);
+                    currentCartCount -= quantity;
+                    cartQtyElement.textContent = currentCartCount;
+
+                    const formData = new FormData();
+                    formData.append('delete_product', true);
+                    formData.append('product_id', productId);
+
+                    fetch('shopping-cart.php', {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            row.remove(); 
+                            updateTotal();
+                            updateRowNumbers(); // Cập nhật lại số thứ tự
+                        } else {
+                            alert('Lỗi khi xóa sản phẩm!');
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+                }
+            });
+        });
+
+        function updateRowNumbers() {
+            const rows = document.querySelectorAll('.table-giohang tbody tr');
+            rows.forEach((row, index) => {
+                row.querySelector('td:nth-child(2)').textContent = index + 1;
+            });
         }
 
         updateTotal();
