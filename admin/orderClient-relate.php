@@ -1,6 +1,10 @@
 <?php
 require "auth.php";  // Nếu có xác thực người dùng
 require "db_connect.php"; // Kết nối database
+
+$dateStart = isset($_GET['date-start']) ? $_GET['date-start'] : null;
+$dateEnd = isset($_GET['date-end']) ? $_GET['date-end'] : null;
+
 $userId = isset($_GET['userId']) ? intval($_GET['userId']) : 0;
 if ($userId <= 0) {
     die("User ID không hợp lệ!");
@@ -11,18 +15,29 @@ $offset = ($page - 1) * $limit;
 
 $sql = "
     SELECT 
-    o.orderId, o.orderCode, o.orderDate, o.status, 
-    p.productId, p.name AS productName, p.image, 
-    od.quantity, od.price, od.subtotal, u.name, o.totalAmount
-FROM Orders o
-JOIN OrderDetail od ON o.orderId = od.orderId
-JOIN Product p ON od.productId = p.productId
-JOIN User u ON o.userId = u.userId
-WHERE o.userId = ?
-ORDER BY o.orderDate DESC";
+        o.orderId, o.orderCode, o.orderDate, o.status, 
+        p.productId, p.name AS productName, p.image, 
+        od.quantity, od.price, od.subtotal, u.name, o.totalAmount
+    FROM Orders o
+    JOIN OrderDetail od ON o.orderId = od.orderId
+    JOIN Product p ON od.productId = p.productId
+    JOIN User u ON o.userId = u.userId
+    WHERE o.userId = ? AND o.status = 'Delivered'
+";
+
+$params = ["i", $userId]; // Kiểu dữ liệu: 'i' là số nguyên
+
+if (!empty($dateStart) && !empty($dateEnd)) {
+    $sql .= " AND o.orderDate BETWEEN ? AND ?";
+    $params[0] .= "ss"; // Thêm kiểu dữ liệu chuỗi 'ss'
+    $params[] = $dateStart;
+    $params[] = $dateEnd;
+}
+
+$sql .= " ORDER BY o.orderDate DESC";
 
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $userId);
+$stmt->bind_param(...$params);
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -145,12 +160,6 @@ $conn->close();
         </div>
         <a href="./manage-order.php">Quản lý đơn hàng</a>
       </li>
-      <li >
-        <div class="inner-icon">
-          <i class="fa-solid fa-chart-line"></i>
-        </div>
-        <a href="./statistic.php">Thống kê kinh doanh</a>
-      </li>
       <li class="active">
         <div class="inner-icon">
           <i class="fa-solid fa-medal"></i>
@@ -178,6 +187,8 @@ $conn->close();
               <div class="card mb-3">
                   <div class="card-body">
                       <p>Mã đơn: <strong><?= $order['orderCode'] ?></strong></p>
+                      <p>Ngày tạo: <strong><?= date('d/m/Y H:i:s', strtotime($order['orderDate'])) ?></strong></p>
+                      <p>Trạng thái: <strong><?= $order['status'] ?></strong></p>
                       <p>Tên người nhận: <strong><?= $order['name'] ?></strong></p>
                       <p>Các sản phẩm:</p>
                       <ul>
@@ -196,21 +207,25 @@ $conn->close();
         <ul class="pagination">
             <!-- Nút trang đầu -->
             <li class="page-item <?= ($page == 1) ? 'disabled' : '' ?>">
-                <a href="./orderClient-relate.php?userId=<?= $productId ?>&page=1" class="page-link">&lt;&lt;</a>
+                <a href="./orderClient-relate.php?userId=<?= $userId ?>&page=1<?= !empty($dateStart) && !empty($dateEnd) ? '&date-start=' . urlencode($dateStart) . '&date-end=' . urlencode($dateEnd) : '' ?>" 
+                  class="page-link">&lt;&lt;</a>
             </li>
 
             <!-- Vòng lặp tạo số trang -->
             <?php for ($i = 1; $i <= $totalPages; $i++): ?>
                 <li class="page-item <?= ($i == $page) ? 'active' : '' ?>">
-                    <a href="./orderClient-relate.php?userId=<?= $productId ?>&page=<?= $i ?>" class="page-link"><?= $i ?></a>
+                    <a href="./orderClient-relate.php?userId=<?= $userId ?>&page=<?= $i ?><?= !empty($dateStart) && !empty($dateEnd) ? '&date-start=' . urlencode($dateStart) . '&date-end=' . urlencode($dateEnd) : '' ?>" 
+                      class="page-link"><?= $i ?></a>
                 </li>
             <?php endfor; ?>
 
             <!-- Nút trang cuối -->
             <li class="page-item <?= ($page == $totalPages) ? 'disabled' : '' ?>">
-                <a href="./orderClient-relate.php?userId=<?= $productId ?>&page=<?= $totalPages ?>" class="page-link">&gt;&gt;</a>
+                <a href="./orderClient-relate.php?userId=<?= $userId ?>&page=<?= $totalPages ?><?= !empty($dateStart) && !empty($dateEnd) ? '&date-start=' . urlencode($dateStart) . '&date-end=' . urlencode($dateEnd) : '' ?>" 
+                  class="page-link">&gt;&gt;</a>
             </li>
         </ul>
+
       </div>
     </div>
   </body>

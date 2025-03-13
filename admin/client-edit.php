@@ -104,12 +104,7 @@ $user = ($result && $result->num_rows > 0) ? $result->fetch_assoc() : null;
         </div>
         <a href="./manage-order.php">Quản lý đơn hàng</a>
       </li>
-      <li>
-        <div class="inner-icon">
-          <i class="fa-solid fa-chart-line"></i>
-        </div>
-        <a href="./statistic.php">Thống kê kinh doanh</a>
-      </li>
+      
       <li>
         <div class="inner-icon">
           <i class="fa-solid fa-medal"></i>
@@ -271,6 +266,11 @@ $user = ($result && $result->num_rows > 0) ? $result->fetch_assoc() : null;
         }
         let data = await response.json(); // Kiểm tra dữ liệu thực sự nhận được
         showAnnouncement(data.status, data.message);   
+        setTimeout(() => {
+          let userId = <?= json_encode($userId) ?>; // Chuyển biến PHP thành JS
+          window.location.href = "./client-detail.php?userId=" + userId;
+        }, 2000);
+       
     } catch (error) {
         console.log("Fetch Error:", error);
         showAnnouncement("danger", "Lỗi khi kết nối server hoặc phản hồi không hợp lệ!");
