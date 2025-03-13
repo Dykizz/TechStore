@@ -783,10 +783,10 @@ include 'information.php';
               <div class="footer">
                 <h3 class="footer-title">Sản phẩm</h3>
                 <ul class="footer-links">
-                  <li><a href="./store-laptop.php">Máy tính</a></li>
-                  <li><a href="./store-smartphone.php">Điện thoại</a></li>
-                  <li><a href="./store-camera.php">Máy ảnh</a></li>
-                  <li><a href="./store-accessories.php">Phụ kiện</a></li>
+                  <li><a href="./products.php?category=1">Máy tính</a></li>
+                  <li><a href="./products.php?category=2">Điện thoại</a></li>
+                  <li><a href="./products.php?category=3">Máy ảnh</a></li>
+                  <li><a href="./products.php?category=4">Phụ kiện</a></li>
                 </ul>
               </div>
             </div>
