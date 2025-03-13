@@ -91,7 +91,7 @@ $conn->close();
             <!-- SEARCH BAR -->
             <div class="col-md-6">
               <div class="header-search">
-                <form action="./store-search.html">
+                <form action="./products.php">
                   <input
                     name="keyword"
                     class="input"
