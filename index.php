@@ -1,5 +1,10 @@
 <?php
 include 'information.php';
+
+
+$userId = isset($_SESSION['userId']) ? (int)$_SESSION['userId'] : 0;
+$userName = isset($_SESSION['name']) ? $_SESSION['name'] : "Khách";
+
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -98,7 +103,7 @@ include 'information.php';
                       <a href="./account-information.php">Thông tin cá nhân</a>
                     </li>
                     <li>
-                      <a href="./purchasing-history.php">Lịch sử mua hàng</a>
+                      <a href="./lichsu_muahang.php">Lịch sử mua hàng</a>
                     </li>
                     <li><a href="./change-password.php">Đổi mật khẩu</a></li>
                     <li><a href="./index-notlogin.php">Đăng xuất</a></li>
@@ -162,7 +167,7 @@ include 'information.php';
                     </div>
                     <div class="cart-btns">
                       <a href="./shopping-cart.php">Xem giỏ hàng</a>
-                      <a href="./checkout.html">
+                      <a href="./checkout.php">
                         Thanh toán <i class="fa fa-arrow-circle-right"></i>
                       </a>
                     </div>

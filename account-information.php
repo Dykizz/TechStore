@@ -9,7 +9,7 @@ if (!isset($_SESSION['email'])) {
 }
 
 $email = $_SESSION['email'];
-$sql = "SELECT name, phoneNumber, gender, dateOfBirth FROM user WHERE email = '" . mysqli_real_escape_string($conn, $email) . "'";
+$sql = "SELECT name, phoneNumber, gender, dateOfBirth FROM users WHERE email = '" . mysqli_real_escape_string($conn, $email) . "'";
 $result = mysqli_query($conn, $sql);
 
 if (mysqli_num_rows($result) > 0) {
@@ -34,7 +34,7 @@ $message = ''; // Khai báo biến thông báo
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $new_fullname = mysqli_real_escape_string($conn, $_POST['name']);
     $phone = mysqli_real_escape_string($conn, $_POST['phone']);
-    $sex = mysqli_real_escape_string($conn, $_POST['sex']);
+    //$sex = mysqli_real_escape_string($conn, $_POST['sex']);
     $birthday = mysqli_real_escape_string($conn, $_POST['birthday']);
     $address = mysqli_real_escape_string($conn, $_POST['address']);
 
@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $message = "Số điện thoại không hợp lệ! Phải là 10 chữ số.";
   } else {
       // Cập nhật bảng user
-      $update_user_sql = "UPDATE user SET name = '$new_fullname', phoneNumber = '$phone', gender = '$sex', dateOfBirth = '$birthday' WHERE email = '" . mysqli_real_escape_string($conn, $_SESSION['email']) . "'";
+      $update_user_sql = "UPDATE users SET name = '$new_fullname', phoneNumber = '$phone', gender = '$sex', dateOfBirth = '$birthday' WHERE email = '" . mysqli_real_escape_string($conn, $_SESSION['email']) . "'";
       if (mysqli_query($conn, $update_user_sql)) {
           $_SESSION['fullname'] = $new_fullname; // Cập nhật session
           $message = "Đã cập nhật thông tin cá nhân thành công!";
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           $message = "Lỗi khi cập nhật user: " . mysqli_error($conn);
       }
     // Cập nhật bảng user
-    $update_user_sql = "UPDATE user SET name = '$new_fullname', phoneNumber = '$phone', gender = '$sex', dateOfBirth = '$birthday' WHERE email = '" . mysqli_real_escape_string($conn, $_SESSION['email']) . "'";
+    $update_user_sql = "UPDATE users SET name = '$new_fullname', phoneNumber = '$phone', gender = '$sex', dateOfBirth = '$birthday' WHERE email = '" . mysqli_real_escape_string($conn, $_SESSION['email']) . "'";
     if (mysqli_query($conn, $update_user_sql)) {
         $_SESSION['fullname'] = $new_fullname; // Cập nhật session
         $message = "Đã cập nhật thông tin cá nhân thành công!";

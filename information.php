@@ -11,7 +11,7 @@ include 'connect.php';
 
 // Luôn truy vấn lại database để lấy thông tin mới nhất
 $email = $_SESSION['email'];
-$sql = "SELECT name FROM user WHERE email = '" . mysqli_real_escape_string($conn, $email) . "'";
+$sql = "SELECT name FROM users WHERE email = '" . mysqli_real_escape_string($conn, $email) . "'";
 $result = mysqli_query($conn, $sql);
 
 if (mysqli_num_rows($result) > 0) {

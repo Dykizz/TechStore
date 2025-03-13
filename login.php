@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Chỉ tiếp tục nếu không có lỗi rỗng
     if (empty($email_error) && empty($password_error)) {
         $escaped_email = mysqli_real_escape_string($conn, $email);
-        $sql = "SELECT * FROM user WHERE email = '$escaped_email'";
+        $sql = "SELECT * FROM users WHERE email = '$escaped_email'";
         $result = mysqli_query($conn, $sql);
 
         if (mysqli_num_rows($result) == 0) {
