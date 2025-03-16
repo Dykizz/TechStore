@@ -12,7 +12,7 @@ if ($userId == 0 || $orderId == 0) {
 
 $sql = "SELECT o.*, u.name AS userName, ua.address AS shippingAddress 
         FROM Orders o 
-        JOIN Users u ON o.userId = u.userId 
+        JOIN User u ON o.userId = u.userId 
         LEFT JOIN UserAddress ua ON o.shippingAddressId = ua.shippingAddressId 
         WHERE o.orderId = ? AND o.userId = ?";
 $stmt = $conn->prepare($sql);

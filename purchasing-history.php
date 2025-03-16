@@ -1,7 +1,7 @@
 <?php
 session_start();
 include 'connect.php';
-include 'information.php'; // Kết nối dùng MySQLi
+
 
 // Lấy userId từ session
 $userId = isset($_SESSION['userId']) ? (int)$_SESSION['userId'] : 0;
@@ -13,7 +13,7 @@ if ($userId == 0) {
 }
 
 // Lấy thông tin người dùng từ database
-$userSql = "SELECT name FROM Users WHERE userId = ?";
+$userSql = "SELECT name FROM User WHERE userId = ?";
 $userStmt = $conn->prepare($userSql);
 $userStmt->bind_param("i", $userId);
 $userStmt->execute();

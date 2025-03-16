@@ -96,7 +96,7 @@ $userName = isset($_SESSION['name']) ? $_SESSION['name'] : "Khách";
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a href="./account-information.php">Thông tin cá nhân</a></li>
-                                    <li><a href="./purchasing-history.php">Lịch sử mua hàng</a></li>
+                                    <li><a href="./lichsu_muahang.php">Lịch sử mua hàng</a></li>
                                     <li><a href="./change-password.php">Đổi mật khẩu</a></li>
                                     <li><a href="./logout.php">Đăng xuất</a></li>
                                 </ul>

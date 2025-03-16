@@ -1,15 +1,15 @@
 <?php
 session_start();
 include 'connect.php';
-include 'information.php';
-$userId = isset($_SESSION['user_id']) ? (int)$_SESSION['user_id'] : 0; // Đồng bộ với login.php
+
+$userId = isset($_SESSION['userId']) ? (int)$_SESSION['userId'] : 0;
 if ($userId == 0) {
     header("Location: login.php");
     exit;
 }
 
 // Lấy thông tin người dùng từ database
-$userSql = "SELECT name FROM users WHERE id = ?";
+$userSql = "SELECT name FROM user WHERE userId = ?";
 $userStmt = $conn->prepare($userSql);
 $userStmt->bind_param("i", $userId);
 $userStmt->execute();
@@ -19,13 +19,25 @@ $userName = $user['name'] ?? "Khách";
 $userStmt->close();
 
 // Lấy giỏ hàng
-$sql = "SELECT ci.*, p.name, p.price FROM CartItem ci JOIN Product p ON ci.productId = p.productId WHERE ci.userId = ?";
+/*$sql = "SELECT ci.*, p.name, p.price FROM CartItem ci JOIN Product p ON ci.productId = p.productId WHERE ci.userId = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $userId);
+$stmt->execute();
+$result = $stmt->get_result();
+$cartItems = $result->fetch_all(MYSQLI_ASSOC);
+$stmt->close();*/
+
+$sql = "SELECT ci.productId, ci.quantity, p.name, p.price 
+        FROM CartItem ci 
+        JOIN Product p ON ci.productId = p.productId 
+        WHERE ci.userId = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $userId);
 $stmt->execute();
 $result = $stmt->get_result();
 $cartItems = $result->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
+
 
 // Tính tổng tiền
 $totalAmount = 0;
@@ -88,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($cartItems)) {
         $deleteStmt->close();
 
         $conn->commit();
-        header("Location: lichsu_muahang.php"); // Thay bằng lichsu_muahang.php thay vì order_confirmation.php
+        header("Location: purchasing-history.php"); 
         exit;
     } catch (Exception $e) {
         $conn->rollback();
@@ -144,35 +156,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($cartItems)) {
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a href="account-information.php">Thông tin cá nhân</a></li>
-                                    <li><a href="lichsu_muahang.php">Lịch sử mua hàng</a></li>
+                                    <li><a href="purchasing-history.php">Lịch sử mua hàng</a></li>
                                     <li><a href="change-password.php">Đổi mật khẩu</a></li>
                                     <li><a href="logout.php">Đăng xuất</a></li>
                                 </ul>
                             </div>
                             <div class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                                     <i class="fa fa-shopping-cart"></i>
                                     <span>Giỏ hàng</span>
-                                    <div class="qty"><?php echo count($cartItems); ?></div>
+                                    <div class="qty"><?php echo array_sum(array_column($_SESSION['cart'] ?? [], 'quantity')); ?></div>
                                 </a>
                                 <div class="cart-dropdown">
                                     <div class="cart-list">
-                                        <?php foreach ($cartItems as $item): ?>
-                                            <div class="product-widget">
-                                                <div class="product-body">
-                                                    <h3 class="product-name"><?php echo htmlspecialchars($item['name']); ?></h3>
-                                                    <h4 class="product-price"><span class="qty"><?php echo $item['quantity']; ?>x</span><?php echo number_format($item['price'], 0); ?> VND</h4>
-                                                </div>
-                                            </div>
-                                        <?php endforeach; ?>
+                                        <?php
+                                        if (!empty($_SESSION['cart'])) {
+                                            foreach ($_SESSION['cart'] as $id => $item) {
+                                                echo "
+                                                <div class='product-widget'>
+                                                    <div class='product-img'>
+                                                        <img src='{$item['image']}' alt='' />
+                                                    </div>
+                                                    <div class='product-body'>
+                                                        <h3 class='product-name'>
+                                                            <a href='detail-product.php?id={$id}'>{$item['name']}</a>
+                                                        </h3>
+                                                        <h4 class='product-price'>
+                                                            <span class='qty'>{$item['quantity']}x</span>" . number_format($item['price'], 0, ',', '.') . " VND
+                                                        </h4>
+                                                    </div>
+                                                    <button class='delete'><i class='fa fa-close'></i></button>
+                                                </div>";
+                                            }
+                                        } else {
+                                            echo "<p>Giỏ hàng trống!</p>";
+                                        }
+                                        ?>
                                     </div>
                                     <div class="cart-summary">
-                                        <small><?php echo count($cartItems); ?> sản phẩm được chọn</small>
-                                        <h5>TỔNG: <?php echo number_format($totalAmount, 0); ?> VND</h5>
+                                        <small><?php echo array_sum(array_column($_SESSION['cart'] ?? [], 'quantity')); ?> sản phẩm được chọn</small>
+                                        <h5>TỔNG: <?php echo number_format(array_sum(array_map(function($item) { return $item['price'] * $item['quantity']; }, $_SESSION['cart'] ?? [])), 0, ',', '.'); ?> VND</h5>
                                     </div>
                                     <div class="cart-btns">
-                                        <a href="shopping-cart.php">Xem giỏ hàng</a>
-                                        <a href="checkout.php">Thanh toán <i class="fa fa-arrow-circle-right"></i></a>
+                                        <a href="./shopping-cart.php">Xem giỏ hàng</a>
+                                        <a href="./checkout.php">Thanh toán <i class="fa fa-arrow-circle-right"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -288,15 +315,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($cartItems)) {
                         <h4>Danh sách sản phẩm</h4>
                         <table class="table">
                             <thead>
-                                <tr><th>Tên sản phẩm</th><th>Số lượng</th></tr>
+                                <tr><th>Tên sản phẩm</th><th>Số lượng</th><th>Giá</th></tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($cartItems as $item): ?>
-                                    <tr>
-                                        <td><?php echo htmlspecialchars($item['name']); ?></td>
-                                        <td class="text-center">x<?php echo $item['quantity']; ?></td>
-                                    </tr>
-                                <?php endforeach; ?>
+                                <?php if (empty($cartItems)): ?>
+                                    <tr><td colspan="3">Giỏ hàng trống</td></tr>
+                                <?php else: ?>
+                                    <?php foreach ($cartItems as $item): ?>
+                                        <tr>
+                                            <td><?php echo htmlspecialchars($item['name'] ?? 'Không có tên'); ?></td>
+                                            <td class="text-center">x<?php echo $item['quantity']; ?></td>
+                                            <td><?php echo number_format($item['price'] * $item['quantity'], 0); ?> VND</td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
                             </tbody>
                         </table>
                     </div>
