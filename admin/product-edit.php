@@ -222,12 +222,7 @@ $conn->close();
         </div>
         <a href="./manage-order.php">Quản lý đơn hàng</a>
       </li>
-      <li>
-        <div class="inner-icon">
-          <i class="fa-solid fa-chart-line"></i>
-        </div>
-        <a href="./statistic.php">Thống kê kinh doanh</a>
-      </li>
+      
       <li>
         <div class="inner-icon">
           <i class="fa-solid fa-medal"></i>

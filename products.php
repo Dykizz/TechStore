@@ -26,6 +26,11 @@ if ($max_price < PHP_INT_MAX) {
     $sql .= " AND price <= $max_price";
 }
 
+$sql_car = "SELECT name FROM Category WHERE categoryId = $category_id";
+$result_car = $conn->query($sql_car);
+if ($result_car->num_rows > 0) {
+    $category_name = $result_car->fetch_assoc()['name'];
+}
 // Get total number of products
 $total_result = $conn->query($sql);
 $total_products = $total_result->num_rows;
