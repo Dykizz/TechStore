@@ -61,6 +61,26 @@ $result = $conn->query($sql);
     <div class="alert alert-show announce" role="alert"></div>
     
     <!-- HEADER -->
+     <!-- TOP HEADER -->
+     <div id="top-header">
+        <div class="container">
+          <ul class="header-links pull-left">
+            <li>
+              <a href="#"><i class="fa fa-phone"></i> Hotline: <strong>0975419019</strong>
+            </li>
+            <li>
+              <a href="#"><i class="fa fa-envelope-o"></i> nhom6@email.com </a>
+            </li>
+            <li>
+              <a href="#"
+                ><i class="fa fa-map-marker"></i> 273 An Dương Vương, Phường 3,
+                Quận 5
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!-- /TOP HEADER -->
     <div id="header">
         <!-- container -->
         <div class="container">
