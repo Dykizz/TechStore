@@ -1,4 +1,5 @@
 <?php
+//session_start();
 include 'connect.php';
 include 'information.php';
 
@@ -6,47 +7,71 @@ include 'information.php';
 $productId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
 if ($productId > 0) {
-  $sql = "SELECT 
-              p.productId, p.name AS productName, p.image, p.description, p.isActive,
-              p.stock, p.price, p.discountPercent, c.categoryId, c.name AS categoryName,
-              a.attributeId, a.name AS attributeName, av.value AS attributeValue
-          FROM Product p
-          LEFT JOIN Category c ON p.categoryId = c.categoryId
-          LEFT JOIN AttributeValue av ON p.productId = av.productId
-          LEFT JOIN Attribute a ON av.attributeId = a.attributeId
-          WHERE p.productId = ?";
+    $sql = "SELECT 
+                p.productId, p.name AS productName, p.image, p.description, p.isActive,
+                p.stock, p.price, p.discountPercent, c.categoryId, c.name AS categoryName,
+                a.attributeId, a.name AS attributeName, av.value AS attributeValue
+            FROM Product p
+            LEFT JOIN Category c ON p.categoryId = c.categoryId
+            LEFT JOIN AttributeValue av ON p.productId = av.productId
+            LEFT JOIN Attribute a ON av.attributeId = a.attributeId
+            WHERE p.productId = ?";
 
-  $stmt = $conn->prepare($sql);
-  $stmt->bind_param("i", $productId);
-  $stmt->execute();
-  $result = $stmt->get_result();
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $productId);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-  $product = [];
-  while ($row = $result->fetch_assoc()) {
-      if (empty($product)) {
-          $product = [
-              "categoryId" => $row["categoryId"],
-              "productId" => $row["productId"],
-              "isActive" => $row["isActive"],
-              "productName" => $row["productName"],
-              "image" => $row["image"],
-              "description" => $row["description"],
-              "stock" => $row["stock"],
-              "price" => $row["price"],
-              "discountPercent" => $row["discountPercent"],
-              "attributes" => [],
-              "categoryName" => $row["categoryName"]
-          ];
-      }
-      if ($row["attributeId"]) {
-          $product["attributes"][] = [
-              "attributeId" => $row["attributeId"],  // Lấy thêm ID
-              "name" => $row["attributeName"],
-              "value" => $row["attributeValue"]
-          ];
-      }
-  }
-  $stmt->close();
+    $product = [];
+    while ($row = $result->fetch_assoc()) {
+        if (empty($product)) {
+            $product = [
+                "categoryId" => $row["categoryId"],
+                "productId" => $row["productId"],
+                "isActive" => $row["isActive"],
+                "productName" => $row["productName"],
+                "image" => $row["image"],
+                "description" => $row["description"],
+                "stock" => $row["stock"],
+                "price" => $row["price"],
+                "discountPercent" => $row["discountPercent"],
+                "attributes" => [],
+                "categoryName" => $row["categoryName"]
+            ];
+        }
+        if ($row["attributeId"]) {
+            $product["attributes"][] = [
+                "attributeId" => $row["attributeId"],
+                "name" => $row["attributeName"],
+                "value" => $row["attributeValue"]
+            ];
+        }
+    }
+    $stmt->close();
+}
+
+// Xử lý thêm sản phẩm vào giỏ hàng (sử dụng session)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart'])) {
+    $productId = (int)$_POST['product_id'];
+    $quantity = isset($_POST['quantity']) ? (int)$_POST['quantity'] : 1;
+
+    // Kiểm tra sản phẩm đã có trong giỏ hàng chưa
+    if (!isset($_SESSION['cart'][$productId])) {
+        // Thêm sản phẩm mới
+        $_SESSION['cart'][$productId] = [
+            'name' => $product['productName'],
+            'image' => $product['image'],
+            'price' => $product['price'] * ((100 - $product['discountPercent']) / 100),
+            'quantity' => $quantity
+        ];
+    } else {
+        // Tăng số lượng nếu sản phẩm đã có
+        $_SESSION['cart'][$productId]['quantity'] += $quantity;
+    }
+
+    // Chuyển hướng để tránh gửi lại form
+    header("Location: detail-product.php?id=" . $productId);
+    exit;
 }
 
 $conn->close();
@@ -248,24 +273,30 @@ $conn->close();
               </div>
               <br />
               <div class="add-to-cart">
-                <div class="qty-label">
-                  <span class="qty-text">Số lượng</span>
-                  <div class="text-center qty-buttons">
-                    <button class="btn btn-secondary">-</button>
-                    <span>1</span>
-                    <button class="btn btn-secondary">+</button>
-                  </div>
-                </div>
-                <div class="add-to-cart">
-                  <button
-                    class="add-to-cart-btn btn-announce"
-                    type-announce="success"
-                    message="Thêm sản phẩm vào giỏ hàng thành công!"
-                  >
-                    <i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng
-                  </button>
-                </div>
-              </div>
+  <div class="qty-label">
+    <span class="qty-text">Số lượng</span>
+    <div class="text-center qty-buttons">
+      <button class="btn btn-secondary qty-decrease">-</button>
+      <span class="qty-value">1</span>
+      <button class="btn btn-secondary qty-increase">+</button>
+    </div>
+  </div>
+  <div class="add-to-cart">
+    <form method="POST" class="add-to-cart-form">
+      <input type="hidden" name="product_id" value="<?= $product['productId'] ?>">
+      <input type="hidden" name="quantity" class="quantity-input" value="1">
+      <button
+        type="submit"
+        name="add_to_cart"
+        class="add-to-cart-btn btn-announce"
+        type-announce="success"
+        message="Thêm sản phẩm vào giỏ hàng thành công!"
+      >
+        <i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng
+      </button>
+    </form>
+  </div>
+</div>
               <ul class="product-links">
                 <li>Danh mục:</li>
                 <li><a href='./products.php?category=<?= $product["categoryId"]?>'><?= $product["categoryName"] ?></a></li>
@@ -916,5 +947,31 @@ $conn->close();
     <script src="js/nouislider.min.js"></script>
     <script src="js/jquery.zoom.min.js"></script>
     <script src="js/main.js"></script>
+    <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const qtyDecrease = document.querySelector('.qty-decrease');
+    const qtyIncrease = document.querySelector('.qty-increase');
+    const qtyValue = document.querySelector('.qty-value');
+    const quantityInput = document.querySelector('.quantity-input');
+
+    qtyDecrease.addEventListener('click', function(e) {
+      e.preventDefault();
+      let value = parseInt(qtyValue.textContent);
+      if (value > 1) {
+        value--;
+        qtyValue.textContent = value;
+        quantityInput.value = value;
+      }
+    });
+
+    qtyIncrease.addEventListener('click', function(e) {
+      e.preventDefault();
+      let value = parseInt(qtyValue.textContent);
+      value++;
+      qtyValue.textContent = value;
+      quantityInput.value = value;
+    });
+  });
+</script>
   </body>
 </html>
