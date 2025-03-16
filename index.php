@@ -41,7 +41,7 @@ $userName = isset($_SESSION['name']) ? $_SESSION['name'] : "Khách";
         <div class="container">
           <ul class="header-links pull-left">
             <li>
-              <a href="#"><i class="fa fa-phone"></i> Hotline: <strong>+84 975 419 019</strong>
+              <a href="#"><i class="fa fa-phone"></i> Hotline: <strong>0975419019</strong>
             </li>
             <li>
               <a href="#"><i class="fa fa-envelope-o"></i> nhom6@email.com </a>
