@@ -6,27 +6,8 @@ $limit = 5; // Số đơn hàng mỗi trang
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 if ($page < 1) $page = 1;
 
-$sort = $_GET['sort'] ?? 'default';
-
-// Xác định ORDER BY tương ứng
-switch ($sort) {
-    case 'price-increase':
-        $orderBy = "o.totalAmount ASC";
-        break;
-    case 'price-decrease':
-        $orderBy = "o.totalAmount DESC";
-        break;
-    case 'time-increase':
-        $orderBy = "o.orderDate ASC";
-        break;
-    case 'time-decrease':
-        $orderBy = "o.orderDate DESC";
-        break;
-    default:
-        $orderBy = "o.orderDate DESC"; // Mặc định
-}
-
 $search = isset($_GET['search']) ? $conn->real_escape_string(trim($_GET['search'])) : '';
+$searchAddress = isset($_GET['searchAddress']) ? $conn->real_escape_string(trim($_GET['searchAddress'])) : '';
 
 // Lấy dữ liệu lọc từ form
 $dateStart = isset($_GET['date-start']) ? $_GET['date-start'] : '';
@@ -37,6 +18,9 @@ $status = isset($_GET['status']) ? $_GET['status'] : '';
 $conditions = [];
 if (!empty($search)) {
   $conditions[] = "(o.orderCode LIKE '%$search%' OR u.name LIKE '%$search%')";
+}
+if (!empty($searchAddress)) {
+  $conditions[] = "(o.customShippingAddress LIKE '%$searchAddress%')";
 }
 if (!empty($dateStart)) {
     $conditions[] = "o.orderDate >= '$dateStart'";
@@ -67,7 +51,6 @@ $sql = "SELECT o.orderId, o.orderCode, u.name, o.orderDate, o.status, o.totalAmo
         FROM Orders o
         JOIN User u ON o.userId = u.userId
         $whereClause
-        ORDER BY $orderBy
         LIMIT $limit OFFSET $offset";
 
 $result = $conn->query($sql);
@@ -79,10 +62,9 @@ if ($result->num_rows > 0) {
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Trang Admin</title>
@@ -104,9 +86,9 @@ if ($result->num_rows > 0) {
       referrerpolicy="no-referrer"
     />
     <link rel="stylesheet" href="style.css" />
-  </head>
+</head>
 
-  <body>
+<body>
     <div class="alert alert-show announce" role="alert"></div>
     <header>
       <div class="inner-logo">
@@ -158,12 +140,6 @@ if ($result->num_rows > 0) {
           <i class="fa-solid fa-clipboard-list"></i>
         </div>
         <a href="./manage-order.php">Quản lý đơn hàng</a>
-      </li>
-      <li>
-        <div class="inner-icon">
-          <i class="fa-solid fa-chart-line"></i>
-        </div>
-        <a href="./statistic.php">Thống kê kinh doanh</a>
       </li>
       <li>
         <div class="inner-icon">
@@ -234,58 +210,59 @@ if ($result->num_rows > 0) {
       </div>
       <h4>Danh sách đơn hàng</h4>
       <div class="row">
-        <div class="col-6">
-          <div class="card" >
-            <div class="card-header mb-0 bg-success">Bộ sắp xếp</div>
+        <div class='col-6'>
+          <div class="card">
+            <div class="card-header mb-0 bg-success">Tìm kiếm đơn hàng</div>
             <div class="card-body mb-0">
-              <div class="form-group">
-                <label for="sort">Sắp xếp theo</label>
-                <div class="input-group">
-                  <select class="form-control" name="" id="sortSelect">
-                    <option value="" selected disabled>
-                      --Chọn tiêu chí sắp xếp--
-                    </option>
-                    <option value="default">Mặc định</option>
-                    <option value="price-increase">Giá tiền tăng dần</option>
-                    <option value="price-decrease">Giá tiền giảm dần</option>
-                    <option value="time-increase">Thời gian tăng dần</option>
-                    <option value="time-decrease">Thời gian giảm dần</option>
-                  </select>
-                  <button class="btn btn-success" onclick="sortData()">
-                    Sắp xếp
-                  </button>
+                <div class="form-group">
+                    <div class="input-group">
+                        <input
+                            id="search"
+                            class="form-control"
+                            name="search"
+                            type="text"
+                            placeholder="Nhập tên khách hàng hoặc mã đơn hàng"
+                            onkeypress="if(event.key === 'Enter') searchData();"
+                        />
+                        <button
+                            type="button"
+                            class="input-group-append btn btn-success"
+                            onclick="searchData()"
+                        >
+                            Tìm kiếm
+                        </button>
+                    </div>
                 </div>
-              </div>
             </div>
           </div>
         </div>
         <div class='col-6'>
           <div class="card">
-            <div class="card-header mb-0 bg-success">Tìm kiếm đơn hàng</div>
+            <div class="card-header mb-0 bg-success">Tìm kiếm theo địa chỉ</div> <!-- Sửa lỗi cú pháp -->
             <div class="card-body mb-0">
-              <div class="form-group">
-              <label for="search">Tìm kiếm theo</label>
-                <div class="input-group">
-                  <input
-                    id = "search"
-                    class="form-control"
-                    name="search"
-                    type="text"
-                    placeholder="Nhập tên khách hàng hoặc mã đơn hàng"
-                  />
-                  <button
-                    type="submit"
-                    class="input-group-append btn btn-success "
-                    onclick="searchData()"
-                  >
-                    Tìm kiếm
-                  </button>
+                <div class="form-group">
+                    <div class="input-group">
+                        <input
+                            id="searchAddress"
+                            class="form-control"
+                            name="searchAddress"
+                            type="text"
+                            placeholder="Nhập địa chỉ giao hàng"
+                            onkeypress="if(event.key === 'Enter') searchAddress();"
+                        />
+                        <button
+                            type="button"
+                            class="input-group-append btn btn-success"
+                            onclick="searchAddress()"
+                        >
+                            Tìm kiếm
+                        </button>
+                    </div>
                 </div>
-              </div>
             </div>
           </div>
         </div>
-      </div>
+      </div> <!-- Đóng thẻ div.row -->
       <div class="alert alert-info d-flex align-items-center">
         <i class="fa-solid fa-circle-info mr-2"></i>
         Tìm thấy &nbsp;<span class="badge badge-primary p-2"><?= $totalOrders  ?></span>&nbsp; đơn hàng phù hợp với điều kiện tìm kiếm
@@ -333,7 +310,6 @@ if ($result->num_rows > 0) {
                     $currentStatus = $order['status'];
                     $currentClass = $statusOptions[$currentStatus]['class'];
 
-                   
                     echo "<select class='badge {$currentClass}' 
                             style='border: none; padding: 5px; border-radius: 5px; color: white;'
                             onchange=\"changeBadgeColor(this,{$order['orderId']})\">";
@@ -367,7 +343,7 @@ if ($result->num_rows > 0) {
         <ul class="pagination">
             <!-- Nút trang đầu -->
             <li class="page-item <?= ($page == 1) ? 'disabled' : '' ?>">
-                <a href="./manage-order.php?page=1" class="page-link">&lt;&lt;</a>
+                <a href="./manage-order.php?page=1" class="page-link"><<</a>
             </li>
 
             <!-- Vòng lặp tạo số trang -->
@@ -379,92 +355,100 @@ if ($result->num_rows > 0) {
 
             <!-- Nút trang cuối -->
             <li class="page-item <?= ($page == $totalPages) ? 'disabled' : '' ?>">
-                <a href="./manage-order.php?page=<?= $totalPages ?>" class="page-link">&gt;&gt;</a>
+                <a href="./manage-order.php?page=<?= $totalPages ?>" class="page-link">>></a>
             </li>
         </ul>
       </div>
-
-    </div>
+    </div> <!-- Đóng thẻ div.content -->
     <script src="../js/announcement.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-      let urlParams = new URLSearchParams(window.location.search);
-      let sortValue = urlParams.get("sort");
-      let searchValue = urlParams.get("search");
+        let urlParams = new URLSearchParams(window.location.search);
+        let sortValue = urlParams.get("sort");
+        let searchValue = urlParams.get("search");
+        let searchAddressValue = urlParams.get("searchAddress");
 
-      if (sortValue) {
-        document.getElementById("sortSelect").value = sortValue;
-      }
-      if (searchValue){
-        document.getElementById("search").value = searchValue;
-      }
-    });
-
-    function updateURLParameter(key, value) {
-      let url = new URL(window.location.href);
-
-      if (value) {
-        url.searchParams.set(key, value); // Cập nhật giá trị tham số
-      } else {
-        url.searchParams.delete(key); // Xóa nếu giá trị rỗng
-      }
-
-      window.location.href = url.toString();
-    }
-    function sortData() {
-      let sortValue = document.getElementById("sortSelect").value;
-      updateURLParameter("sort", sortValue);
-    }
-
-    function searchData(){
-      let searchValue = document.getElementById("search").value;
-      updateURLParameter("search", searchValue);
-    }
-
-    async function changeBadgeColor(selectElement, orderId) {
-        let oldStatus = selectElement.dataset.oldStatus || selectElement.value; // Lưu trạng thái cũ
-        let newStatus = selectElement.value;
-
-        let statusClasses = {
-            'Pending': 'badge-secondary',
-            'Confirmed': 'badge-info',
-            'Delivered': 'badge-success',
-            'Cancelled': 'badge-danger'
-        };
-
-        // Xóa tất cả class badge cũ
-        selectElement.classList.remove('badge-secondary', 'badge-info', 'badge-success', 'badge-danger');
-
-        // Thêm class badge mới
-        selectElement.classList.add(statusClasses[newStatus]);
-        console.log(orderId,newStatus);
-        try {
-            let response = await fetch('update-statusOrder.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: `orderId=${orderId}&status=${newStatus}`
-            });
-
-            let data = await response.json();
-
-            if (data.status === "success") {
-                showAnnouncement("success", data.message);
-                selectElement.dataset.oldStatus = newStatus; // Cập nhật trạng thái mới
-            } else {
-                throw new Error(data.message); // Nếu thất bại, ném lỗi
-            }
-        } catch (error) {
-            // Quay lại trạng thái cũ nếu lỗi
-            selectElement.value = oldStatus;
-            selectElement.classList.remove('badge-secondary', 'badge-info', 'badge-success', 'badge-danger');
-            selectElement.classList.add(statusClasses[oldStatus]);
-            showAnnouncement("danger", error.message);
+        if (sortValue) {
+          document.getElementById("sortSelect").value = sortValue;
         }
-    }
+        if (searchValue){
+          document.getElementById("search").value = searchValue;
+        }
+        if (searchAddressValue){
+          document.getElementById("searchAddress").value = searchAddressValue;
+        }
+      });
 
+      function updateURLParameter(key, value) {
+        let url = new URL(window.location.href);
 
+        if (value) {
+          url.searchParams.set(key, value); // Cập nhật giá trị tham số
+        } else {
+          url.searchParams.delete(key); // Xóa nếu giá trị rỗng
+        }
+
+        window.location.href = url.toString();
+      }
+      function sortData() {
+        let sortValue = document.getElementById("sortSelect").value;
+        updateURLParameter("sort", sortValue);
+      }
+
+      function searchData(){
+        let searchValue = document.getElementById("search").value;
+        window.location.href = "./manage-order.php?search=" + searchValue;
+        // updateURLParameter("search", searchValue);
+      }
+
+      function searchAddress(){
+        let searchValue = document.getElementById("searchAddress").value;
+        window.location.href = "./manage-order.php?searchAddress=" + searchValue;
+        // updateURLParameter("searchAddress", searchValue);
+      }
+
+      async function changeBadgeColor(selectElement, orderId) {
+          let oldStatus = selectElement.dataset.oldStatus || selectElement.value; // Lưu trạng thái cũ
+          let newStatus = selectElement.value;
+
+          let statusClasses = {
+              'Pending': 'badge-secondary',
+              'Confirmed': 'badge-info',
+              'Delivered': 'badge-success',
+              'Cancelled': 'badge-danger'
+          };
+
+          // Xóa tất cả class badge cũ
+          selectElement.classList.remove('badge-secondary', 'badge-info', 'badge-success', 'badge-danger');
+
+          // Thêm class badge mới
+          selectElement.classList.add(statusClasses[newStatus]);
+          console.log(orderId,newStatus);
+          try {
+              let response = await fetch('update-statusOrder.php', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/x-www-form-urlencoded'
+                  },
+                  body: `orderId=${orderId}&status=${newStatus}`
+              });
+
+              let data = await response.json();
+
+              if (data.status === "success") {
+                  showAnnouncement("success", data.message);
+                  selectElement.dataset.oldStatus = newStatus; // Cập nhật trạng thái mới
+              } else {
+                  throw new Error(data.message); // Nếu thất bại, ném lỗi
+              }
+          } catch (error) {
+              // Quay lại trạng thái cũ nếu lỗi
+              selectElement.value = oldStatus;
+              selectElement.classList.remove('badge-secondary', 'badge-info', 'badge-success', 'badge-danger');
+              selectElement.classList.add(statusClasses[oldStatus]);
+              showAnnouncement("danger", error.message);
+          }
+      }
     </script>
-  </body>
+</body>
 </html>

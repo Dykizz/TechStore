@@ -1,7 +1,56 @@
-<?php require "auth.php"; ?>
+<?php 
+require "auth.php";
+require "db_connect.php";
+
+// Truy vấn tài khoản người dùng
+$totalUsersQuery = "SELECT COUNT(*) as total FROM User";
+$activeUsersQuery = "SELECT COUNT(*) as active FROM User WHERE status = 'ACTIVE'";
+$inactiveUsersQuery = "SELECT COUNT(*) as inactive FROM User WHERE status = 'INACTIVE'";
+
+$totalUsersResult = $conn->query($totalUsersQuery);
+$activeUsersResult = $conn->query($activeUsersQuery);
+$inactiveUsersResult = $conn->query($inactiveUsersQuery);
+
+$totalUsers = $totalUsersResult->fetch_assoc()['total'];
+$activeUsers = $activeUsersResult->fetch_assoc()['active'];
+$inactiveUsers = $inactiveUsersResult->fetch_assoc()['inactive'];
+
+// Truy vấn sản phẩm
+$totalProductsQuery = "SELECT COUNT(*) as total FROM Product";
+$activeProductsQuery = "SELECT COUNT(*) as active FROM Product WHERE stock > 0";
+$outOfStockProductsQuery = "SELECT COUNT(*) as out_of_stock FROM Product WHERE stock = 0";
+
+$totalProductsResult = $conn->query($totalProductsQuery);
+$activeProductsResult = $conn->query($activeProductsQuery);
+$outOfStockProductsResult = $conn->query($outOfStockProductsQuery);
+
+$totalProducts = $totalProductsResult->fetch_assoc()['total'];
+$activeProducts = $activeProductsResult->fetch_assoc()['active'];
+$outOfStockProducts = $outOfStockProductsResult->fetch_assoc()['out_of_stock'];
+
+// Truy vấn đơn hàng hôm nay
+$totalOrdersQuery = "SELECT COUNT(*) as total FROM Orders WHERE DATE(orderDate) = CURDATE()";
+$pendingOrdersQuery = "SELECT COUNT(*) as pending FROM Orders WHERE status = 'Pending'";
+$processedOrdersQuery = "SELECT COUNT(*) as processed FROM Orders WHERE status IN ('Confirmed', 'Delivered')";
+$cancelledOrdersQuery = "SELECT COUNT(*) as cancelled FROM Orders WHERE status = 'Cancelled'";
+
+$totalOrdersResult = $conn->query($totalOrdersQuery);
+$pendingOrdersResult = $conn->query($pendingOrdersQuery);
+$processedOrdersResult = $conn->query($processedOrdersQuery);
+$cancelledOrdersResult = $conn->query($cancelledOrdersQuery);
+
+$totalOrders = $totalOrdersResult->fetch_assoc()['total'];
+$pendingOrders = $pendingOrdersResult->fetch_assoc()['pending'];
+$processedOrders = $processedOrdersResult->fetch_assoc()['processed'];
+$cancelledOrders = $cancelledOrdersResult->fetch_assoc()['cancelled'];
+
+// Đóng kết nối
+$conn->close();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Trang Admin</title>
@@ -23,8 +72,8 @@
       referrerpolicy="no-referrer"
     />
     <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
+</head>
+<body>
     <header>
       <div class="inner-logo">
         <a href="./index.php">
@@ -78,12 +127,6 @@
       </li>
       <li>
         <div class="inner-icon">
-          <i class="fa-solid fa-chart-line"></i>
-        </div>
-        <a href="./statistic.php">Thống kê kinh doanh</a>
-      </li>
-      <li>
-        <div class="inner-icon">
           <i class="fa-solid fa-medal"></i>
         </div>
         <a href="./top5-client.php">Top 5 khách hàng</a>
@@ -97,40 +140,19 @@
             <div class="card-header">Tài khoản người dùng</div>
             <div class="card-body">
               <p>
-                Số lượng tài khoản :
-                <strong>289 </strong>
+                Số lượng tài khoản:
+                <strong><?= $totalUsers ?></strong>
                 tài khoản
               </p>
               <p>
-                Đang hoạt động :
-                <strong>286 </strong>
+                Đang hoạt động:
+                <strong><?= $activeUsers ?></strong>
                 tài khoản
               </p>
               <p>
-                Ngừng hoạt động :
-                <strong>3 </strong>
+                Ngừng hoạt động:
+                <strong><?= $inactiveUsers ?></strong>
                 tài khoản
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col-6">
-          <div class="card">
-            <div class="card-header">Khách hàng truy cập</div>
-            <div class="card-body">
-              <p>
-                Số lượng truy cập hiện tại :
-                <strong>1278 </strong>
-                lượt
-              </p>
-              <p>
-                Thời gian truy cập nhiều nhất :
-                <strong>9h-11h</strong>
-              </p>
-              <p>
-                Số lượng khách hàng đã mua hàng trong hôm nay :
-                <strong>32 </strong>
-                khách hàng
               </p>
             </div>
           </div>
@@ -140,23 +162,18 @@
             <div class="card-header">Sản phẩm</div>
             <div class="card-body">
               <p>
-                Số lượng sản phẩm :
-                <strong>120 </strong>
+                Số lượng sản phẩm:
+                <strong><?= $totalProducts ?></strong>
                 sản phẩm
               </p>
               <p>
-                Đang hoạt động :
-                <strong>116 </strong>
+                Đang hoạt động:
+                <strong><?= $activeProducts ?></strong>
                 sản phẩm
               </p>
               <p>
-                Hết hàng :
-                <strong>3 </strong>
-                sản phẩm
-              </p>
-              <p>
-                Ngừng hoạt động :
-                <strong>1 </strong>
+                Hết hàng:
+                <strong><?= $outOfStockProducts ?></strong>
                 sản phẩm
               </p>
             </div>
@@ -164,26 +181,26 @@
         </div>
         <div class="col-6">
           <div class="card">
-            <div class="card-header">Đơn hàng</div>
+            <div class="card-header">Đơn hàng hôm nay</div>
             <div class="card-body">
               <p>
-                Số lượng đơn hàng hôm nay :
-                <strong>40 </strong>
+                Số lượng đơn hàng hôm nay:
+                <strong><?= $totalOrders ?></strong>
                 đơn hàng
               </p>
               <p>
-                Chưa xác nhận :
-                <strong>19 </strong>
+                Chưa xác nhận:
+                <strong><?= $pendingOrders ?></strong>
                 đơn hàng
               </p>
               <p>
-                Đã xử lý :
-                <strong>19 </strong>
+                Đã xử lý:
+                <strong><?= $processedOrders ?></strong>
                 đơn hàng
               </p>
               <p>
-                Đã hủy :
-                <strong>2 </strong>
+                Đã hủy:
+                <strong><?= $cancelledOrders ?></strong>
                 đơn hàng
               </p>
             </div>
@@ -191,5 +208,5 @@
         </div>
       </div>
     </div>
-  </body>
+</body>
 </html>

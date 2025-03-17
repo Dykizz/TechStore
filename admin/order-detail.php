@@ -32,7 +32,7 @@ if (!$order) {
 // Truy vấn lấy danh sách sản phẩm trong đơn hàng
 $sqlDetails = "SELECT 
                 od.orderDetailId, od.productId, p.name AS productName, 
-                od.quantity, od.price, od.subtotal
+                od.quantity, od.price, od.subtotal , p.image
               FROM OrderDetail od
               JOIN Product p ON od.productId = p.productId
               WHERE od.orderId = ?";
@@ -132,12 +132,6 @@ function formatPhoneNumber($phoneNumber) {
         </li>
         <li>
             <div class="inner-icon">
-                <i class="fa-solid fa-chart-line"></i>
-            </div>
-            <a href="./statistic.php">Thống kê kinh doanh</a>
-        </li>
-        <li>
-            <div class="inner-icon">
               <i class="fa-solid fa-medal"></i>
             </div>
             <a href="./top5-client.php">Top 5 khách hàng</a>
@@ -233,6 +227,7 @@ function formatPhoneNumber($phoneNumber) {
                 <table class="table table-hover text-center">
                     <thead>
                         <th class="text-left">Tên sản phẩm</th>
+                        <th>Hình ảnh</th>
                         <th>Số lượng</th>
                         <th>Giá</th>
                         <th>Tổng</th>
@@ -241,6 +236,8 @@ function formatPhoneNumber($phoneNumber) {
                         <?php foreach ($orderDetails as $index => $item) : ?>
                             <tr>
                                 <td class="text-left"><?= htmlspecialchars($item['productName']) ?></td>
+                                <td> <img src="../<?= $item['image'] ?>" alt="Product image" style="width: auto; height: 60px;">
+                                </td>
                                 <td><?= $item['quantity'] ?></td>
                                 <td><?= number_format($item['price'], 0, ',', '.') ?> VND</td>
                                 <td><?= number_format($item['subtotal'], 0, ',', '.') ?> VND</td>
