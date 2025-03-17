@@ -221,23 +221,17 @@ if ($userId) {
 
     <!-- NAVIGATION -->
     <nav id="navigation">
-        <!-- container -->
         <div class="container">
-            <!-- responsive-nav -->
             <div id="responsive-nav">
-                <!-- NAV -->
                 <ul class="main-nav nav navbar-nav">
-                    <li class=""><a href="./index.php">Trang chủ</a></li>
-                    <li><a href="./store-laptop.php?category=1">Máy tính</a></li>
-                    <li><a href="./store-smartphone.php?category=2">Điện thoại</a></li>
-                    <li><a href="./store-camera.php?category=3">Máy ảnh</a></li>
-                    <li><a href="./store-accessories.php?category=4">Phụ kiện</a></li>
+                    <li><a href="./index.php">Trang chủ</a></li>
+                    <li class="<?php echo $category_id == 1 ? 'active' : ''; ?>"><a href="./products.php?category=1">Máy tính</a></li>
+                    <li class="<?php echo $category_id == 2 ? 'active' : ''; ?>"><a href="./products.php?category=2">Điện thoại</a></li>
+                    <li class="<?php echo $category_id == 3 ? 'active' : ''; ?>"><a href="./products.php?category=3">Máy ảnh</a></li>
+                    <li class="<?php echo $category_id == 4 ? 'active' : ''; ?>"><a href="./products.php?category=4">Phụ kiện</a></li>
                 </ul>
-                <!-- /NAV -->
             </div>
-            <!-- /responsive-nav -->
         </div>
-        <!-- /container -->
     </nav>
     <!-- /NAVIGATION -->
 

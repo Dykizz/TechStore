@@ -3,11 +3,11 @@ include 'connect.php';
 include 'information.php';
 
 // Kiểm tra kết nối
-if ($conn === false) {
-    die("Lỗi kết nối database!");
+if ($conn === false || $conn->connect_error) {
+    die("Lỗi kết nối database: " . $conn->connect_error);
 }
 
-// Lấy thông tin người dùng từ database (User) kết hợp (UserAddress)
+// Lấy thông tin người dùng từ database
 $userId = isset($_SESSION['userId']) ? (int)$_SESSION['userId'] : 0;
 $userInfo = [];
 if ($userId) {
@@ -21,35 +21,74 @@ if ($userId) {
     $userStmt->close();
 }
 
-// Lấy thông tin giỏ hàng từ database (CartItem)
+// Khởi tạo biến giỏ hàng
 $cartItems = [];
 $cartCount = 0;
 $totalPrice = 0;
-if ($userId) {
-    $cartStmt = $conn->prepare("
-        SELECT ci.productId, ci.quantity, p.name, p.price, p.image
-        FROM CartItem ci
-        JOIN Product p ON ci.productId = p.productId
-        WHERE ci.userId = ?
-    ");
-    $cartStmt->bind_param("i", $userId);
-    $cartStmt->execute();
-    $cartResult = $cartStmt->get_result();
 
-    while ($item = $cartResult->fetch_assoc()) {
-        $cartItems[$item['productId']] = [
-            'name' => $item['name'],
-            'price' => $item['price'],
-            'image' => $item['image'],
-            'quantity' => $item['quantity']
-        ];
-        $cartCount += $item['quantity'];
-        $totalPrice += $item['price'] * $item['quantity'];
+// Xử lý dữ liệu giỏ hàng
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['checkout']) && isset($_POST['selected_items'])) {
+    // Thanh toán các sản phẩm được chọn từ shopping-cart.php
+    $selectedItems = $_POST['selected_items'];
+    if (!empty($selectedItems)) {
+        $productIds = array_column($selectedItems, 'productId');
+        $placeholders = implode(',', array_fill(0, count($productIds), '?'));
+
+        $cartStmt = $conn->prepare("
+            SELECT p.productId, p.name, p.price, p.image
+            FROM Product p
+            WHERE p.productId IN ($placeholders)
+        ");
+        $types = str_repeat('i', count($productIds));
+        $cartStmt->bind_param($types, ...$productIds);
+        $cartStmt->execute();
+        $cartResult = $cartStmt->get_result();
+
+        while ($item = $cartResult->fetch_assoc()) {
+            $productId = $item['productId'];
+            $quantity = (int)$selectedItems[$productId]['quantity'];
+            $cartItems[$productId] = [
+                'name' => $item['name'],
+                'price' => $item['price'],
+                'image' => $item['image'],
+                'quantity' => $quantity
+            ];
+            $cartCount += $quantity;
+            $totalPrice += $item['price'] * $quantity;
+        }
+        $cartStmt->close();
     }
-    $cartStmt->close();
+} else {
+    // Thanh toán toàn bộ giỏ hàng khi truy cập từ header
+    if ($userId) {
+        $cartStmt = $conn->prepare("
+            SELECT p.productId, p.name, p.price, p.image, ci.quantity
+            FROM Product p
+            INNER JOIN CartItem ci ON p.productId = ci.productId
+            WHERE ci.userId = ?
+        ");
+        $cartStmt->bind_param("i", $userId);
+        $cartStmt->execute();
+        $cartResult = $cartStmt->get_result();
+
+        while ($item = $cartResult->fetch_assoc()) {
+            $productId = $item['productId'];
+            $quantity = (int)$item['quantity'];
+            $cartItems[$productId] = [
+                'name' => $item['name'],
+                'price' => $item['price'],
+                'image' => $item['image'],
+                'quantity' => $quantity
+            ];
+            $cartCount += $quantity;
+            $totalPrice += $item['price'] * $quantity;
+        }
+        $cartStmt->close();
+    }
 }
 
-// Xử lý đặt hàng khi form được gửi
+// Xử lý đặt hàng
+$error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
     $recipientName = filter_input(INPUT_POST, 'recipient-name', FILTER_SANITIZE_STRING);
     $phoneNumber = filter_input(INPUT_POST, 'phone-number', FILTER_SANITIZE_STRING);
@@ -57,54 +96,71 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
     $address = !empty($_POST['new-address']) ? filter_input(INPUT_POST, 'new-address', FILTER_SANITIZE_STRING) : filter_input(INPUT_POST, 'saved-address', FILTER_SANITIZE_STRING);
     $paymentMethod = filter_input(INPUT_POST, 'payment', FILTER_SANITIZE_STRING) ?? '';
     $totalAmount = $totalPrice;
-    $orderCode = 'ORD' . time(); // Tạo mã đơn hàng duy nhất
+    $orderCode = 'ORD' . time() . rand(1000, 9999);
     $status = 'Pending';
 
-    // Debug: Kiểm tra dữ liệu gửi lên
-    error_log("Payment Method received: " . $paymentMethod); // Ghi log để kiểm tra
+    $mappedPaymentMethod = '';
+    switch ($paymentMethod) {
+        case 'cash': $mappedPaymentMethod = 'CASH'; break;
+        case 'bank-transfer': $mappedPaymentMethod = 'BANK_TRANSFER'; break;
+        case 'card': $mappedPaymentMethod = 'CREDIT_CARD'; break;
+        default: $mappedPaymentMethod = 'CASH';
+    }
 
-    // Kiểm tra dữ liệu đầu vào
+    $cardHolderName = $mappedPaymentMethod === 'CREDIT_CARD' ? filter_input(INPUT_POST, 'card-name', FILTER_SANITIZE_STRING) : NULL;
+    $cardNumber = $mappedPaymentMethod === 'CREDIT_CARD' ? filter_input(INPUT_POST, 'card-number', FILTER_SANITIZE_STRING) : NULL;
+    $cardExpiryDate = $mappedPaymentMethod === 'CREDIT_CARD' ? filter_input(INPUT_POST, 'card-expiry', FILTER_SANITIZE_STRING) : NULL;
+
     if (empty($recipientName) || empty($phoneNumber) || empty($address) || empty($paymentMethod)) {
-        $error = "Vui lòng điền đầy đủ thông tin bắt buộc, bao gồm phương thức thanh toán!";
+        $error = "Vui lòng điền đầy đủ thông tin bắt buộc!";
     } elseif (empty($cartItems)) {
-        $error = "Giỏ hàng trống, không thể đặt hàng!";
-    } elseif (!in_array($paymentMethod, ['cash', 'bank-transfer', 'card'])) {
-        $error = "Phương thức thanh toán không hợp lệ! Giá trị nhận được: " . $paymentMethod;
+        $error = "Không có sản phẩm nào được chọn để thanh toán!";
+    } elseif ($mappedPaymentMethod === 'CREDIT_CARD' && (empty($cardHolderName) || empty($cardNumber) || empty($cardExpiryDate))) {
+        $error = "Vui lòng điền đầy đủ thông tin thẻ tín dụng!";
     } else {
-        // Lưu vào bảng Orders
         $stmt = $conn->prepare("
-            INSERT INTO Orders (userId, orderCode, orderDate, status, totalAmount, customShippingAddress, paymentMethod)
-            VALUES (?, ?, NOW(), ?, ?, ?, ?)
+            INSERT INTO Orders (userId, orderCode, orderDate, status, totalAmount, customShippingAddress, paymentMethod, cardHolderName, cardNumber, cardExpiryDate)
+            VALUES (?, ?, NOW(), ?, ?, ?, ?, ?, ?, ?)
         ");
-        $stmt->bind_param("ississ", $userId, $orderCode, $status, $totalAmount, $address, $paymentMethod);
-        if ($stmt->execute()) {
-            $orderId = $conn->insert_id;
-
-            // Lưu chi tiết đơn hàng vào OrderDetail
-            $detailStmt = $conn->prepare("
-                INSERT INTO OrderDetail (orderId, productId, quantity, price)
-                VALUES (?, ?, ?, ?)
-            ");
-            foreach ($cartItems as $productId => $item) {
-                $quantity = $item['quantity'];
-                $price = $item['price'];
-                $detailStmt->bind_param("iiid", $orderId, $productId, $quantity, $price);
-                $detailStmt->execute();
-            }
-            $detailStmt->close();
-
-            // Xóa giỏ hàng trong CartItem sau khi đặt hàng thành công
-            $deleteStmt = $conn->prepare("DELETE FROM CartItem WHERE userId = ?");
-            $deleteStmt->bind_param("i", $userId);
-            $deleteStmt->execute();
-            $deleteStmt->close();
-
-            $stmt->close();
-            header("Location: order-success.php?orderId=" . $orderId);
-            exit;
+        if ($stmt === false) {
+            $error = "Lỗi chuẩn bị câu lệnh SQL: " . $conn->error;
         } else {
-            $error = "Lỗi khi lưu đơn hàng: " . $stmt->error;
-            $stmt->close();
+            $stmt->bind_param("ississsss", $userId, $orderCode, $status, $totalAmount, $address, $mappedPaymentMethod, $cardHolderName, $cardNumber, $cardExpiryDate);
+            if ($stmt->execute()) {
+                $orderId = $conn->insert_id;
+
+                // Lưu chi tiết đơn hàng
+                $detailStmt = $conn->prepare("
+                    INSERT INTO OrderDetail (orderId, productId, quantity, price)
+                    VALUES (?, ?, ?, ?)
+                ");
+                foreach ($cartItems as $productId => $item) {
+                    $quantity = $item['quantity'];
+                    $price = $item['price'];
+                    $detailStmt->bind_param("iiid", $orderId, $productId, $quantity, $price);
+                    $detailStmt->execute();
+                }
+                $detailStmt->close();
+
+                // Xóa chỉ các sản phẩm đã được thanh toán khỏi giỏ hàng
+                $productIds = array_keys($cartItems);
+                if (!empty($productIds)) {
+                    $placeholders = implode(',', array_fill(0, count($productIds), '?'));
+                    $deleteStmt = $conn->prepare("DELETE FROM CartItem WHERE userId = ? AND productId IN ($placeholders)");
+                    $params = array_merge([$userId], $productIds);
+                    $types = str_repeat('i', count($params));
+                    $deleteStmt->bind_param($types, ...$params);
+                    $deleteStmt->execute();
+                    $deleteStmt->close();
+                }
+
+                $stmt->close();
+                header("Location: order-success.php?orderId=" . $orderId);
+                exit;
+            } else {
+                $error = "Lỗi khi lưu đơn hàng: " . $stmt->error;
+                $stmt->close();
+            }
         }
     }
 }
@@ -156,7 +212,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                         </div>
                     </div>
                     <div class="col-md-3 clearfix">
-                        <?php if ($fullname): ?>
+                        <?php if (isset($fullname) && $fullname): ?>
                             <div class="header-ctn">
                                 <div class="dropdown">
                                     <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
@@ -182,22 +238,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                                                 <?php foreach ($cartItems as $id => $item): ?>
                                                     <div class="product-widget">
                                                         <div class="product-img">
-                                                            <img src="<?php echo $item['image']; ?>" alt="" />
+                                                            <img src="<?php echo htmlspecialchars($item['image']); ?>" alt="" />
                                                         </div>
                                                         <div class="product-body">
                                                             <h3 class="product-name">
-                                                                <a href="detail-product.php?id=<?php echo $id; ?>"><?php echo $item['name']; ?></a>
+                                                                <a href="detail-product.php?id=<?php echo $id; ?>"><?php echo htmlspecialchars($item['name']); ?></a>
                                                             </h3>
                                                             <h4 class="product-price">
                                                                 <span class="qty"><?php echo $item['quantity']; ?>x</span>
                                                                 <?php echo number_format($item['price'], 0, ',', '.'); ?> VND
                                                             </h4>
                                                         </div>
-                                                        <button class="delete" data-product-id="<?php echo $id; ?>"><i class="fa fa-close"></i></button>
                                                     </div>
                                                 <?php endforeach; ?>
                                             <?php else: ?>
-                                                <p>Giỏ hàng trống!</p>
+                                                <p>Không có sản phẩm nào trong giỏ hàng!</p>
                                             <?php endif; ?>
                                         </div>
                                         <div class="cart-summary">
@@ -255,8 +310,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                         <div class="section-title">
                             <h3 class="title">Thông Tin Người Nhận</h3>
                         </div>
-                        <?php if (isset($error)) echo "<p style='color: red;'>$error</p>"; ?>
+                        <?php if (!empty($error)) echo "<p style='color: red;'>$error</p>"; ?>
                         <form method="POST" action="">
+                            <!-- Hidden fields để giữ dữ liệu sản phẩm được chọn -->
+                            <?php if (isset($_POST['checkout'])): ?>
+                                <?php foreach ($cartItems as $productId => $item): ?>
+                                    <input type="hidden" name="selected_items[<?php echo $productId; ?>][productId]" value="<?php echo $productId; ?>">
+                                    <input type="hidden" name="selected_items[<?php echo $productId; ?>][quantity]" value="<?php echo $item['quantity']; ?>">
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                            
                             <div class="form-group">
                                 <label for="recipient-name">Tên người nhận:</label>
                                 <input class="input" type="text" id="recipient-name" name="recipient-name" value="<?php echo htmlspecialchars($userInfo['name'] ?? ''); ?>" required />
@@ -288,7 +351,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                             <input class="input" type="text" id="new-address" name="new-address" placeholder="Nhập địa chỉ giao hàng" disabled />
                         </div>
                     </div>
-                            
+
                     <div class="payment-method">
                         <div class="section-title">
                             <h3 class="title">Chọn Phương Thức Thanh Toán</h3>
@@ -346,7 +409,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                                         </tr>";
                                     }
                                 } else {
-                                    echo "<tr><td colspan='2'>Giỏ hàng trống!</td></tr>";
+                                    echo "<tr><td colspan='2'>Không có sản phẩm nào được chọn!</td></tr>";
                                 }
                                 ?>
                             </tbody>
@@ -495,7 +558,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
     <script src="js/jquery.zoom.min.js"></script>
     <script src="js/main.js"></script>
     <script>
-        // Xử lý logic địa chỉ giao hàng
         const newAddressCheckbox = document.getElementById('new-address-checkbox');
         const newAddressInput = document.getElementById('new-address');
         const savedAddressInput = document.getElementById('saved-address');
@@ -511,7 +573,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                 newAddressInput.value = "";
                 savedAddressInput.required = true;
             }
-            updateSummary(); // Cập nhật tóm tắt khi thay đổi checkbox
+            updateSummary();
         });
 
         if (!newAddressCheckbox.checked) {
@@ -519,15 +581,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
             savedAddressInput.required = true;
         }
 
-        // Hiển thị thông tin thẻ khi chọn "Thẻ tín dụng"
         document.querySelectorAll('input[name="payment"]').forEach(function(radio) {
             radio.addEventListener('change', function() {
                 document.getElementById('card-details').style.display = this.value === 'card' ? 'block' : 'none';
-                updateSummary(); // Cập nhật tóm tắt khi thay đổi phương thức thanh toán
+                updateSummary();
             });
         });
 
-        // Kiểm tra điều khoản và phương thức thanh toán
         document.querySelector('form').addEventListener('submit', function(e) {
             const paymentMethod = document.querySelector('input[name="payment"]:checked');
             if (!document.getElementById('terms').checked) {
@@ -539,31 +599,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
             }
         });
 
-        // Cập nhật tóm tắt hóa đơn
         function updateSummary() {
             const recipientName = document.getElementById('recipient-name').value;
             const phoneNumber = document.getElementById('phone-number').value;
             const deliveryNotes = document.getElementById('delivery-notes').value;
             const address = newAddressCheckbox.checked && newAddressInput.value ? newAddressInput.value : savedAddressInput.value;
             const paymentMethod = document.querySelector('input[name="payment"]:checked')?.value || '';
-            
-            // Thông tin chi tiết cho từng phương thức thanh toán
+
             let paymentMethodText = '';
             switch (paymentMethod) {
-                case 'cash':
-                    paymentMethodText = 'Tiền mặt';
-                    break;
-                case 'bank-transfer':
-                    paymentMethodText = 'Chuyển khoản ngân hàng';
-                    break;
+                case 'cash': paymentMethodText = 'Tiền mặt'; break;
+                case 'bank-transfer': paymentMethodText = 'Chuyển khoản ngân hàng'; break;
                 case 'card':
                     const cardName = document.getElementById('card-name').value || 'Chưa nhập';
                     const cardNumber = document.getElementById('card-number').value || 'Chưa nhập';
                     const cardExpiry = document.getElementById('card-expiry').value || 'Chưa nhập';
                     paymentMethodText = `Thẻ tín dụng: ${cardName} - ${cardNumber} - Hết hạn: ${cardExpiry}`;
                     break;
-                default:
-                    paymentMethodText = 'Chưa chọn phương thức thanh toán';
+                default: paymentMethodText = 'Chưa chọn phương thức thanh toán';
             }
 
             document.getElementById('recipient-name-summary').textContent = recipientName || '';
@@ -573,12 +626,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
             document.getElementById('payment-method-summary').textContent = paymentMethodText;
         }
 
-        // Cập nhật khi người dùng điền thông tin 
         document.querySelectorAll('#recipient-name, #phone-number, #delivery-notes, #new-address, #saved-address, input[name="payment"], #card-name, #card-number, #card-expiry').forEach(function(element) {
-            element.addEventListener('input', updateSummary); // Dùng 'input' để cập nhật ngay khi người dùng nhập
+            element.addEventListener('input', updateSummary);
         });
 
-        // Khởi tạo tóm tắt khi tải trang
         updateSummary();
     </script>
 </body>

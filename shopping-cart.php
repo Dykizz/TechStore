@@ -34,17 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$cartStmt = $conn->prepare("
-    SELECT ci.productId, ci.quantity, p.name, p.price, p.image
-    FROM CartItem ci
-    JOIN Product p ON ci.productId = p.productId
-    WHERE ci.userId = ?
-");
-$cartStmt->bind_param("i", $userId);
-$cartStmt->execute();
-$cartResult = $cartStmt->get_result();
-
-$userId = isset($_SESSION['userId']) ? (int)$_SESSION['userId'] : 0;
+// Lấy dữ liệu giỏ hàng để hiển thị
 $cartItems = [];
 $cartCount = 0;
 $totalPrice = 0;
@@ -70,6 +60,7 @@ if ($userId) {
         $cartCount += $item['quantity'];
         $totalPrice += $item['price'] * $item['quantity'];
     }
+    $cartStmt->close();
 }
 
 $message = isset($_SESSION['message']) ? $_SESSION['message'] : '';
@@ -92,7 +83,7 @@ unset($_SESSION['message']);
     <link type="text/css" rel="stylesheet" href="css/style.css?v=1.1" />
 </head>
 <body>
-    <div class="alert alert-success alert-show announce" role="alert"><?php echo $message; ?></div>
+    <div class="alert alert-success alert-show announce" role="alert"><?php echo htmlspecialchars($message); ?></div>
 
     <!-- HEADER -->
     <header>
@@ -124,7 +115,7 @@ unset($_SESSION['message']);
                         </div>
                     </div>
                     <div class="col-md-3 clearfix">
-                        <?php if ($fullname): ?>
+                        <?php if (isset($fullname) && $fullname): ?>
                             <div class="header-ctn">
                                 <div class="dropdown">
                                     <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
@@ -150,11 +141,11 @@ unset($_SESSION['message']);
                                                 <?php foreach ($cartItems as $id => $item): ?>
                                                     <div class="product-widget">
                                                         <div class="product-img">
-                                                            <img src="<?php echo $item['image']; ?>" alt="" />
+                                                            <img src="<?php echo htmlspecialchars($item['image']); ?>" alt="" />
                                                         </div>
                                                         <div class="product-body">
                                                             <h3 class="product-name">
-                                                                <a href="detail-product.php?id=<?php echo $id; ?>"><?php echo $item['name']; ?></a>
+                                                                <a href="detail-product.php?id=<?php echo $id; ?>"><?php echo htmlspecialchars($item['name']); ?></a>
                                                             </h3>
                                                             <h4 class="product-price">
                                                                 <span class="qty"><?php echo $item['quantity']; ?>x</span>
@@ -169,7 +160,7 @@ unset($_SESSION['message']);
                                             <?php endif; ?>
                                         </div>
                                         <div class="cart-summary">
-                                            <small><?php echo $cartCount; ?> sản phẩm được chọn</small>
+                                            <small><?php echo $cartCount; ?> sản phẩm trong giỏ</small>
                                             <h5>TỔNG: <?php echo number_format($totalPrice, 0, ',', '.'); ?> VND</h5>
                                         </div>
                                         <div class="cart-btns">
@@ -221,38 +212,41 @@ unset($_SESSION['message']);
                             <?php $index = 1; foreach ($cartItems as $id => $item): ?>
                                 <tr>
                                     <td>
-                                        <input type="checkbox" name="selected_items[]" value="<?php echo $id; ?>" 
+                                        <input type="checkbox" name="selected_items[<?php echo $id; ?>][productId]" value="<?php echo $id; ?>" 
                                                data-price="<?php echo $item['price'] * $item['quantity']; ?>" 
                                                onchange="updateTotal()">
+                                        <input type="hidden" name="selected_items[<?php echo $id; ?>][quantity]" value="<?php echo $item['quantity']; ?>">
                                     </td>
                                     <td><?php echo $index++; ?></td>
-                                    <td><?php echo $item['name']; ?></td>
+                                    <td><?php echo htmlspecialchars($item['name']); ?></td>
                                     <td>
                                         <div class="product-table">
                                             <div class="product-img">
-                                                <img src="<?php echo $item['image']; ?>" alt="" />
+                                                <img src="<?php echo htmlspecialchars($item['image']); ?>" alt="" />
                                             </div>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="product-price-container">
-                                            <span class="price"><?php echo number_format($item['price'] * $item['quantity'], 0, ',', '.'); ?></span>
+                                            <span class="price"><?php echo number_format($item['price'], 0, ',', '.'); ?></span>
                                             <span class="currency">VND</span>
                                         </div>
+                                    </td>
                                     <td>
                                         <div class="quantity-control">
-                                            <button class="btn btn-outline-secondary btn-sm decrease" data-product-id="<?php echo $id; ?>">-</button>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm decrease" data-product-id="<?php echo $id; ?>">-</button>
                                             <input type="number" class="quantity-input form-control form-control-sm" value="<?php echo $item['quantity']; ?>" min="1" readonly>
-                                            <button class="btn btn-outline-secondary btn-sm increase" data-product-id="<?php echo $id; ?>">+</button>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm increase" data-product-id="<?php echo $id; ?>">+</button>
                                         </div>
                                     </td>
                                     <td class="item-total" data-price="<?php echo $item['price']; ?>">
-                                    <div class="product-price-container">
-                                        <span class="price"><?php echo number_format($item['price'] * $item['quantity'], 0, ',', '.'); ?></span>
-                                        <span class="currency">VND</span>
-                                    </div>
+                                        <div class="product-price-container">
+                                            <span class="price"><?php echo number_format($item['price'] * $item['quantity'], 0, ',', '.'); ?></span>
+                                            <span class="currency">VND</span>
+                                        </div>
+                                    </td>
                                     <td>
-                                        <button class="remove-btn btn delete-product" data-product-id="<?php echo $id; ?>">
+                                        <button type="button" class="remove-btn btn delete-product" data-product-id="<?php echo $id; ?>">
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     </td>
@@ -276,6 +270,8 @@ unset($_SESSION['message']);
         </div>
     </div>
     <!-- /CART -->
+
+    <!-- jQuery Plugins -->
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/slick.min.js"></script>
@@ -285,9 +281,10 @@ unset($_SESSION['message']);
     <script>
     document.addEventListener('DOMContentLoaded', function () {
         const selectAll = document.getElementById('select_all');
-        const checkboxes = document.getElementsByName('selected_items[]');
+        const checkboxes = document.querySelectorAll('input[name$="[productId]"]');
         const totalElement = document.getElementById('selected-total');
-        const cartQtyElement = document.getElementById('cart-qty');
+        const cartQtyElement = document.querySelector('.header-ctn .qty');
+        const form = document.getElementById('checkout-form');
 
         function updateTotal() {
             const total = Array.from(checkboxes)
@@ -316,7 +313,6 @@ unset($_SESSION['message']);
             });
         });
 
-        // Xử lý tăng/giảm số lượng bằng AJAX
         document.querySelectorAll('.quantity-control .btn').forEach(button => {
             button.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -325,15 +321,17 @@ unset($_SESSION['message']);
                 const quantityInput = quantityControl.querySelector('.quantity-input');
                 const itemTotalElement = this.closest('tr').querySelector('.item-total');
                 const checkbox = this.closest('tr').querySelector('input[type="checkbox"]');
+                const hiddenQuantity = this.closest('tr').querySelector('input[type="hidden"]');
                 const pricePerUnit = parseFloat(itemTotalElement.getAttribute('data-price'));
                 let quantity = parseInt(quantityInput.value);
 
                 if (this.classList.contains('decrease') && quantity > 1) quantity--;
                 if (this.classList.contains('increase')) quantity++;
                 quantityInput.value = quantity;
+                hiddenQuantity.value = quantity;
 
                 const newTotal = pricePerUnit * quantity;
-                itemTotalElement.textContent = newTotal.toLocaleString('vi-VN') + ' VND';
+                itemTotalElement.querySelector('.price').textContent = newTotal.toLocaleString('vi-VN');
                 checkbox.setAttribute('data-price', newTotal);
 
                 let currentCartCount = parseInt(cartQtyElement.textContent);
@@ -349,21 +347,18 @@ unset($_SESSION['message']);
                 fetch('shopping-cart.php', {
                     method: 'POST',
                     body: formData,
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
                 })
                 .then(response => response.json())
                 .then(data => {
-                    if (!data.success) {
-                        alert('Lỗi khi cập nhật số lượng!');
+                    if (data.success) {
+                        updateTotal();
                     }
                 })
                 .catch(error => console.error('Error:', error));
             });
         });
 
-        // Xử lý xóa sản phẩm bằng AJAX
         document.querySelectorAll('.delete-product').forEach(button => {
             button.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -382,18 +377,14 @@ unset($_SESSION['message']);
                     fetch('shopping-cart.php', {
                         method: 'POST',
                         body: formData,
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest'
-                        }
+                        headers: { 'X-Requested-With': 'XMLHttpRequest' }
                     })
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            row.remove(); 
+                            row.remove();
                             updateTotal();
-                            updateRowNumbers(); // Cập nhật lại số thứ tự
-                        } else {
-                            alert('Lỗi khi xóa sản phẩm!');
+                            updateRowNumbers();
                         }
                     })
                     .catch(error => console.error('Error:', error));
@@ -407,6 +398,14 @@ unset($_SESSION['message']);
                 row.querySelector('td:nth-child(2)').textContent = index + 1;
             });
         }
+
+        form.addEventListener('submit', function(e) {
+            const selectedItems = Array.from(checkboxes).filter(cb => cb.checked);
+            if (selectedItems.length === 0) {
+                e.preventDefault();
+                alert('Vui lòng chọn ít nhất một sản phẩm để thanh toán!');
+            }
+        });
 
         updateTotal();
     });
