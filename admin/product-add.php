@@ -187,7 +187,7 @@ $result_categories = $conn->query($sql_categories);
 
         <div class="row">
           <div class="col-6">
-          <label for="img-input">Hình ảnh sản phẩm</label>
+          <label for="img-input">Hình ảnh sản phẩm</label> 
             <div class="custom-file">
               <input
                 type="file"

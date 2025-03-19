@@ -51,6 +51,7 @@ $sql = "SELECT o.orderId, o.orderCode, u.name, o.orderDate, o.status, o.totalAmo
         FROM Orders o
         JOIN User u ON o.userId = u.userId
         $whereClause
+        ORDER BY o.orderDate DESC
         LIMIT $limit OFFSET $offset";
 
 $result = $conn->query($sql);
@@ -184,20 +185,14 @@ if ($result->num_rows > 0) {
               <div class="col-6">
                 <div class="form-group">
                   <label for="order-status">Tình trạng đơn hàng</label>
-                  <select
-                    class="form-control"
-                    name="status"
-                    id="order-status"
-                  >
-                    <option value="" disabled>
-                      --Chọn tình trạng đơn hàng--
-                    </option>
-                    <option value="" selected>Tất cả tình trạng</option>
-                    <option value="Pending">Chưa xử lý</option>
-                    <option value="Confirmed">Đã xác nhận</option>
-                    <option value="Delivered">Giao thành công</option>
-                    <option value="Cancelled">Đã hủy</option>
-                  </select>
+                  <select class="form-control" name="status" id="order-status">
+                    <option value="" disabled>--Chọn tình trạng đơn hàng--</option>
+                    <option value="" <?= empty($status) ? 'selected' : '' ?>>Tất cả tình trạng</option>
+                    <option value="Pending" <?= $status === 'Pending' ? 'selected' : '' ?>>Chưa xử lý</option>
+                    <option value="Confirmed" <?= $status === 'Confirmed' ? 'selected' : '' ?>>Đã xác nhận</option>
+                    <option value="Delivered" <?= $status === 'Delivered' ? 'selected' : '' ?>>Giao thành công</option>
+                    <option value="Cancelled" <?= $status === 'Cancelled' ? 'selected' : '' ?>>Đã hủy</option>
+                </select>
                 </div>
               </div>
             </div>
@@ -342,10 +337,13 @@ if ($result->num_rows > 0) {
       <div class="inner-pagination">
         <ul class="pagination">
             <!-- Nút trang đầu -->
-            <li class="page-item <?= ($page == 1) ? 'disabled' : '' ?>">
-                <a href="./manage-order.php?page=1" class="page-link"><<</a>
-            </li>
-
+             <?php 
+            if ($page > 1 && $totalPages > 0) 
+                echo "<li class='page-item'>
+                        <a href='./manage-order.php?page=1' class='page-link'><<</a>
+                      </li>";
+             ?>
+             
             <!-- Vòng lặp tạo số trang -->
             <?php for ($i = 1; $i <= $totalPages; $i++): ?>
                 <li class="page-item <?= ($i == $page) ? 'active' : '' ?>">
@@ -354,9 +352,12 @@ if ($result->num_rows > 0) {
             <?php endfor; ?>
 
             <!-- Nút trang cuối -->
-            <li class="page-item <?= ($page == $totalPages) ? 'disabled' : '' ?>">
-                <a href="./manage-order.php?page=<?= $totalPages ?>" class="page-link">>></a>
-            </li>
+            <?php 
+              if ($page != $totalPages && $totalPages > 0) 
+                echo "<li class='page-item'>
+                        <a href='./manage-order.php?page=$totalPages' class='page-link'>>></a>
+                      </li>";
+            ?>
         </ul>
       </div>
     </div> <!-- Đóng thẻ div.content -->

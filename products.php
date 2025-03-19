@@ -117,8 +117,8 @@ if ($userId) {
                     <div class="col-md-6">
                         <div class="header-search">
                             <form action="./products.php">
-                                <input name="keyword" class="input" placeholder="Nhập sản phẩm muốn tìm kiếm ..." />
-                                <button class="search-btn">Tìm kiếm</button>
+                                <input name="keyword" class="input" value="<?= isset($keyword) ? htmlspecialchars($keyword) : '' ?>" placeholder="Nhập sản phẩm muốn tìm kiếm ..." />
+                                <button class="search-btn">Tìm kiếm</button> 
                             </form>
                         </div>
                     </div>
