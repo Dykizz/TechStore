@@ -166,6 +166,10 @@ unset($item);
     .notification.hide {
         opacity: 0;
     }
+    .bg-red{
+        background-color:rgb(225, 35, 35);
+    }
+
 </style>
 </head>
 <body>
@@ -307,22 +311,27 @@ unset($item);
                     <div class="panel-body">
                         <?php
                         $statusClass = '';
+                        $statusText = '';
                         switch ($order['status']) {
                             case 'Pending':
                                 $statusClass = 'badge';
+                                $statusText = 'Chưa xử lý';
                                 break;
                             case 'Confirmed':
                                 $statusClass = 'badge badge-info';
+                                $statusText = 'Đã xác nhận';
                                 break;
                             case 'Delivered':
                                 $statusClass = 'badge badge-success';
+                                $statusText = 'Giao thành công';
                                 break;
                             case 'Cancelled':
-                                $statusClass = 'badge badge-danger';
+                                $statusClass = 'badge bg-red';
+                                $statusText = 'Đã hủy';
                                 break;
                         }
                         ?>
-                        <span class="<?php echo $statusClass; ?> mb-3"><?php echo htmlspecialchars($order['status']); ?></span>
+                        <span class="<?php echo $statusClass; ?> mb-3"><?php echo htmlspecialchars($statusText); ?></span>
                         <p>Thời gian: <strong><?php echo htmlspecialchars($order['orderDate']); ?></strong></p>
                         <p>Mã đơn: <strong><?php echo htmlspecialchars($order['orderCode']); ?></strong></p>
                         <p>Tên người nhận: <strong><?php echo htmlspecialchars($userName); ?></strong></p>
@@ -350,7 +359,7 @@ unset($item);
                         </ul>
                         <p>Tổng tiền: <strong><?php echo number_format($order['totalAmount'], 0, ',', '.'); ?> VND</strong></p>
                         <a class="text-primary" href="./order-detail.php?orderId=<?php echo $order['orderId']; ?>" style="color: #337ab7">Xem chi tiết</a>
-                        <?php if (in_array($order['status'], ['Pending', 'Confirmed'])): ?>
+                        <?php if ($order['status']=='Pending'): ?>
                             <form method="POST" style="display:inline; margin-left: 10px;">
                                 <input type="hidden" name="order_id" value="<?php echo $order['orderId']; ?>">
                                 <button type="submit" name="cancel_order" class="btn btn-danger btn-sm">Hủy đơn hàng</button>
@@ -467,7 +476,6 @@ unset($item);
     <script src="js/bootstrap.min.js"></script>
     <script src="js/slick.min.js"></script>
     <script src="js/nouislider.min.js"></script>
-    <script src="js/jquery.zoom.min.js"></script>
     <script src="js/main.js"></script>
     <script>
     // Tự động ẩn thông báo sau 3 giây
