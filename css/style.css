@@ -62,12 +62,7 @@ body {
   overflow-x: hidden;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1,h2,h3,h4,h5,h6 {
   color: #2b2d42;
   font-weight: 700;
   margin: 0 0 10px;
@@ -80,8 +75,7 @@ a {
   transition: 0.2s color;
 }
 
-a:hover,
-a:focus {
+a:hover,a:focus {
   color: #d10024;
   text-decoration: none;
   outline: none;
@@ -1320,7 +1314,6 @@ textarea.input {
 
 .store-filter {
   margin-bottom: 15px;
-  margin-top: 15px;
 }
 
 /*-- Store Sort --*/
@@ -1378,6 +1371,7 @@ textarea.input {
 
 .store-pagination {
   float: right;
+  margin-top: 50px; /* Adjust this value as needed */
 }
 
 .store-pagination li {
@@ -2788,4 +2782,41 @@ textarea.input {
 .form-group:last-of-type {
   margin-bottom: 30px;
 }
+/*------------------------------------------------------------------------------*/
 
+/*Định dạng cột chỉnh số lượng và cột giá tiền trong trang shopping-cart */
+.quantity-control {
+  display: flex;
+  align-items: center;
+}
+
+.quantity-control .btn {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.quantity-control .quantity-input {
+  width: 50px;
+  text-align: center;
+  margin: 0 5px;
+}
+
+/* Đảm bảo giá tiền và VND nằm trên cùng một dòng */
+.product-price-container {
+  display: flex;
+  align-items: center; 
+  gap: 5px; 
+  justify-content: flex-start; 
+}
+
+.order-submit {
+  padding: 10px 20px;
+  border-radius: 40px;
+  width: 90%; /* Giảm một chút để có khoảng trống hai bên */
+  margin: 0 auto; /* Căn giữa nút */
+  box-sizing: border-box;
+}
