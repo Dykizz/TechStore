@@ -124,6 +124,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
                 "price" => $row["price"],
                 "discountPercent" => $row["discountPercent"],
                 "attributes" => [],
+                "categoryId" => $row["categoryId"]
             ];
         }
         if ($row["attributeId"]) {
@@ -392,6 +393,5 @@ $conn->close();
   </body>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="../js/handleFileImage.js"></script>
-  <script src="../js/helper.js"></script>
   <script src="../js/handleCategories.js"></script>
 </html>
