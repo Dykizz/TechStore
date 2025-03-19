@@ -72,15 +72,24 @@ mysqli_close($conn);
 <body>
     <div class="alert alert-show announce" role="alert"><?php echo $error_message; ?></div>
     <header>
-        <div id="top-header">
-            <div class="container">
-                <ul class="header-links pull-left">
-                    <li><a href="#"><i class="fa fa-phone"></i> Hotline: <strong>+84 975 419 019</strong></a></li>
-                    <li><a href="#"><i class="fa fa-envelope-o"></i> nhom6@email.com</a></li>
-                    <li><a href="#"><i class="fa fa-map-marker"></i> 273 An Dương Vương, Phường 3, Quận 5</a></li>
-                </ul>
-            </div>
+    <div id="top-header">
+        <div class="container">
+          <ul class="header-links pull-left">
+            <li>
+              <a href="#"><i class="fa fa-phone"></i> Hotline: <strong>0975419019</strong>
+            </li>
+            <li>
+              <a href="#"><i class="fa fa-envelope-o"></i> nhom6@email.com </a>
+            </li>
+            <li>
+              <a href="#"
+                ><i class="fa fa-map-marker"></i> 273 An Dương Vương, Phường 3,
+                Quận 5
+              </a>
+            </li>
+          </ul>
         </div>
+      </div>
         <div id="header" style="border-bottom: 3px solid red">
             <div class="container">
                 <div class="row">
