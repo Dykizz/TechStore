@@ -59,7 +59,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order'])) {
         $updateStmt->execute();
         $updateStmt->close();
 
+        // Lưu thông báo vào session
+        $_SESSION['notification'] = [
+            'type' => 'success',
+            'message' => 'Đơn hàng đã được hủy thành công!'
+        ];
+
         // Làm mới trang để cập nhật trạng thái
+        header("Location: purchasing-history.php");
+        exit;
+    } else {
+        // Lưu thông báo lỗi nếu không thể hủy
+        $_SESSION['notification'] = [
+            'type' => 'error',
+            'message' => 'Không thể hủy đơn hàng này!'
+        ];
+
         header("Location: purchasing-history.php");
         exit;
     }
@@ -124,8 +139,46 @@ unset($item);
     <link type="text/css" rel="stylesheet" href="css/nouislider.min.css" />
     <link rel="stylesheet" href="css/font-awesome.min.css" />
     <link type="text/css" rel="stylesheet" href="css/style.css?v=1.1" />
+    <style>
+    .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 20px;
+        border-radius: 5px;
+        color: #fff;
+        font-weight: 500;
+        z-index: 1000;
+        display: none;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: opacity 0.5s ease;
+    }
+    .notification.success {
+        background-color: #28a745;
+    }
+    .notification.error {
+        background-color: #dc3545;
+    }
+    .notification.show {
+        display: block;
+        opacity: 1;
+    }
+    .notification.hide {
+        opacity: 0;
+    }
+</style>
 </head>
 <body>
+
+    <!-- Thông báo -->
+    <?php if (isset($_SESSION['notification'])): ?>
+        <div class="notification <?php echo $_SESSION['notification']['type']; ?> show">
+            <?php echo $_SESSION['notification']['message']; ?>
+        </div>
+        <?php unset($_SESSION['notification']); // Xóa thông báo sau khi hiển thị ?>
+    <?php endif; ?>
+    <!--/Thông báo-->
+    
     <!-- HEADER -->
     <header>
         <div id="top-header">
@@ -416,5 +469,17 @@ unset($item);
     <script src="js/nouislider.min.js"></script>
     <script src="js/jquery.zoom.min.js"></script>
     <script src="js/main.js"></script>
+    <script>
+    // Tự động ẩn thông báo sau 3 giây
+    document.addEventListener('DOMContentLoaded', function() {
+        const notification = document.querySelector('.notification');
+        if (notification) {
+            setTimeout(() => {
+                notification.classList.remove('show');
+                notification.classList.add('hide');
+            }, 3000); // Ẩn sau 3 giây
+        }
+    });
+</script>
 </body>
 </html>
