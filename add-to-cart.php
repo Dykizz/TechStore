@@ -29,7 +29,7 @@ switch ($action) {
         $name = isset($_POST['name']) ? trim($_POST['name']) : '';
         $price = isset($_POST['price']) ? (int)$_POST['price'] : 0;
         $image = isset($_POST['image']) ? trim($_POST['image']) : '';
-        $quantity = 1;
+        $quantity = isset($_POST['quantity']) ? (int)$_POST['quantity'] : 1;
 
         if (!$productId || !$name || !$price || !$image) {
             echo json_encode([
