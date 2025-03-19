@@ -1,5 +1,5 @@
 <?php
-
+//session_start();
 include 'connect.php';
 include 'information.php';
 
@@ -50,29 +50,75 @@ if ($productId > 0) {
     $stmt->close();
 }
 
-// Xử lý thêm sản phẩm vào giỏ hàng (sử dụng session)
+// Xử lý thêm sản phẩm vào giỏ hàng (CartItem)
+$userId = isset($_SESSION['userId']) ? (int)$_SESSION['userId'] : 0;
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart'])) {
     $productId = (int)$_POST['product_id'];
     $quantity = isset($_POST['quantity']) ? (int)$_POST['quantity'] : 1;
 
-    // Kiểm tra sản phẩm đã có trong giỏ hàng chưa
-    if (!isset($_SESSION['cart'][$productId])) {
-        // Thêm sản phẩm mới
-        $_SESSION['cart'][$productId] = [
-            'name' => $product['productName'],
-            'image' => $product['image'],
-            'price' => $product['price'] * ((100 - $product['discountPercent']) / 100),
-            'quantity' => $quantity
-        ];
-    } else {
-        // Tăng số lượng nếu sản phẩm đã có
-        $_SESSION['cart'][$productId]['quantity'] += $quantity;
-    }
+    if ($userId > 0) { // Chỉ thêm nếu người dùng đã đăng nhập
+        // Kiểm tra sản phẩm đã có trong CartItem chưa
+        $checkSql = "SELECT quantity FROM CartItem WHERE userId = ? AND productId = ?";
+        $checkStmt = $conn->prepare($checkSql);
+        $checkStmt->bind_param("ii", $userId, $productId);
+        $checkStmt->execute();
+        $checkResult = $checkStmt->get_result();
 
-    // Chuyển hướng để tránh gửi lại form
+        if ($checkResult->num_rows > 0) {
+            // Cập nhật số lượng nếu sản phẩm đã có
+            $currentQty = $checkResult->fetch_assoc()['quantity'];
+            $newQty = $currentQty + $quantity;
+            $updateSql = "UPDATE CartItem SET quantity = ?, addedDate = NOW() WHERE userId = ? AND productId = ?";
+            $updateStmt = $conn->prepare($updateSql);
+            $updateStmt->bind_param("iii", $newQty, $userId, $productId);
+            $updateStmt->execute();
+            $updateStmt->close();
+        } else {
+            // Thêm mới vào CartItem
+            $insertSql = "INSERT INTO CartItem (userId, productId, quantity, addedDate) VALUES (?, ?, ?, NOW())";
+            $insertStmt = $conn->prepare($insertSql);
+            $insertStmt->bind_param("iii", $userId, $productId, $quantity);
+            $insertStmt->execute();
+            $insertStmt->close();
+        }
+        $checkStmt->close();
+
+        // Chuyển hướng để tránh gửi lại form
+        header("Location: detail-product.php?id=" . $productId);
+        exit;
+    } else {
+        // Nếu chưa đăng nhập, chuyển hướng đến login
+        header("Location: login.php");
+        exit;
+    }
+}
+
+// Xử lý xóa sản phẩm khỏi giỏ hàng
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['remove_from_cart'])) {
+    $productId = (int)$_POST['product_id'];
+
+    // Xóa sản phẩm khỏi CartItem
+    $deleteSql = "DELETE FROM CartItem WHERE userId = ? AND productId = ?";
+    $deleteStmt = $conn->prepare($deleteSql);
+    $deleteStmt->bind_param("ii", $userId, $productId);
+    $deleteStmt->execute();
+    $deleteStmt->close();
+
     header("Location: detail-product.php?id=" . $productId);
     exit;
 }
+
+// Lấy danh sách giỏ hàng từ CartItem
+$cartSql = "SELECT ci.productId, ci.quantity, p.name, p.price, p.image 
+            FROM CartItem ci 
+            JOIN Product p ON ci.productId = p.productId 
+            WHERE ci.userId = ?";
+$cartStmt = $conn->prepare($cartSql);
+$cartStmt->bind_param("i", $userId);
+$cartStmt->execute();
+$cartResult = $cartStmt->get_result();
+$cartItems = $cartResult->fetch_all(MYSQLI_ASSOC);
+$cartStmt->close();
 
 $conn->close();
 ?>
@@ -164,47 +210,50 @@ $conn->close();
                                 </ul>
                             </div>
                             <div class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                                    <i class="fa fa-shopping-cart"></i>
-                                    <span>Giỏ hàng</span>
-                                    <div class="qty"><?php echo array_sum(array_column($_SESSION['cart'] ?? [], 'quantity')); ?></div>
-                                </a>
-                                <div class="cart-dropdown">
-                                    <div class="cart-list">
-                                        <?php
-                                        if (!empty($_SESSION['cart'])) {
-                                            foreach ($_SESSION['cart'] as $id => $item) {
-                                                echo "
-                                                <div class='product-widget'>
-                                                    <div class='product-img'>
-                                                        <img src='{$item['image']}' alt='' />
-                                                    </div>
-                                                    <div class='product-body'>
-                                                        <h3 class='product-name'>
-                                                            <a href='detail-product.php?id={$id}'>{$item['name']}</a>
-                                                        </h3>
-                                                        <h4 class='product-price'>
-                                                            <span class='qty'>{$item['quantity']}x</span>" . number_format($item['price'], 0, ',', '.') . " VND
-                                                        </h4>
-                                                    </div>
-                                                    <button class='delete'><i class='fa fa-close'></i></button>
-                                                </div>";
-                                            }
-                                        } else {
-                                            echo "<p>Giỏ hàng trống!</p>";
-                                        }
-                                        ?>
-                                    </div>
-                                    <div class="cart-summary">
-                                        <small><?php echo array_sum(array_column($_SESSION['cart'] ?? [], 'quantity')); ?> sản phẩm được chọn</small>
-                                        <h5>TỔNG: <?php echo number_format(array_sum(array_map(function($item) { return $item['price'] * $item['quantity']; }, $_SESSION['cart'] ?? [])), 0, ',', '.'); ?> VND</h5>
-                                    </div>
-                                    <div class="cart-btns">
-                                        <a href="./shopping-cart.php">Xem giỏ hàng</a>
-                                        <a href="./checkout.php">Thanh toán <i class="fa fa-arrow-circle-right"></i></a>
-                                    </div>
-                                </div>
-                            </div>
+    <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+        <i class="fa fa-shopping-cart"></i>
+        <span>Giỏ hàng</span>
+        <div class="qty"><?php echo array_sum(array_column($cartItems ?? [], 'quantity')); ?></div>
+    </a>
+    <div class="cart-dropdown">
+        <div class="cart-list">
+            <?php
+            if (!empty($cartItems)) {
+                foreach ($cartItems as $item) {
+                    echo "
+                    <div class='product-widget'>
+                        <div class='product-img'>
+                            <img src='{$item['image']}' alt='' />
+                        </div>
+                        <div class='product-body'>
+                            <h3 class='product-name'>
+                                <a href='detail-product.php?id={$item['productId']}'>{$item['name']}</a>
+                            </h3>
+                            <h4 class='product-price'>
+                                <span class='qty'>{$item['quantity']}x</span>" . number_format($item['price'], 0, ',', '.') . " VND
+                            </h4>
+                        </div>
+                        <form method='POST' style='display:inline;'>
+                            <input type='hidden' name='product_id' value='{$item['productId']}'>
+                            <button type='submit' name='remove_from_cart' class='delete'><i class='fa fa-close'></i></button>
+                        </form>
+                    </div>";
+                }
+            } else {
+                echo "<p>Giỏ hàng trống!</p>";
+            }
+            ?>
+        </div>
+        <div class="cart-summary">
+            <small><?php echo array_sum(array_column($cartItems ?? [], 'quantity')); ?> sản phẩm được chọn</small>
+            <h5>TỔNG: <?php echo number_format(array_sum(array_map(function($item) { return $item['price'] * $item['quantity']; }, $cartItems ?? [])), 0, ',', '.'); ?> VND</h5>
+        </div>
+        <div class="cart-btns">
+            <a href="./shopping-cart.php">Xem giỏ hàng</a>
+            <a href="./checkout.php">Thanh toán <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+</div>
                             <div class="menu-toggle">
                                 <a href="#"><i class="fa fa-bars"></i><span>Danh mục</span></a>
                             </div>
