@@ -21,7 +21,6 @@ if ($userId) {
     $userStmt->close();
 }
 
-// Khởi tạo biến giỏ hàng
 $cartItems = [];
 $cartCount = 0;
 $totalPrice = 0;
@@ -143,11 +142,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                 $detailStmt->close();
 
                 // Xóa chỉ các sản phẩm đã được thanh toán khỏi giỏ hàng
-                $productIds = array_keys($cartItems);
-                if (!empty($productIds)) {
-                    $placeholders = implode(',', array_fill(0, count($productIds), '?'));
+                $productIdsToDelete = isset($_POST['selected_items']) ? array_column($_POST['selected_items'], 'productId') : array_keys($cartItems);
+                if (!empty($productIdsToDelete)) {
+                    $placeholders = implode(',', array_fill(0, count($productIdsToDelete), '?'));
                     $deleteStmt = $conn->prepare("DELETE FROM CartItem WHERE userId = ? AND productId IN ($placeholders)");
-                    $params = array_merge([$userId], $productIds);
+                    $params = array_merge([$userId], $productIdsToDelete);
                     $types = str_repeat('i', count($params));
                     $deleteStmt->bind_param($types, ...$params);
                     $deleteStmt->execute();
@@ -380,12 +379,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                             </div>
                             <div class="form-group">
                                 <label for="card-expiry">Ngày hết hạn:</label>
-                                <input class="input" type="date" id="card-expiry" name="card-expiry" placeholder="MM/YY" />
+                                <input 
+                                    class="input" 
+                                    type="text" 
+                                    id="card-expiry" 
+                                    name="card-expiry" 
+                                    placeholder="MM/YYYY" 
+                                    maxlength="7" 
+                                    oninput="formatExpiry(this)" 
+                                />
                             </div>
+                            <script>
+                                function formatExpiry(input) {
+                                    input.value = input.value.replace(/[^0-9\/]/g, '');
+                                    if (input.value.length === 2 && !input.value.includes('/')) {
+                                        input.value += '/';
+                                    }
+                                    if (input.value.length > 7) {
+                                        input.value = input.value.slice(0, 7);
+                                    }
+                                }
+                            </script>
                         </div>
                     </div>
                 </div>
-
                 <div class="col-md-5 order-details">
                     <div class="section-title text-center">
                         <h3 class="title">Tóm Tắt Hóa Đơn</h3>

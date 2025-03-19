@@ -59,7 +59,7 @@ if ($userId) {
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Electro - HTML Ecommerce Template</title>
+    <title>Electro - Trang chủ</title>
     <!--Favicon-->
     <link rel="shortcut icon" href="./img/logo.png" type="image/x-icon" />
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet" />

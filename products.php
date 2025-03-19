@@ -7,8 +7,8 @@ $keyword = isset($_GET['keyword']) ? $conn->real_escape_string($_GET['keyword'])
 $min_price = isset($_GET['min_price']) && $_GET['min_price'] !== '' ? (int)$_GET['min_price'] : 0;
 $max_price = isset($_GET['max_price']) && $_GET['max_price'] !== '' ? (int)$_GET['max_price'] : PHP_INT_MAX;
 
-// Pagination parameters
-$limit = 9; // Number of products per page
+
+$limit = 9; 
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $offset = ($page - 1) * $limit;
 
@@ -26,12 +26,18 @@ if ($max_price < PHP_INT_MAX) {
     $sql .= " AND price <= $max_price";
 }
 
-$sql_car = "SELECT name FROM Category WHERE categoryId = $category_id";
-$result_car = $conn->query($sql_car);
-if ($result_car->num_rows > 0) {
-    $category_name = $result_car->fetch_assoc()['name'];
+$category_name = null;
+if ($category_id !== null && $category_id > 0) {
+    $sql_car = "SELECT name FROM Category WHERE categoryId = $category_id";
+    $result_car = $conn->query($sql_car);
+    if ($result_car === false) {
+        die("Error in category query: " . $conn->error);
+    }
+    if ($result_car->num_rows > 0) {
+        $category_name = $result_car->fetch_assoc()['name'];
+    }
 }
-// Get total number of products
+
 $total_result = $conn->query($sql);
 $total_products = $total_result->num_rows;
 $total_pages = ceil($total_products / $limit);

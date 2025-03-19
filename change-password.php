@@ -1,8 +1,8 @@
 <?php
-
 include 'connect.php';
 include 'information.php';
 
+// Xử lý đổi mật khẩu
 $message = "";
 $message_type = "";
 
@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $rePassword = trim($_POST['rePassword']);
     $userId = $_SESSION['userId'];
 
-    $sql = "SELECT password FROM user WHERE userId = " . mysqli_real_escape_string($conn, $userId);
+    $sql = "SELECT password FROM User WHERE userId = " . mysqli_real_escape_string($conn, $userId);
     $result = mysqli_query($conn, $sql);
     $user = mysqli_fetch_assoc($result);
 
@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $message_type = "error";
             } else {
                 $newPassword = mysqli_real_escape_string($conn, $newPassword);
-                $update_sql = "UPDATE user SET password = '$newPassword', updatedAt = CURRENT_TIMESTAMP WHERE userId = " . mysqli_real_escape_string($conn, $userId);
+                $update_sql = "UPDATE User SET password = '$newPassword', updatedAt = CURRENT_TIMESTAMP WHERE userId = " . mysqli_real_escape_string($conn, $userId);
                 if (mysqli_query($conn, $update_sql)) {
                     $message = "Đã đổi mật khẩu thành công!";
                     $message_type = "success";
@@ -44,17 +44,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $message_type = "error";
     }
 }
-mysqli_close($conn);
+
+// Lấy thông tin giỏ hàng từ database
+$userId = isset($_SESSION['userId']) ? (int)$_SESSION['userId'] : 0;
+$cartItems = [];
+$cartCount = 0;
+$totalPrice = 0;
+
+if ($userId) {
+    $cartStmt = $conn->prepare("
+        SELECT ci.productId, ci.quantity, p.name, p.price, p.image
+        FROM CartItem ci
+        JOIN Product p ON ci.productId = p.productId
+        WHERE ci.userId = ?
+    ");
+    $cartStmt->bind_param("i", $userId);
+    $cartStmt->execute();
+    $cartResult = $cartStmt->get_result();
+
+    while ($item = $cartResult->fetch_assoc()) {
+        $cartItems[$item['productId']] = [
+            'name' => $item['name'],
+            'price' => $item['price'],
+            'image' => $item['image'],
+            'quantity' => $item['quantity']
+        ];
+        $cartCount += $item['quantity'];
+        $totalPrice += $item['price'] * $item['quantity'];
+    }
+    $cartStmt->close();
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="utf-8" />
+    <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Electro - Đổi mật khẩu</title>
-    <!--Favicon-->
+    <!-- Favicon -->
     <link rel="shortcut icon" href="./img/logo.png" type="image/x-icon" />
     <!-- Google font -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet" />
@@ -89,6 +118,7 @@ mysqli_close($conn);
 </head>
 <body>
     <div class="alert alert-show announce" role="alert"></div>
+    <!-- HEADER -->
     <header>
         <div id="top-header">
             <div class="container">
@@ -111,78 +141,88 @@ mysqli_close($conn);
                     </div>
                     <div class="col-md-6">
                         <div class="header-search">
-                            <form action="./store-search.php" method="GET">
-                                <input name="keyword" class="input" placeholder="Nhập sản phẩm muốn tìm kiếm ..." value="<?php echo htmlspecialchars($keyword ?? ''); ?>"/>
-                                <input type="submit" class="search-btn" value="Tìm kiếm" />
+                            <form action="./products.php" method="GET">
+                                <input name="keyword" class="input" placeholder="Nhập sản phẩm muốn tìm kiếm ..." />
+                                <button class="search-btn">Tìm kiếm</button>
                             </form>
                         </div>
                     </div>
                     <div class="col-md-3 clearfix">
-                        <div class="header-ctn">
-                            <div class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                                    <i class="fa fa-user-o"></i>
-                                    <span><?php echo htmlspecialchars($fullname ?? ''); ?></span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="./account-information.php">Thông tin cá nhân</a></li>
-                                    <li><a href="./purchasing-history.php">Lịch sử mua hàng</a></li>
-                                    <li><a href="./change-password.php">Đổi mật khẩu</a></li>
-                                    <li><a href="./index-notlogin.php">Đăng xuất</a></li>
-                                </ul>
-                            </div>
-                            <div class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                                    <i class="fa fa-shopping-cart"></i>
-                                    <span>Giỏ hàng</span>
-                                    <div class="qty"><?php echo array_sum(array_column($_SESSION['cart'] ?? [], 'quantity')); ?></div>
-                                </a>
-                                <div class="cart-dropdown">
-                                    <div class="cart-list">
-                                        <?php
-                                        if (!empty($_SESSION['cart'])) {
-                                            foreach ($_SESSION['cart'] as $id => $item) {
-                                                echo "
-                                                <div class='product-widget'>
-                                                    <div class='product-img'>
-                                                        <img src='{$item['image']}' alt='' />
+                        <?php if (isset($fullname) && $fullname): ?>
+                            <div class="header-ctn">
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                                        <i class="fa fa-user-o"></i>
+                                        <span><?php echo htmlspecialchars($fullname); ?></span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="./account-information.php">Thông tin cá nhân</a></li>
+                                        <li><a href="./purchasing-history.php">Lịch sử mua hàng</a></li>
+                                        <li><a href="./change-password.php">Đổi mật khẩu</a></li>
+                                        <li><a href="./logout.php">Đăng xuất</a></li>
+                                    </ul>
+                                </div>
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                                        <i class="fa fa-shopping-cart"></i>
+                                        <span>Giỏ hàng</span>
+                                        <div class="qty"><?php echo $cartCount; ?></div>
+                                    </a>
+                                    <div class="cart-dropdown">
+                                        <div class="cart-list">
+                                            <?php if (!empty($cartItems)): ?>
+                                                <?php foreach ($cartItems as $id => $item): ?>
+                                                    <div class="product-widget">
+                                                        <div class="product-img">
+                                                            <img src="<?php echo htmlspecialchars($item['image']); ?>" alt="" />
+                                                        </div>
+                                                        <div class="product-body">
+                                                            <h3 class="product-name">
+                                                                <a href="detail-product.php?id=<?php echo $id; ?>"><?php echo htmlspecialchars($item['name']); ?></a>
+                                                            </h3>
+                                                            <h4 class="product-price">
+                                                                <span class="qty"><?php echo $item['quantity']; ?>x</span>
+                                                                <?php echo number_format($item['price'], 0, ',', '.'); ?> VND
+                                                            </h4>
+                                                        </div>
+                                                        <button class="delete" data-product-id="<?php echo $id; ?>"><i class="fa fa-close"></i></button>
                                                     </div>
-                                                    <div class='product-body'>
-                                                        <h3 class='product-name'>
-                                                            <a href='detail-product.php?id={$id}'>{$item['name']}</a>
-                                                        </h3>
-                                                        <h4 class='product-price'>
-                                                            <span class='qty'>{$item['quantity']}x</span>" . number_format($item['price'], 0, ',', '.') . " VND
-                                                        </h4>
-                                                    </div>
-                                                    <button class='delete'><i class='fa fa-close'></i></button>
-                                                </div>";
-                                            }
-                                        } else {
-                                            echo "<p>Giỏ hàng trống!</p>";
-                                        }
-                                        ?>
-                                    </div>
-                                    <div class="cart-summary">
-                                        <small><?php echo array_sum(array_column($_SESSION['cart'] ?? [], 'quantity')); ?> sản phẩm được chọn</small>
-                                        <h5>TỔNG: <?php echo number_format(array_sum(array_map(function($item) { return $item['price'] * $item['quantity']; }, $_SESSION['cart'] ?? [])), 0, ',', '.'); ?> VND</h5>
-                                    </div>
-                                    <div class="cart-btns">
-                                        <a href="./shopping-cart.php">Xem giỏ hàng</a>
-                                        <a href="./checkout.php">Thanh toán <i class="fa fa-arrow-circle-right"></i></a>
+                                                <?php endforeach; ?>
+                                            <?php else: ?>
+                                                <p>Giỏ hàng trống!</p>
+                                            <?php endif; ?>
+                                        </div>
+                                        <div class="cart-summary">
+                                            <small><?php echo $cartCount; ?> sản phẩm được chọn</small>
+                                            <h5>TỔNG: <?php echo number_format($totalPrice, 0, ',', '.'); ?> VND</h5>
+                                        </div>
+                                        <div class="cart-btns">
+                                            <a href="./shopping-cart.php">Xem giỏ hàng</a>
+                                            <a href="./checkout.php">Thanh toán <i class="fa fa-arrow-circle-right"></i></a>
+                                        </div>
                                     </div>
                                 </div>
+                                <div class="menu-toggle">
+                                    <a href="#"><i class="fa fa-bars"></i><span>Danh mục</span></a>
+                                </div>
                             </div>
-                            <div class="menu-toggle">
-                                <a href="#"><i class="fa fa-bars"></i><span>Danh mục</span></a>
+                        <?php else: ?>
+                            <div class="header-ctn">
+                                <div><a href="./login.php" class="btn btn-primary">Đăng nhập</a></div>
+                                <div><a href="./register.php" class="btn btn-primary">Đăng kí</a></div>
+                                <div class="menu-toggle">
+                                    <a href="#"><i class="fa fa-bars"></i><span>Danh mục</span></a>
+                                </div>
                             </div>
-                        </div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
         </div>
     </header>
+    <!-- /HEADER -->
 
+    <!-- BODY -->
     <div class="body">
         <div class="login-container">
             <h2 class="login-title">Đổi mật khẩu</h2>
@@ -219,12 +259,124 @@ mysqli_close($conn);
             </div>
         </div>
     </div>
+    <!-- /BODY -->
 
+    <!-- FOOTER -->
+    <footer id="footer">
+        <div class="section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3 col-xs-6">
+                        <div class="footer">
+                            <h3 class="footer-title">Về chúng tôi</h3>
+                            <p>Chất lượng làm nên thương hiệu.</p>
+                            <ul class="footer-links">
+                                <li><a href="#"><i class="fa fa-phone"></i><strong>+84 975 419 019</strong></a></li>
+                                <li><a href="#"><i class="fa fa-envelope-o"></i>nhom6@email.com</a></li>
+                                <li><a href="#"><i class="fa fa-map-marker"></i>273 An Dương Vương, Phường 3, Quận 5</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-xs-6">
+                        <div class="footer">
+                            <h3 class="footer-title">Sản phẩm</h3>
+                            <ul class="footer-links">
+                                <li><a href="./products.php?category=1">Máy tính</a></li>
+                                <li><a href="./products.php?category=2">Điện thoại</a></li>
+                                <li><a href="./products.php?category=3">Máy ảnh</a></li>
+                                <li><a href="./products.php?category=4">Phụ kiện</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="clearfix visible-xs"></div>
+                    <div class="col-md-3 col-xs-6">
+                        <div class="footer">
+                            <h3 class="footer-title">Thông tin</h3>
+                            <ul class="footer-links">
+                                <li><a href="#">Về chúng tôi</a></li>
+                                <li><a href="#">Liên hệ với chúng tôi</a></li>
+                                <li><a href="#">Chính sách bảo mật</a></li>
+                                <li><a href="#">Đơn hàng & Hoàn trả</a></li>
+                                <li><a href="#">Điều khoản & Điều kiện</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-xs-6">
+                        <div class="footer">
+                            <h3 class="footer-title">Dịch vụ</h3>
+                            <ul class="footer-links">
+                                <li><a href="./account-information.php">Tài khoản</a></li>
+                                <li><a href="./shopping-cart.php">Giỏ hàng</a></li>
+                                <li><a href="#">Trợ giúp</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="bottom-footer" class="section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <ul class="footer-payments">
+                            <li><a href="#"><i class="fa fa-cc-visa"></i></a></li>
+                            <li><a href="#"><i class="fa fa-credit-card"></i></a></li>
+                            <li><a href="#"><i class="fa fa-cc-paypal"></i></a></li>
+                            <li><a href="#"><i class="fa fa-cc-mastercard"></i></a></li>
+                            <li><a href="#"><i class="fa fa-cc-discover"></i></a></li>
+                            <li><a href="#"><i class="fa fa-cc-amex"></i></a></li>
+                        </ul>
+                        <span class="copyright">
+                            Copyright © <script>document.write(new Date().getFullYear());</script> Bản quyền thuộc về Electro.
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- /FOOTER -->
+
+    <!-- jQuery Plugins -->
     <script src="js/helper.js"></script>
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/slick.min.js"></script>
     <script src="js/nouislider.min.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/announcement.js"></script>
+    <script>
+        document.querySelectorAll('.cart-dropdown .delete').forEach(button => {
+            button.addEventListener('click', async function () {
+                const formData = new FormData();
+                formData.append('action', 'remove');
+                formData.append('productId', this.getAttribute('data-product-id'));
+
+                try {
+                    let response = await fetch("add-to-cart.php", {
+                        method: "POST",
+                        body: formData
+                    });
+
+                    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                    let data = await response.json();
+
+                    if (data.status === "success") {
+                        document.querySelector('.header-ctn .qty').textContent = data.cartQuantity;
+                        showAnnouncement("success", "Đã xóa sản phẩm khỏi giỏ hàng!");
+                        setTimeout(() => window.location.reload(), 3000);
+                    } else {
+                        showAnnouncement("danger", data.message);
+                    }
+                } catch (error) {
+                    console.log("Fetch Error:", error);
+                    showAnnouncement("danger", "Lỗi khi xóa sản phẩm!");
+                }
+            });
+        });
+    </script>
 </body>
 </html>
+
+<?php
+$conn->close();
+?>
