@@ -220,8 +220,8 @@ if ($userId) {
             Tìm thấy &nbsp;<span class="badge badge-primary p-2"><?= $total_products ?></span>&nbsp; sản phẩm phù hợp với điều kiện tìm kiếm
         </div>
             <div class="row">
-                <!-- ASIDE -->
 
+                <!-- ASIDE -->
                 <div id="aside" class="col-md-3">
                     <div class="aside border-red">
                         <h3 class="aside-title text-center">Tìm kiếm nâng cao</h3>
@@ -246,36 +246,46 @@ if ($userId) {
                             <button type="submit" class="btn btn-filter">Tìm kiếm</button>
                         </form>
                     </div>
-                    <div class="aside">
-                        <h3 class="aside-title">Sản phẩm bán chạy</h3>
-                        <div class="product-widget">
-                            <div class="product-img"><img src="./img/iphone-15-pro-max_3.png" alt=""></div>
-                            <div class="product-body">
-                                <h3 class="product-name"><a href="./detail-product-smartphone.php">iPhone 15 Pro Max 256GB | Chính hãng VN/A</a></h3>
-                                <h4 class="product-price">29.490.000₫ <del class="product-old-price">34.990.000₫</del></h4>
+                <div class="aside">
+                    <h3 class="aside-title">Sản phẩm bán chạy</h3>
+                        <?php
+                        $hotProductsStmt = $conn->prepare("
+                            SELECT p.productId, p.name, p.price, p.image, p.discountPercent, SUM(od.quantity) as total_sales
+                            FROM Product p
+                            LEFT JOIN OrderDetail od ON p.productId = od.productId
+                            WHERE p.stock > 0
+                            GROUP BY p.productId, p.name, p.price, p.image, p.discountPercent
+                            ORDER BY total_sales DESC
+                            LIMIT 4
+                        ");
+                        $hotProductsStmt->execute();
+                        $hotProducts = $hotProductsStmt->get_result();
+
+                        while ($row = $hotProducts->fetch_assoc()) {
+                            $oldPrice = $row['discountPercent'] > 0 ? $row['price'] * (1 + $row['discountPercent'] / 100) : $row['price'];
+                        ?>
+                            <div class="product-widget">
+                                <div class="product-img">
+                                    <img src="<?php echo $row['image']; ?>" alt="">
+                                </div>
+                                <div class="product-body">
+                                    <h3 class="product-name">
+                                        <a href="detail-product.php?id=<?php echo $row['productId']; ?>">
+                                            <?php echo htmlspecialchars($row['name']); ?>
+                                        </a>
+                                    </h3>
+                                    <h4 class="product-price">
+                                        <?php echo number_format($row['price'], 0, ',', '.'); ?>₫ 
+                                        <?php if ($row['discountPercent'] > 0): ?>
+                                            <del class="product-old-price"><?php echo number_format($oldPrice, 0, ',', '.'); ?>₫</del>
+                                        <?php endif; ?>
+                                    </h4>
+                                </div>
                             </div>
-                        </div>
-                        <div class="product-widget">
-                            <div class="product-img"><img src="./img/sanphambanchay_asus.png" alt=""></div>
-                            <div class="product-body">
-                                <h3 class="product-name"><a href="./detail-product-laptop.php">Laptop ASUS TUF Gaming A14 FA401WV-RG061WS</a></h3>
-                                <h4 class="product-price">44.990.000₫ <del class="product-old-price">46.990.000₫</del></h4>
-                            </div>
-                        </div>
-                        <div class="product-widget">
-                            <div class="product-img"><img src="./img/apple-airpods-pro-2-usb-c_1_.png" alt=""></div>
-                            <div class="product-body">
-                                <h3 class="product-name"><a href="./detail-product-accessories.php">Tai nghe Bluetooth Apple AirPods Pro 2 2023 USB-C</a></h3>
-                                <h4 class="product-price">5.790.000₫ <del class="product-old-price">6.190.000₫</del></h4>
-                            </div>
-                        </div>
-                        <div class="product-widget">
-                            <div class="product-img"><img src="./img/canon.png" alt=""></div>
-                            <div class="product-body">
-                                <h3 class="product-name"><a href="./detail-product-camera.php">Máy ảnh Canon EOS R10 kit RF-S18-45mm F4.5-6.3 IS STM</a></h3>
-                                <h4 class="product-price">21.900.000₫ <del class="product-old-price">28.330.000₫</del></h4>
-                            </div>
-                        </div>
+                        <?php
+                        }
+                        $hotProductsStmt->close();
+                        ?>
                     </div>
                 </div>
                 <!-- /ASIDE -->
