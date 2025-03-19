@@ -336,7 +336,16 @@ unset($item);
                         <p>Mã đơn: <strong><?php echo htmlspecialchars($order['orderCode']); ?></strong></p>
                         <p>Tên người nhận: <strong><?php echo htmlspecialchars($userName); ?></strong></p>
                         <p>Địa chỉ giao hàng: <strong><?php echo htmlspecialchars($order['customShippingAddress'] ?? $order['shippingAddress'] ?? 'Không có địa chỉ'); ?></strong></p>
-                        <p>Phương thức thanh toán: <strong><?php echo htmlspecialchars($order['paymentMethod']); ?></strong></p>
+                        <?php
+                            $paymentMethods = [
+                                'CASH' => 'Tiền mặt',
+                                'BANK_TRANSFER' => 'Chuyển khoản ngân hàng',
+                                'CREDIT_CARD' => 'Thẻ tín dụng'
+                            ];
+
+                            $paymentText = $paymentMethods[$order['paymentMethod']] ?? 'Không xác định';
+                        ?>
+                        <p>Phương thức thanh toán: <strong><?php echo htmlspecialchars($paymentText); ?></strong></p>
                         <p>Các sản phẩm:</p>
                         <ul>
                             <?php
