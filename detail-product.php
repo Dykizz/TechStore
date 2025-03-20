@@ -51,7 +51,7 @@ if ($productId > 0) {
 
 // Lấy danh sách giỏ hàng từ CartItem
 $userId = isset($_SESSION['userId']) ? (int)$_SESSION['userId'] : 0;
-$cartSql = "SELECT ci.productId, ci.quantity, p.name, p.price, p.image 
+$cartSql = "SELECT ci.productId, ci.quantity, p.name, p.price, p.image , p.discountPercent
             FROM CartItem ci 
             JOIN Product p ON ci.productId = p.productId 
             WHERE ci.userId = ?";
@@ -142,7 +142,7 @@ $cartStmt->close();
                                                             <a href='detail-product.php?id={$item['productId']}'>{$item['name']}</a>
                                                         </h3>
                                                         <h4 class='product-price'>
-                                                            <span class='qty'>{$item['quantity']}x</span>" . number_format($item['price'], 0, ',', '.') . " VND
+                                                            <span class='qty'>{$item['quantity']}x</span>" . number_format($item['price']* (1 - $item['discountPercent'] / 100), 0, ',', '.') . " VND
                                                         </h4>
                                                     </div>
                                                     <button class='delete' data-product-id='{$item['productId']}'><i class='fa fa-close'></i></button>
