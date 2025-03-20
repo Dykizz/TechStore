@@ -13,6 +13,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['update_quantity']) && isset($_POST['product_id']) && isset($_POST['quantity'])) {
         $productId = (int)$_POST['product_id'];
         $quantity = (int)$_POST['quantity'];
+        if ($quantity < 1) {
+            $quantity = 1; // Đặt lại thành 1 nếu nhỏ hơn 1
+        }
         $updateStmt = $conn->prepare("UPDATE CartItem SET quantity = ? WHERE userId = ? AND productId = ?");
         $updateStmt->bind_param("iii", $quantity, $userId, $productId);
         $updateStmt->execute();
@@ -41,7 +44,7 @@ $totalPrice = 0;
 
 if ($userId) {
     $cartStmt = $conn->prepare("
-        SELECT ci.productId, ci.quantity, p.name, p.price, p.image , p.discountPercent
+        SELECT ci.productId, ci.quantity, p.name, p.price, p.image, p.discountPercent
         FROM CartItem ci
         JOIN Product p ON ci.productId = p.productId
         WHERE ci.userId = ?
@@ -53,16 +56,17 @@ if ($userId) {
     while ($item = $cartResult->fetch_assoc()) {
         $discountPercent = isset($item['discountPercent']) ? $item['discountPercent'] : 0;
         $newPrice = $item['price'] * (1 - $discountPercent / 100);
+        $quantity = max(1, $item['quantity']);
     
         $cartItems[$item['productId']] = [
             'name' => $item['name'],
             'price' => $item['price'],
             'image' => $item['image'],
-            'quantity' => $item['quantity'],
+            'quantity' => $quantity,
             'newPrice' => $newPrice
         ];
-        $cartCount += $item['quantity'];
-        $totalPrice += $newPrice * $item['quantity'];
+        $cartCount += $quantity;
+        $totalPrice += $newPrice * $quantity;
     }
     
     $cartStmt->close();
@@ -218,7 +222,7 @@ unset($_SESSION['message']);
                                 <tr>
                                     <td>
                                         <input type="checkbox" name="selected_items[<?php echo $id; ?>][productId]" value="<?php echo $id; ?>" 
-                                               data-price="<?php echo $item['newPrice'] * $item['quantity']; ?>" 
+                                               data-price="<?php echo $item['newPrice']; ?>" 
                                                onchange="updateTotal()">
                                         <input type="hidden" name="selected_items[<?php echo $id; ?>][quantity]" value="<?php echo $item['quantity']; ?>">
                                     </td>
@@ -238,13 +242,13 @@ unset($_SESSION['message']);
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="quantity-control" style = "display: flex; justify-content: center;">
+                                        <div class="quantity-control" style="display: flex; justify-content: center;">
                                             <button type="button" class="btn btn-outline-secondary btn-sm decrease" data-product-id="<?php echo $id; ?>">-</button>
-                                            <input style="text-align: center;" type="number" class="quantity-input form-control form-control-sm " value="<?php echo $item['quantity']; ?>" min="1" readonly>
+                                            <input style="text-align: center;" type="number" class="quantity-input form-control form-control-sm" value="<?php echo $item['quantity']; ?>" min="1" readonly>
                                             <button type="button" class="btn btn-outline-secondary btn-sm increase" data-product-id="<?php echo $id; ?>">+</button>
                                         </div>
                                     </td>
-                                    <td class="item-total" data-price="<?php echo $item['price']; ?>">
+                                    <td class="item-total" data-price="<?php echo $item['newPrice']; ?>">
                                         <div class="product-price-container">
                                             <span class="price"><?php echo number_format($item['newPrice'] * $item['quantity'], 0, ',', '.'); ?></span>
                                             <span class="currency">VND</span>
@@ -369,7 +373,11 @@ unset($_SESSION['message']);
         function updateTotal() {
             const total = Array.from(checkboxes)
                 .filter(checkbox => checkbox.checked)
-                .reduce((sum, checkbox) => sum + parseFloat(checkbox.getAttribute('data-price')), 0);
+                .reduce((sum, checkbox) => {
+                    const pricePerUnit = parseFloat(checkbox.getAttribute('data-price'));
+                    const quantity = parseInt(checkbox.closest('tr').querySelector('.quantity-input').value);
+                    return sum + (pricePerUnit * quantity);
+                }, 0);
             totalElement.textContent = total.toLocaleString('vi-VN') + ' VND';
         }
 
@@ -404,20 +412,24 @@ unset($_SESSION['message']);
                 const hiddenQuantity = this.closest('tr').querySelector('input[type="hidden"]');
                 const pricePerUnit = parseFloat(itemTotalElement.getAttribute('data-price'));
                 let quantity = parseInt(quantityInput.value);
+                let originalQuantity = quantity; // Lưu giá trị ban đầu để so sánh
 
                 if (this.classList.contains('decrease') && quantity > 1) quantity--;
                 if (this.classList.contains('increase')) quantity++;
+
+                if (quantity < 1) quantity = 1;
+
                 quantityInput.value = quantity;
                 hiddenQuantity.value = quantity;
 
                 const newTotal = pricePerUnit * quantity;
                 itemTotalElement.querySelector('.price').textContent = newTotal.toLocaleString('vi-VN');
-                checkbox.setAttribute('data-price', newTotal);
+                checkbox.setAttribute('data-price', pricePerUnit);
 
                 let currentCartCount = parseInt(cartQtyElement.textContent);
                 if (this.classList.contains('increase')) currentCartCount++;
-                if (this.classList.contains('decrease') && quantity >= 1) currentCartCount--;
-                cartQtyElement.textContent = currentCartCount;
+                if (this.classList.contains('decrease') && originalQuantity > 1) currentCartCount--; // Kiểm tra quantity ban đầu
+                cartQtyElement.textContent = Math.max(0, currentCartCount);
 
                 const formData = new FormData();
                 formData.append('update_quantity', true);
@@ -448,7 +460,7 @@ unset($_SESSION['message']);
                     const quantity = parseInt(row.querySelector('.quantity-input').value);
                     let currentCartCount = parseInt(cartQtyElement.textContent);
                     currentCartCount -= quantity;
-                    cartQtyElement.textContent = currentCartCount;
+                    cartQtyElement.textContent = Math.max(0, currentCartCount);
 
                     const formData = new FormData();
                     formData.append('delete_product', true);
