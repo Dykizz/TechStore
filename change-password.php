@@ -182,7 +182,7 @@ if ($userId) {
                                                             </h3>
                                                             <h4 class="product-price">
                                                                 <span class="qty"><?php echo $item['quantity']; ?>x</span>
-                                                                <?php echo number_format($item['price'], 0, ',', '.'); ?> VND
+                                                                <?php echo number_format($item['newPrice'], 0, ',', '.'); ?> VND
                                                             </h4>
                                                         </div>
                                                         <button class="delete" data-product-id="<?php echo $id; ?>"><i class="fa fa-close"></i></button>

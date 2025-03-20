@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['checkout']) && isset(
         $placeholders = implode(',', array_fill(0, count($productIds), '?'));
 
         $cartStmt = $conn->prepare("
-            SELECT p.productId, p.name, p.price, p.image
+            SELECT p.productId, p.name, p.price, p.image, p.discountPercent
             FROM Product p
             WHERE p.productId IN ($placeholders)
         ");
@@ -46,14 +46,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['checkout']) && isset(
         while ($item = $cartResult->fetch_assoc()) {
             $productId = $item['productId'];
             $quantity = (int)$selectedItems[$productId]['quantity'];
+            $newPrice = $item['price'] * (1 - ($item['discountPercent'] ?? 0) / 100);
             $cartItems[$productId] = [
                 'name' => $item['name'],
                 'price' => $item['price'],
                 'image' => $item['image'],
-                'quantity' => $quantity
+                'quantity' => $quantity,
+                'newPrice' => $newPrice
             ];
             $cartCount += $quantity;
-            $totalPrice += $item['price'] * $quantity;
+            $totalPrice += $newPrice * $quantity;
         }
         $cartStmt->close();
     }
@@ -61,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['checkout']) && isset(
     // Thanh toán toàn bộ giỏ hàng khi truy cập từ header
     if ($userId) {
         $cartStmt = $conn->prepare("
-            SELECT p.productId, p.name, p.price, p.image, ci.quantity
+            SELECT p.productId, p.name, p.price, p.image, ci.quantity, p.discountPercent
             FROM Product p
             INNER JOIN CartItem ci ON p.productId = ci.productId
             WHERE ci.userId = ?
@@ -73,14 +75,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['checkout']) && isset(
         while ($item = $cartResult->fetch_assoc()) {
             $productId = $item['productId'];
             $quantity = (int)$item['quantity'];
+            $newPrice = $item['price'] * (1 - ($item['discountPercent'] ?? 0) / 100);
             $cartItems[$productId] = [
                 'name' => $item['name'],
                 'price' => $item['price'],
                 'image' => $item['image'],
-                'quantity' => $quantity
+                'quantity' => $quantity,
+                'newPrice' => $newPrice // Thêm newPrice vào đây
             ];
             $cartCount += $quantity;
-            $totalPrice += $item['price'] * $quantity;
+            $totalPrice += $newPrice * $quantity;
         }
         $cartStmt->close();
     }
@@ -135,7 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                 ");
                 foreach ($cartItems as $productId => $item) {
                     $quantity = $item['quantity'];
-                    $price = $item['price'];
+                    $price = $item['newPrice']; // Đảm bảo price lấy từ newPrice
                     $detailStmt->bind_param("iiid", $orderId, $productId, $quantity, $price);
                     $detailStmt->execute();
                 }
@@ -245,7 +249,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                                                             </h3>
                                                             <h4 class="product-price">
                                                                 <span class="qty"><?php echo $item['quantity']; ?>x</span>
-                                                                <?php echo number_format($item['price'], 0, ',', '.'); ?> VND
+                                                                <?php echo number_format($item['newPrice'], 0, ',', '.'); ?> VND
                                                             </h4>
                                                         </div>
                                                     </div>

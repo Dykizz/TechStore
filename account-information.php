@@ -33,7 +33,7 @@ if ($row = $result->fetch_assoc()) {
     $sex = $row['gender'] ?? 'MALE';
     $birthday = $row['dateOfBirth'] ?? '';
     $email = $row['email'] ?? $_SESSION['email'];
-    $avatarPath = $row['avatar'] ?? './img/avarta-man.png';
+    $avatarPath = $row['avatar'] == 'MALE' ? './img/avarta-man.png' : './img/avarta-woman.svg' ;
 }
 $stmt->close();
 

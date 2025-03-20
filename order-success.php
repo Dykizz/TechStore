@@ -53,7 +53,7 @@ $totalPrice = 0;
 
 if ($userId) {
     $cartStmt = $conn->prepare("
-        SELECT ci.productId, ci.quantity, p.name, p.price, p.image
+        SELECT ci.productId, ci.quantity, p.name, p.price, p.image , p.discountPercent
         FROM CartItem ci
         JOIN Product p ON ci.productId = p.productId
         WHERE ci.userId = ?
@@ -63,15 +63,21 @@ if ($userId) {
     $cartResult = $cartStmt->get_result();
 
     while ($item = $cartResult->fetch_assoc()) {
+        $discountPercent = isset($item['discountPercent']) ? $item['discountPercent'] : 0;
+        $newPrice = $item['price'] * (1 - $discountPercent / 100);
+    
         $cartItems[$item['productId']] = [
             'name' => $item['name'],
             'price' => $item['price'],
             'image' => $item['image'],
-            'quantity' => $item['quantity']
+            'quantity' => $item['quantity'],
+            'newPrice' => $newPrice
         ];
         $cartCount += $item['quantity'];
-        $totalPrice += $item['price'] * $item['quantity'];
+        $totalPrice += $newPrice * $item['quantity'];
     }
+    
+    $cartStmt->close();
 }
 ?>
 
@@ -179,7 +185,7 @@ if ($userId) {
                                                             </h3>
                                                             <h4 class="product-price">
                                                                 <span class="qty"><?php echo $item['quantity']; ?>x</span>
-                                                                <?php echo number_format($item['price'], 0, ',', '.'); ?> VND
+                                                                <?php echo number_format($item['newPrice'], 0, ',', '.'); ?> VND
                                                             </h4>
                                                         </div>
                                                         <button class="delete" data-product-id="<?php echo $id; ?>"><i class="fa fa-close"></i></button>
