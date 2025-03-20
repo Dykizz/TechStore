@@ -1,7 +1,11 @@
 <?php
 include 'connect.php';
 include 'information.php';
-
+$userId = isset($_SESSION['userId']) ? (int)$_SESSION['userId'] : 0;
+if (!$userId) {
+    header("Location: login.php");
+    exit();
+}
 // Lấy productId từ query string
 $productId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
@@ -50,17 +54,40 @@ if ($productId > 0) {
 }
 
 // Lấy danh sách giỏ hàng từ CartItem
-$userId = isset($_SESSION['userId']) ? (int)$_SESSION['userId'] : 0;
-$cartSql = "SELECT ci.productId, ci.quantity, p.name, p.price, p.image , p.discountPercent
-            FROM CartItem ci 
-            JOIN Product p ON ci.productId = p.productId 
-            WHERE ci.userId = ?";
-$cartStmt = $conn->prepare($cartSql);
-$cartStmt->bind_param("i", $userId);
-$cartStmt->execute();
-$cartResult = $cartStmt->get_result();
-$cartItems = $cartResult->fetch_all(MYSQLI_ASSOC);
-$cartStmt->close();
+$cartItems = [];
+$cartCount = 0;
+$totalPrice = 0;
+
+if ($userId) {
+    $cartStmt = $conn->prepare("
+        SELECT ci.productId, ci.quantity, p.name, p.price, p.image, p.discountPercent
+        FROM CartItem ci
+        JOIN Product p ON ci.productId = p.productId
+        WHERE ci.userId = ?
+    ");
+    $cartStmt->bind_param("i", $userId);
+    $cartStmt->execute();
+    $cartResult = $cartStmt->get_result();
+
+    while ($item = $cartResult->fetch_assoc()) {
+        $discountPercent = isset($item['discountPercent']) ? $item['discountPercent'] : 0;
+        $newPrice = $item['price'] * (1 - $discountPercent / 100);
+        $quantity = max(1, $item['quantity']);
+    
+        $cartItems[$item['productId']] = [
+            'name' => $item['name'],
+            'price' => $item['price'],
+            'image' => $item['image'],
+            'quantity' => $quantity,
+            'newPrice' => $newPrice
+        ];
+        $cartCount += $quantity;
+        $totalPrice += $newPrice * $quantity;
+    }
+    
+    $cartStmt->close();
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -122,47 +149,45 @@ $cartStmt->close();
                                 </ul>
                             </div>
                             <div class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                                    <i class="fa fa-shopping-cart"></i>
-                                    <span>Giỏ hàng</span>
-                                    <div class="qty"><?php echo array_sum(array_column($cartItems ?? [], 'quantity')); ?></div>
-                                </a>
-                                <div class="cart-dropdown">
-                                    <div class="cart-list">
-                                        <?php
-                                        if (!empty($cartItems)) {
-                                            foreach ($cartItems as $item) {
-                                                echo "
-                                                <div class='product-widget'>
-                                                    <div class='product-img'>
-                                                        <img src='{$item['image']}' alt='' />
+                                    <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                                        <i class="fa fa-shopping-cart"></i>
+                                        <span>Giỏ hàng</span>
+                                        <div class="qty"><?php echo $cartCount; ?></div>
+                                    </a>
+                                    <div class="cart-dropdown">
+                                        <div class="cart-list">
+                                            <?php if (!empty($cartItems)): ?>
+                                                <?php foreach ($cartItems as $id => $item): ?>
+                                                    <div class="product-widget">
+                                                        <div class="product-img">
+                                                            <img src="<?php echo htmlspecialchars($item['image']); ?>" alt="" />
+                                                        </div>
+                                                        <div class="product-body">
+                                                            <h3 class="product-name">
+                                                                <a href="detail-product.php?id=<?php echo $id; ?>"><?php echo htmlspecialchars($item['name']); ?></a>
+                                                            </h3>
+                                                            <h4 class="product-price">
+                                                                <span class="qty"><?php echo $item['quantity']; ?>x</span>
+                                                                <?php echo number_format($item['newPrice'], 0, ',', '.'); ?> VND
+                                                            </h4>
+                                                        </div>
+                                                        <button class="delete" data-product-id="<?php echo $id; ?>"><i class="fa fa-close"></i></button>
                                                     </div>
-                                                    <div class='product-body'>
-                                                        <h3 class='product-name'>
-                                                            <a href='detail-product.php?id={$item['productId']}'>{$item['name']}</a>
-                                                        </h3>
-                                                        <h4 class='product-price'>
-                                                            <span class='qty'>{$item['quantity']}x</span>" . number_format($item['price']* (1 - $item['discountPercent'] / 100), 0, ',', '.') . " VND
-                                                        </h4>
-                                                    </div>
-                                                    <button class='delete' data-product-id='{$item['productId']}'><i class='fa fa-close'></i></button>
-                                                </div>";
-                                            }
-                                        } else {
-                                            echo "<p>Giỏ hàng trống!</p>";
-                                        }
-                                        ?>
-                                    </div>
-                                    <div class="cart-summary">
-                                        <small><?php echo array_sum(array_column($cartItems ?? [], 'quantity')); ?> sản phẩm được chọn</small>
-                                        <h5>TỔNG: <?php echo number_format(array_sum(array_map(function($item) { return $item['price'] * $item['quantity']; }, $cartItems ?? [])), 0, ',', '.'); ?> VND</h5>
-                                    </div>
-                                    <div class="cart-btns">
-                                        <a href="./shopping-cart.php">Xem giỏ hàng</a>
-                                        <a href="./checkout.php">Thanh toán <i class="fa fa-arrow-circle-right"></i></a>
+                                                <?php endforeach; ?>
+                                            <?php else: ?>
+                                                <p>Giỏ hàng trống!</p>
+                                            <?php endif; ?>
+                                        </div>
+                                        <div class="cart-summary">
+                                            <small><?php echo $cartCount; ?> sản phẩm trong giỏ</small>
+                                            <h5>TỔNG: <?php echo number_format($totalPrice, 0, ',', '.'); ?> VND</h5>
+                                        </div>
+                                        <div class="cart-btns">
+                                            <a href="./shopping-cart.php">Xem giỏ hàng</a>
+                                            <a href="./checkout.php">Thanh toán <i class="fa fa-arrow-circle-right"></i></a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                             <div class="menu-toggle">
                                 <a href="#"><i class="fa fa-bars"></i><span>Danh mục</span></a>
                             </div>
