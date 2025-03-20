@@ -176,6 +176,12 @@ $conn->close();
               <?= $orders[array_key_first($orders)]['name'] ?? 'Không xác định' ?>
           </a>
       </p>
+      <?php if (!empty($dateStart) && !empty($dateEnd)) : ?>
+          <div class="alert alert-info">
+              <strong>Khoảng thời gian:</strong> Từ <b><?= date('d/m/Y', strtotime($dateStart)) ?></b> đến <b><?= date('d/m/Y', strtotime($dateEnd)) ?></b>
+          </div>
+      <?php endif; ?>
+
       <p>
           <i class="text-success">
               Có <strong><?= count($orders) ?></strong> đơn hàng liên quan đến khách hàng này!
@@ -204,29 +210,36 @@ $conn->close();
       </div>
        <!-- Phân trang -->
        <div class="inner-pagination">
-        <ul class="pagination">
-            <!-- Nút trang đầu -->
-            <li class="page-item <?= ($page == 1) ? 'disabled' : '' ?>">
-                <a href="./orderClient-relate.php?userId=<?= $userId ?>&page=1<?= !empty($dateStart) && !empty($dateEnd) ? '&date-start=' . urlencode($dateStart) . '&date-end=' . urlencode($dateEnd) : '' ?>" 
-                  class="page-link">&lt;&lt;</a>
-            </li>
+          <ul class="pagination">
+              <!-- Nút trang đầu -->
+              <?php if ($page > 1 && $totalPages > 0): ?>
+                  <li class="page-item <?= ($page == 1) ? 'disabled' : '' ?>">
+                      <a href="./orderClient-relate.php?userId=<?= $userId ?>&page=1<?= !empty($dateStart) && !empty($dateEnd) ? '&date-start=' . urlencode($dateStart) . '&date-end=' . urlencode($dateEnd) : '' ?>" 
+                          class="page-link">&lt;&lt;
+                      </a>
+                  </li>
+              <?php endif; ?>
 
-            <!-- Vòng lặp tạo số trang -->
-            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                <li class="page-item <?= ($i == $page) ? 'active' : '' ?>">
-                    <a href="./orderClient-relate.php?userId=<?= $userId ?>&page=<?= $i ?><?= !empty($dateStart) && !empty($dateEnd) ? '&date-start=' . urlencode($dateStart) . '&date-end=' . urlencode($dateEnd) : '' ?>" 
-                      class="page-link"><?= $i ?></a>
-                </li>
-            <?php endfor; ?>
+              <!-- Vòng lặp tạo số trang -->
+              <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                  <li class="page-item <?= ($i == $page) ? 'active' : '' ?>">
+                      <a href="./orderClient-relate.php?userId=<?= $userId ?>&page=<?= $i ?><?= !empty($dateStart) && !empty($dateEnd) ? '&date-start=' . urlencode($dateStart) . '&date-end=' . urlencode($dateEnd) : '' ?>" 
+                          class="page-link"><?= $i ?>
+                      </a>
+                  </li>
+              <?php endfor; ?>
 
-            <!-- Nút trang cuối -->
-            <li class="page-item <?= ($page == $totalPages) ? 'disabled' : '' ?>">
-                <a href="./orderClient-relate.php?userId=<?= $userId ?>&page=<?= $totalPages ?><?= !empty($dateStart) && !empty($dateEnd) ? '&date-start=' . urlencode($dateStart) . '&date-end=' . urlencode($dateEnd) : '' ?>" 
-                  class="page-link">&gt;&gt;</a>
-            </li>
-        </ul>
-
+              <!-- Nút trang cuối -->
+              <?php if ($page != $totalPages && $totalPages > 0): ?>
+                  <li class="page-item <?= ($page == $totalPages) ? 'disabled' : '' ?>">
+                      <a href="./orderClient-relate.php?userId=<?= $userId ?>&page=<?= $totalPages ?><?= !empty($dateStart) && !empty($dateEnd) ? '&date-start=' . urlencode($dateStart) . '&date-end=' . urlencode($dateEnd) : '' ?>" 
+                          class="page-link">&gt;&gt;
+                      </a>
+                  </li>
+              <?php endif; ?>
+          </ul>
       </div>
+
     </div>
   </body>
 </html>
