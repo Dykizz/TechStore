@@ -217,25 +217,43 @@ unset($item);
                         <div class="panel-body">
                             <p>Mã đơn: <strong><?php echo htmlspecialchars($order['orderCode']); ?></strong></p>
                             <p>Thời gian: <strong><?php echo htmlspecialchars($order['orderDate']); ?></strong></p>
-                            <p>Trạng thái: <strong><?php echo htmlspecialchars($order['status']); ?></strong></p>
+                            <?php
+                            $statusText = [
+                                'Pending' => 'Chưa xử lý',
+                                'Confirmed' => 'Đã xác nhận',
+                                'Delivered' => 'Giao thành công',
+                                'Cancelled' => 'Đã hủy'
+                            ];
+                            ?>
+                            <p>Trạng thái: <strong><?php echo $statusText[$order['status']] ?? 'Không xác định'; ?></strong></p>
+
                             <p>Tên người nhận: <strong><?php echo htmlspecialchars($userName); ?></strong></p>
                             <p>Địa chỉ giao hàng: <strong><?php echo htmlspecialchars($order['customShippingAddress'] ?? $order['shippingAddress'] ?? 'Không có địa chỉ'); ?></strong></p>
-                            <p>Phương thức thanh toán: <strong><?php echo htmlspecialchars($order['paymentMethod']); ?></strong></p>
+                            <?php
+                            $paymentMethods = [
+                                'CASH' => 'Tiền mặt',
+                                'BANK_TRANSFER' => 'Chuyển khoản ngân hàng',
+                                'CREDIT_CARD' => 'Thẻ tín dụng'
+                            ];
+
+                            $paymentText = $paymentMethods[$order['paymentMethod']] ?? 'Không xác định';
+                            ?>
+                            <p>Phương thức thanh toán: <strong><?php echo htmlspecialchars($paymentText); ?></strong></p>
                             <h4>Danh sách sản phẩm</h4>
-                            <table class="table">
-                                <thead>
+                            <table class="table text-center">
+                                <thead >
                                     <tr>
-                                        <th>Sản phẩm</th>
-                                        <th>Hình ảnh</th>
-                                        <th>Số lượng</th>
-                                        <th>Giá</th>
-                                        <th>Tổng</th>
+                                        <th class ="text-left">Sản phẩm</th>
+                                        <th class = "text-center">Hình ảnh</th>
+                                        <th class = "text-center">Số lượng</th>
+                                        <th class = "text-center">Giá</th>
+                                        <th class = "text-center">Tổng</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php foreach ($details as $detail): ?>
                                         <tr>
-                                            <td><?php echo htmlspecialchars($detail['productName']); ?></td>
+                                            <td class="text-left"><?php echo htmlspecialchars($detail['productName']); ?></td>
                                             <td><img src="<?php echo htmlspecialchars($detail['image']); ?>" alt="" style="width: 50px; height: 50px;" /></td>
                                             <td><?php echo $detail['quantity']; ?></td>
                                             <td><?php echo number_format($detail['price'], 0, ',', '.'); ?> VND</td>

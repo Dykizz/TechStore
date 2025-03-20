@@ -2,12 +2,10 @@
 session_start();
 include 'connect.php';
 
-
 // Lấy userId từ session
 $userId = isset($_SESSION['userId']) ? (int)$_SESSION['userId'] : 0;
 
 if ($userId == 0) {
-    // Nếu chưa đăng nhập, chuyển hướng về login.php
     header("Location: login.php");
     exit;
 }
@@ -19,10 +17,25 @@ $userStmt->bind_param("i", $userId);
 $userStmt->execute();
 $userResult = $userStmt->get_result();
 $user = $userResult->fetch_assoc();
-$userName = $user['name'] ?? "Khách"; // Nếu không tìm thấy, mặc định là "Khách"
+$userName = $user['name'] ?? "Khách";
 $userStmt->close();
 
-// Lấy danh sách đơn hàng
+// Thiết lập phân trang
+$itemsPerPage = 5;
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$page = max(1, $page);
+$offset = ($page - 1) * $itemsPerPage;
+
+// Đếm tổng số đơn hàng
+$countSql = "SELECT COUNT(*) as total FROM Orders WHERE userId = ?";
+$countStmt = $conn->prepare($countSql);
+$countStmt->bind_param("i", $userId);
+$countStmt->execute();
+$totalOrders = $countStmt->get_result()->fetch_assoc()['total'];
+$countStmt->close();
+$total_pages = ceil($totalOrders / $itemsPerPage);
+
+// Lấy danh sách đơn hàng với phân trang
 $sql = "
     SELECT o.orderId, o.orderCode, o.orderDate, o.status, o.totalAmount,
            ua.address AS shippingAddress, o.customShippingAddress, o.paymentMethod
@@ -30,9 +43,10 @@ $sql = "
     LEFT JOIN UserAddress ua ON o.shippingAddressId = ua.shippingAddressId
     WHERE o.userId = ?
     ORDER BY o.orderDate DESC
+    LIMIT ? OFFSET ?
 ";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $userId);
+$stmt->bind_param("iii", $userId, $itemsPerPage, $offset);
 $stmt->execute();
 $result = $stmt->get_result();
 $orders = $result->fetch_all(MYSQLI_ASSOC);
@@ -42,7 +56,6 @@ $stmt->close();
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order'])) {
     $orderId = (int)$_POST['order_id'];
 
-    // Kiểm tra trạng thái đơn hàng trước khi hủy
     $checkSql = "SELECT status FROM Orders WHERE orderId = ? AND userId = ?";
     $checkStmt = $conn->prepare($checkSql);
     $checkStmt->bind_param("ii", $orderId, $userId);
@@ -51,7 +64,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order'])) {
     $orderStatus = $checkResult->fetch_assoc()['status'];
     $checkStmt->close();
 
-    // Chỉ cho phép hủy nếu trạng thái là Pending hoặc Confirmed
     if (in_array($orderStatus, ['Pending', 'Confirmed'])) {
         $updateSql = "UPDATE Orders SET status = 'Cancelled' WHERE orderId = ? AND userId = ?";
         $updateStmt = $conn->prepare($updateSql);
@@ -59,28 +71,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order'])) {
         $updateStmt->execute();
         $updateStmt->close();
 
-        // Lưu thông báo vào session
         $_SESSION['notification'] = [
             'type' => 'success',
             'message' => 'Đơn hàng đã được hủy thành công!'
         ];
-
-        // Làm mới trang để cập nhật trạng thái
-        header("Location: purchasing-history.php");
-        exit;
     } else {
-        // Lưu thông báo lỗi nếu không thể hủy
         $_SESSION['notification'] = [
             'type' => 'error',
             'message' => 'Không thể hủy đơn hàng này!'
         ];
-
-        header("Location: purchasing-history.php");
-        exit;
     }
+    header("Location: purchasing-history.php?page=$page");
+    exit;
 }
-// Đếm tổng số đơn hàng
-$totalOrders = count($orders);
 
 // Lấy thông tin giỏ hàng
 $cartSql = "
@@ -96,20 +99,15 @@ $cartResult = $cartStmt->get_result();
 $cartItems = $cartResult->fetch_all(MYSQLI_ASSOC);
 $cartStmt->close();
 
-
 // Xử lý xóa sản phẩm khỏi giỏ hàng
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['remove_from_cart'])) {
     $productId = (int)$_POST['product_id'];
-
-    // Xóa sản phẩm khỏi CartItem
     $deleteSql = "DELETE FROM CartItem WHERE userId = ? AND productId = ?";
     $deleteStmt = $conn->prepare($deleteSql);
     $deleteStmt->bind_param("ii", $userId, $productId);
     $deleteStmt->execute();
     $deleteStmt->close();
-
-    // Làm mới trang để cập nhật giỏ hàng
-    header("Location: purchasing-history.php");
+    header("Location: purchasing-history.php?page=$page");
     exit;
 }
 
@@ -119,7 +117,7 @@ $cartTotal = 0;
 foreach ($cartItems as &$item) {
     $priceAfterDiscount = $item['price'] * ((100 - ($item['discountPercent'] ?? 0)) / 100);
     $cartTotal += $priceAfterDiscount * $item['quantity'];
-    $item['price'] = $priceAfterDiscount; // Cập nhật giá sau giảm giá để hiển thị
+    $item['price'] = $priceAfterDiscount;
 }
 unset($item);
 ?>
@@ -166,6 +164,10 @@ unset($item);
     .notification.hide {
         opacity: 0;
     }
+    .bg-red{
+        background-color:rgb(225, 35, 35);
+    }
+
 </style>
 </head>
 <body>
@@ -307,27 +309,41 @@ unset($item);
                     <div class="panel-body">
                         <?php
                         $statusClass = '';
+                        $statusText = '';
                         switch ($order['status']) {
                             case 'Pending':
                                 $statusClass = 'badge';
+                                $statusText = 'Chưa xử lý';
                                 break;
                             case 'Confirmed':
                                 $statusClass = 'badge badge-info';
+                                $statusText = 'Đã xác nhận';
                                 break;
                             case 'Delivered':
                                 $statusClass = 'badge badge-success';
+                                $statusText = 'Giao thành công';
                                 break;
                             case 'Cancelled':
-                                $statusClass = 'badge badge-danger';
+                                $statusClass = 'badge bg-red';
+                                $statusText = 'Đã hủy';
                                 break;
                         }
                         ?>
-                        <span class="<?php echo $statusClass; ?> mb-3"><?php echo htmlspecialchars($order['status']); ?></span>
+                        <span class="<?php echo $statusClass; ?> mb-3"><?php echo htmlspecialchars($statusText); ?></span>
                         <p>Thời gian: <strong><?php echo htmlspecialchars($order['orderDate']); ?></strong></p>
                         <p>Mã đơn: <strong><?php echo htmlspecialchars($order['orderCode']); ?></strong></p>
                         <p>Tên người nhận: <strong><?php echo htmlspecialchars($userName); ?></strong></p>
                         <p>Địa chỉ giao hàng: <strong><?php echo htmlspecialchars($order['customShippingAddress'] ?? $order['shippingAddress'] ?? 'Không có địa chỉ'); ?></strong></p>
-                        <p>Phương thức thanh toán: <strong><?php echo htmlspecialchars($order['paymentMethod']); ?></strong></p>
+                        <?php
+                            $paymentMethods = [
+                                'CASH' => 'Tiền mặt',
+                                'BANK_TRANSFER' => 'Chuyển khoản ngân hàng',
+                                'CREDIT_CARD' => 'Thẻ tín dụng'
+                            ];
+
+                            $paymentText = $paymentMethods[$order['paymentMethod']] ?? 'Không xác định';
+                        ?>
+                        <p>Phương thức thanh toán: <strong><?php echo htmlspecialchars($paymentText); ?></strong></p>
                         <p>Các sản phẩm:</p>
                         <ul>
                             <?php
@@ -350,7 +366,7 @@ unset($item);
                         </ul>
                         <p>Tổng tiền: <strong><?php echo number_format($order['totalAmount'], 0, ',', '.'); ?> VND</strong></p>
                         <a class="text-primary" href="./order-detail.php?orderId=<?php echo $order['orderId']; ?>" style="color: #337ab7">Xem chi tiết</a>
-                        <?php if (in_array($order['status'], ['Pending', 'Confirmed'])): ?>
+                        <?php if ($order['status']=='Pending'): ?>
                             <form method="POST" style="display:inline; margin-left: 10px;">
                                 <input type="hidden" name="order_id" value="<?php echo $order['orderId']; ?>">
                                 <button type="submit" name="cancel_order" class="btn btn-danger btn-sm">Hủy đơn hàng</button>
@@ -359,34 +375,23 @@ unset($item);
                     </div>
                 </div>
             <?php endforeach; ?>
+            <div class="store-filter clearfix">
+                    <ul class="store-pagination">
+                        <?php if ($page > 1): ?>
+                            <li><a href="?page=<?php echo $page - 1; ?>"><i class="fa fa-angle-left"></i></a></li>
+                        <?php endif; ?>
+                        <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                            <li class="<?php echo $i == $page ? 'active' : ''; ?>"><a href="?page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+                        <?php endfor; ?>
+                        <?php if ($page < $total_pages): ?>
+                            <li><a href="?page=<?php echo $page + 1; ?>"><i class="fa fa-angle-right"></i></a></li>
+                        <?php endif; ?>
+                    </ul>
+                </div>
         <?php endif; ?>
     </div>
 </div>
     <!-- /SECTION -->
-
-    <!-- NEWSLETTER -->
-    <div id="newsletter" class="section">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="newsletter">
-                        <p>Đăng ký để nhận <strong>THÔNG BÁO MỚI NHẤT</strong></p>
-                        <form>
-                            <input class="input" type="email" placeholder="Nhập email" />
-                            <button class="newsletter-btn"><i class="fa fa-envelope"></i> Đăng ký</button>
-                        </form>
-                        <ul class="newsletter-follow">
-                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                            <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                            <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /NEWSLETTER -->
 
     <!-- FOOTER -->
     <footer id="footer">
@@ -467,7 +472,6 @@ unset($item);
     <script src="js/bootstrap.min.js"></script>
     <script src="js/slick.min.js"></script>
     <script src="js/nouislider.min.js"></script>
-    <script src="js/jquery.zoom.min.js"></script>
     <script src="js/main.js"></script>
     <script>
     // Tự động ẩn thông báo sau 3 giây

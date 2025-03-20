@@ -201,7 +201,9 @@ $result_categories = $conn->query($sql_categories);
               </label>
             </div>
             <div class="inner-img">
-              <img src="../<?= $product["image"] ?>" alt="sản phẩm" srcset="" />
+            <img src="<?= !empty($product['image']) ? '../' . $product['image'] : '' ?>" 
+              alt="sản phẩm" 
+              class="<?= empty($product['image']) ? 'd-none' : '' ?>" />
               <span class="cancel">x</span>
             </div>
           </div>
